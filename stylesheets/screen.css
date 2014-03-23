@@ -2,6 +2,7 @@
  * In this file you should write your main styles. (or centralize your imports)
  * Import this file using the following HTML or equivalent:
  * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+/*This is the reset file that comes with compass*/
 /* line 17, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -65,4 +66,88 @@ a img {
 /* line 116, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
   display: block;
+}
+
+/*Setting up some colors from color scheme*/
+/* line 17, ../sass/screen.scss */
+body {
+  background-color: #e0f4f6;
+  font-family: Arial, sans-serif;
+}
+
+/* line 26, ../sass/screen.scss */
+.circle {
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+  background-color: #196966;
+  position: absolute;
+  bottom: 0;
+  right: 25px;
+}
+
+/* line 37, ../sass/screen.scss */
+#question_mark {
+  position: absolute;
+  margin: 0 auto;
+  width: 60%;
+  height: 66%;
+  bottom: 0;
+  right: 0;
+  font-size: 50px;
+  color: white;
+}
+
+/* line 48, ../sass/screen.scss */
+.house {
+  position: absolute;
+  bottom: 20%;
+  width: 40%;
+  left: 30%;
+}
+
+/* line 55, ../sass/screen.scss */
+.pieces_start_container {
+  background-color: #196966;
+  height: 20%;
+  width: 30%;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+
+/* line 65, ../sass/screen.scss */
+.pieces_start_prompt {
+  width: 70%;
+  height: 10px;
+  text-align: center;
+  margin: 0 auto;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 47%;
+  color: white;
+}
+
+/* line 77, ../sass/screen.scss */
+.shopping_cart_container {
+  background-color: #196966;
+  height: 20%;
+  width: 30%;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+/* line 86, ../sass/screen.scss */
+.shopping_cart_prompt {
+  width: 60%;
+  height: 10px;
+  text-align: center;
+  margin: 0 auto;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 50%;
+  color: white;
 }
