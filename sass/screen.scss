@@ -8,9 +8,10 @@
 
 /*Setting up some colors from color scheme*/
 $background: #E0F4F6;
+$background2: #C0E5E4;
 $button-color: #196966;
-$pixel-width: 1920;
-$pixel-height: 1080;
+$screen-width: 1920px;
+$screen-height: 1080px;
 $corner-container-height: 20%;
 $corner-container-width: 30%;
 
@@ -25,12 +26,13 @@ body{
 
 .circle{
 	border-radius: 50%;
-	width: 150px;
-	height: 150px;
+	width: 20%;
+	height: 20%;
 	background-color: $button-color;
 	position: absolute;
 	bottom: 0;
-	right: 25px;
+	right: 40px;
+	cursor: pointer;
 
 }
 
@@ -50,6 +52,15 @@ body{
 	bottom: 20%;
 	width: 40%;
 	left: 30%;
+}
+
+.info_panel{
+	position: absolute;
+	bottom: 20%;
+	right: 0;
+	height: 60%;
+	background-color: white;
+	width: $corner-container-width;
 }
 
 .pieces_start_container{
@@ -93,4 +104,13 @@ body{
 	right: 0;
 	bottom: 50%;
 	color: white;
+}
+
+.task{
+	padding: 20px;
+	font-size: 20px;
+
+	&:hover{
+		font-size: 30px;
+	}
 }
