@@ -1,3 +1,12 @@
+
+function bin2String(array) {
+  var result = "";
+  for (var i = 0; i < array.length; i++) {
+    result += String.fromCharCode(parseInt(array[i], 2));
+  }
+  return result;
+}
+
 ;
 jQuery(function($){    
     'use strict';
@@ -37,7 +46,21 @@ jQuery(function($){
         },
 
         onUpdate : function(data) {
+            data = data.message;
+            var buffer = [];
+            var allCoords = data.toString().split('~');
+            for(var i = 0; i < allCoords.length; i++){
+                var coords = allCoords[i].split(',');
+                if(coords.length >=2 ){
+                    buffer.push(parseFloat(coords[0]));
+                    buffer.push(parseFloat(coords[1]));
+                }
+            }
             console.log(data);
+            if(buffer.length >=2 ){
+                console.log(buffer[0] + " " + buffer[1]);
+            }
+
         },
     };
 
