@@ -1,6 +1,6 @@
 /* PORT NUMBERS */
 var cppPort = 1337;
-var clientPort = 8080;
+var clientPort = 8001;
 
 
  // Import the Express module
@@ -22,9 +22,9 @@ var server = net.createServer(function (socket) {
   console.log("connection!");
   
   socket.on('data', function (data) {
+        var buffer = []; 
         console.log(data.toString());
-        var floatData = new Float32Array(data);
-        simulation.update(data);
+        simulation.update(data.toString());
     });
 });
 // Start listening directly on tcp port
