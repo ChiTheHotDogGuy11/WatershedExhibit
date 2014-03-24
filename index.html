@@ -1,5 +1,4 @@
 <!doctype html>
-<<<<<<< HEAD
 <html>
     <head>
         <script src='http://localhost:1337/socket.io/socket.io.js'></script>
@@ -19,13 +18,18 @@
         <ul id='messages'></ul>
     </body>
 </html>
-=======
 <html> 
 	<head>
 		<title>Watershed Exhibit</title>
 		<link rel="stylesheet" type="text/css" href="stylesheets/screen.css"> 
 		<script src="js/jquery-1.11.0.js"></script>
     <script src="js/main.js"></script>
+		<!-- If Socket.IO is used with Express, then the /socket.io/ path will
+        serve the proper Socket.IO javascript files used by the browser -->
+		<script src="/socket.io/socket.io.js"></script>
+		
+		<!-- app.js is where all the client-side Jeopardy! game logic lives-->
+		<script src="app.js"></script>
 	</head>
 	<body>
 		<div class="page_container">
@@ -51,4 +55,3 @@
 
 	</body>
 </html>
->>>>>>> 69d090c3d26650ac6f404a916785aae5f26f0ea2
