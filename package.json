@@ -1,0 +1,11 @@
+{
+    "name" : "WatershedExhibit",
+    "description" : "Watershed Exhibit Simulation",
+    "version" : "0.1.0",
+    "private" : true,
+    "dependencies": {
+        "express": "3.x",
+        "socket.io":"0.9",
+		"web":"*"
+    }
+}
