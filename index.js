@@ -3,26 +3,6 @@ var cppPort = 1337;
 var clientPort = 8080;
 
 
-/***************
- * C++ SETUP ***
- ***************/
-var net = require('net');
-
-var server = net.createServer(function (socket) {
-  console.log("connection!");
-  
-  socket.on('data', function (data) {
-        console.log(data.toString());
-    });
-});
-// Start listening directly on tcp port
-server.listen(cppPort, '0.0.0.0');
-
-
-/******************
- * CLIENT SETUP ***
- ******************/
-
  // Import the Express module
 var express = require('express');
 // Import the 'path' module (packaged with Node.js)
@@ -33,6 +13,28 @@ var app = express();
 
 // Import the appServer file.
 var simulation = require('./appServer');
+/***************
+ * C++ SETUP ***
+ ***************/
+var net = require('net');
+
+var server = net.createServer(function (socket) {
+  console.log("connection!");
+  
+  socket.on('data', function (data) {
+        console.log(data.toString());
+        var floatData = new Float32Array(data);
+        simulation.update(data);
+    });
+});
+// Start listening directly on tcp port
+server.listen(cppPort, '127.0.0.1');
+
+
+/******************
+ * CLIENT SETUP ***
+ ******************/
+
 
 // Create a simple Express application
 app.configure(function() {

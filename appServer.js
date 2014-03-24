@@ -29,3 +29,8 @@ exports.initSimulation = function(sio, socket){
     gameSocket.on('playerAnswer', playerAnswer);
     gameSocket.on('playerRestart', playerRestart);*/
 }
+
+exports.update = function(data) {
+    gameSocket.emit('update', { message: data});
+    console.log("update sent");
+}

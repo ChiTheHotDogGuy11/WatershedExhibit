@@ -24,6 +24,7 @@ jQuery(function($){
          */
         bindEvents : function() {
             IO.socket.on('connected', IO.onConnected );
+            IO.socket.on('update', IO.onUpdate);
         },
 
         /**
@@ -33,6 +34,10 @@ jQuery(function($){
             // Cache a copy of the client's socket.IO session ID on the App
             //App.mySocketId = IO.socket.socket.sessionid;
 			alert("Connected by client!");
+        },
+
+        onUpdate : function(data) {
+            console.log(data);
         },
     };
 
