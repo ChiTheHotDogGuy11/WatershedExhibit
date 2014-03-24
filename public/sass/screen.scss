@@ -1,0 +1,117 @@
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+
+/*This is the reset file that comes with compass*/
+@import "compass/reset";
+
+/*Setting up some colors from color scheme*/
+$background: #E0F4F6;
+$background2: #C0E5E4;
+$button-color: #196966;
+$screen-width: 1920px;
+$screen-height: 1080px;
+$corner-container-height: 20%;
+$corner-container-width: 30%;
+
+body{
+	background-color: $background;
+	font-family: Arial, sans-serif;
+}
+
+.page_container{
+
+}
+
+.circle{
+	border-radius: 50%;
+	width: 20%;
+	height: 20%;
+	background-color: $button-color;
+	position: absolute;
+	bottom: 0;
+	right: 40px;
+	cursor: pointer;
+
+}
+
+#question_mark{
+	position: absolute;
+	margin: 0 auto;
+	width: 60%;
+	height: 66%;
+	bottom: 0;
+	right: 0;
+	font-size: 50px;
+	color: white;
+}
+
+.house{
+	position: absolute;
+	bottom: 20%;
+	width: 40%;
+	left: 40%;
+	right: 40%;
+}
+
+.info_panel{
+	position: absolute;
+	bottom: 20%;
+	right: 0;
+	height: 60%;
+	background-color: white;
+	width: $corner-container-width;
+}
+
+.pieces_start_container{
+	background-color: $button-color;
+	height: $corner-container-height;
+	width: $corner-container-width;
+	position: absolute;
+	left: 0;
+	bottom: 0;
+
+}
+
+.pieces_start_prompt{
+	width: 70%;
+	height: 10px;
+	text-align: center;
+	margin: 0 auto;
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 47%;
+	color: white;
+}
+
+.shopping_cart_container{
+	background-color: $button-color;
+	height: $corner-container-height;
+	width: $corner-container-width;
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
+.shopping_cart_prompt{
+	width: 60%;
+	height: 10px;
+	text-align: center;
+	margin: 0 auto;
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 50%;
+	color: white;
+}
+
+.task{
+	padding: 20px;
+	font-size: 20px;
+
+	&:hover{
+		font-size: 30px;
+	}
+}
