@@ -33,6 +33,40 @@ html {
   width: 100%;
 }
 
+.overlay {
+  z-index: 10;
+  height: 100%;
+  width: 100%;
+  background: rgba(0,0,0,0.5);
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+}
+
+.calibrate-point {
+  
+  width: 60px;
+  height: 60px;
+  display: none;
+
+}
+
+#point1{
+  top: 0px;
+  left: 0px;
+}
+
+#point2 {
+  top: 0px;
+  right: 0px;
+}
+
+#point3{
+  top: 0px;
+  bottom: 0px;
+}
+
 .circle{
 	border-radius: 50%;
 	width: 20%;
