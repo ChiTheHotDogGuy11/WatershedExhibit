@@ -90,6 +90,43 @@ html {
 }
 
 /* line 36, ../sass/screen.scss */
+.overlay {
+  z-index: 10;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+}
+
+/* line 47, ../sass/screen.scss */
+.calibrate-point {
+  width: 60px;
+  height: 60px;
+  display: none;
+}
+
+/* line 54, ../sass/screen.scss */
+#point1 {
+  top: 0px;
+  left: 0px;
+}
+
+/* line 59, ../sass/screen.scss */
+#point2 {
+  top: 0px;
+  right: 0px;
+}
+
+/* line 64, ../sass/screen.scss */
+#point3 {
+  top: 0px;
+  bottom: 0px;
+}
+
+/* line 69, ../sass/screen.scss */
 .circle {
   border-radius: 50%;
   width: 20%;
@@ -101,7 +138,7 @@ html {
   cursor: pointer;
 }
 
-/* line 48, ../sass/screen.scss */
+/* line 81, ../sass/screen.scss */
 .piece {
   background-color: #cc0000;
   position: absolute;
@@ -111,7 +148,7 @@ html {
   -webkit-border-radius: 50%;
 }
 
-/* line 57, ../sass/screen.scss */
+/* line 90, ../sass/screen.scss */
 #question_mark {
   position: absolute;
   margin: 0 auto;
@@ -123,7 +160,7 @@ html {
   color: white;
 }
 
-/* line 68, ../sass/screen.scss */
+/* line 101, ../sass/screen.scss */
 .house {
   position: absolute;
   bottom: 20%;
@@ -131,7 +168,7 @@ html {
   left: 43%;
 }
 
-/* line 76, ../sass/screen.scss */
+/* line 109, ../sass/screen.scss */
 .info_panel {
   position: absolute;
   bottom: 20%;
@@ -141,7 +178,7 @@ html {
   width: 30%;
 }
 
-/* line 85, ../sass/screen.scss */
+/* line 118, ../sass/screen.scss */
 .pieces_start_container {
   background-color: #196966;
   height: 20%;
@@ -151,7 +188,7 @@ html {
   bottom: 0;
 }
 
-/* line 95, ../sass/screen.scss */
+/* line 128, ../sass/screen.scss */
 .pieces_start_prompt {
   width: 70%;
   height: 10px;
@@ -164,7 +201,7 @@ html {
   color: white;
 }
 
-/* line 107, ../sass/screen.scss */
+/* line 140, ../sass/screen.scss */
 .shopping_cart_container {
   background-color: #196966;
   height: 20%;
@@ -174,7 +211,7 @@ html {
   top: 0;
 }
 
-/* line 116, ../sass/screen.scss */
+/* line 149, ../sass/screen.scss */
 .shopping_cart_prompt {
   width: 60%;
   height: 10px;
@@ -187,25 +224,25 @@ html {
   color: white;
 }
 
-/* line 128, ../sass/screen.scss */
+/* line 161, ../sass/screen.scss */
 .task {
   padding: 20px;
   font-size: 20px;
 }
-/* line 132, ../sass/screen.scss */
+/* line 165, ../sass/screen.scss */
 .task:hover {
   font-size: 30px;
 }
 
 /*Animation Styles*/
-/* line 139, ../sass/screen.scss */
+/* line 172, ../sass/screen.scss */
 #rainbarrel {
   position: absolute;
   bottom: 20%;
   left: 10%;
 }
 
-/* line 145, ../sass/screen.scss */
+/* line 178, ../sass/screen.scss */
 #geothermal {
   position: absolute;
   bottom: 10%;

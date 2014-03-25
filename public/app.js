@@ -63,6 +63,21 @@ var IO = {
     },
 };
 
+function calibrate()
+{
+  $('.overlay').show();
+  $('#point1').show();
+
+  //Then go through, record the points
+  $('#point1').hide();
+  $('#point2').show();
+
+  $('#point2').hide();
+  $('#point3').show();
+  
+  $('#point3').hide();
+}
+
 var boundingList = []; 
 
 function BoundingBox(ref, inAction, outAction)
