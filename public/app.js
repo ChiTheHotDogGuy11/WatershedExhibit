@@ -84,13 +84,19 @@ var IO = {
 				//The floats passed are percentages of the screen
 				xPercent = parseFloat(coords[0]);
 				yPercent = parseFloat(coords[1]);
-        if(xPercent < -10){
-          continue;
-        }
+        // if(xPercent < -10){
+        //   continue;
+        // }
 				//Scale the percentages to absolute values on screen
-				xCoord = xPercent * windowW;
-				yCoord = yPercent * windowH;
-				//pieceIndex = Math.floor(i);
+        //var middle = windowW / 2;
+        //var perfectY = windowH * .6;
+				xCoord = xPercent * windowW * xScale + 200;
+				yCoord = yPercent * windowH * yScale + 200;
+    //     var distFromMidX = Math.abs(middle - xCoord);
+    //     var distFromMidY = Math.abs(perfectY - yCoord);
+    //     xCoord *= (.8 * distFromMidX);
+    //     yCoord *= (.8 * distFromMidY);
+				// //pieceIndex = Math.floor(i);
         //var curID = pieces[pieceIndex].id;
         //console.log(pieceIndex);
         //$("#" + curID + "circle").css("left", xCoord+"px");
@@ -104,19 +110,71 @@ var IO = {
     },
 };
 
+var yScale = .64941;
+var xScale = .77584;
+
 function calibrate()
 {
   $('.overlay').show();
   $('#point1').show();
 
-  //Then go through, record the points
-  $('#point1').hide();
-  $('#point2').show();
+  var x1;
+  var y1;
 
-  $('#point2').hide();
-  $('#point3').show();
-  
-  $('#point3').hide();
+  var x2;
+  var y2;
+
+  var x3;
+  var y3;
+
+  var top;
+  var bottom;
+
+  var left;
+  var right;
+
+  var counter = 0
+
+  $(document).keypress(function(e) {
+    if(e.which == 13) {
+      if(counter == 0) {
+        $('#point2').show();
+
+        top = $('#point1').position().top;
+        left = $('#point1').position().left;
+
+        x1 = pieces[0].x;
+        y1 = pieces[0].y;
+        $('#point1').hide();
+        counter++;
+      }
+      else if(counter == 1) {
+        $('#point3').show();
+
+        right = $('#point2').position().left;
+
+        x2 = pieces[0].x;
+        y2 = pieces[0].y;
+
+        $('#point2').hide();
+        counter++;
+      }
+      else if(counter == 2) {
+        bottom = $('#point3').position().top;
+
+        $('#point3').hide();
+        $('.overlay').hide();
+
+        x3 = pieces[0].x;
+        y3 = pieces[0].y;
+        yScale = (Math.abs(y1) + Math.abs(y3))/(bottom - top);
+        xScale = (Math.abs(x1) + Math.abs(x2))/(right - left);
+        counter = 0;
+      }
+    }
+  });
+  //Then go through, record the points
+
 }
 
 var boundingList = []; 
@@ -169,13 +227,14 @@ function Piece(id, color)
       left: this.x - this.r,
       width: this.r*2,
       height: this.r*2,
-	   backgroundColor: color
+	   backgroundColor: 'transparent'
     }
   }).appendTo('.page_container'); 
 
 }
 
 Piece.prototype.move = function(x,y) {
+  console.log(x + " " +y);
   //Update our coordinates
   this.x = x;
   this.y = y;
