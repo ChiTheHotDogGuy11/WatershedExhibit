@@ -9,6 +9,11 @@ function bin2String(array) {
 
 'use strict';
 
+//The number of pieces that exist on the board.
+var numPieces = 4;
+//Array to store the pieces.
+var pieces;
+
 /**
  * All the code relevant to Socket.IO is collected in the IO namespace.
  *
@@ -38,26 +43,45 @@ var IO = {
 	 * The client is successfully connected!
 	 */
 	onConnected : function(data) {
-		// Cache a copy of the client's socket.IO session ID on the App
-		//App.mySocketId = IO.socket.socket.sessionid;
 		alert("Connected by client!");
+		//The potential colors of the pieces.
+		var colors = ["blue", "orange", "red", "black"];
+		//Initialize the pieces.
+		for (var i = 0; i < numPieces; i++) {
+			var curPiece = new Piece(i, colors[i]);
+			pieces.push(curPiece);
+		}
 	},
 
 
     onUpdate : function(data) {
+		//Convert the byte arrays passed in the data
+		//to floats
         data = data.message;
-        var buffer = [];
-        var allCoords = data.toString().split('~');
+       // var buffer = [];
+	    //Variables used to help move the pieces 
+		var xPercent;
+		var yPercent;
+		var xCoord;
+		var yCoord;
+		var windowW = $(window).width();
+		var windowH = $(window).height();
+		//Structure of data is "x1,y1~x2,y2~..."
+		var allCoords = data.toString().split('~');
         for(var i = 0; i < allCoords.length; i++){
             var coords = allCoords[i].split(',');
             if(coords.length >=2 ){
-                buffer.push(parseFloat(coords[0]));
-                buffer.push(parseFloat(coords[1]));
+				//The floats passed are percentages of the screen
+				xPercent = parseFloat(coords[0]);
+				yPercent = parseFloat(coords[1]);
+				//Scale the percentages to absolute values on screen
+				xCoord = xPercent * windowW;
+				yCoord = yPercent * windowH;
+				pieceIndex = Math.floor(i/2);
+				pieces[pieceIndex].move(xCoord, yCoord);
+                //buffer.push(parseFloat(coords[0]));
+                //buffer.push(parseFloat(coords[1]));
             }
-        }
-        console.log(data);
-        if(buffer.length >=2 ){
-            console.log(buffer[0] + " " + buffer[1]);
         }
 
     },
@@ -106,7 +130,7 @@ function BoundingBox(ref, inAction, outAction)
   }
 }
 
-function Piece(id)
+function Piece(id, color)
 {
   //unique ID for our piece
   this.id = id;
@@ -127,7 +151,8 @@ function Piece(id)
       top: this.y - this.r,
       left: this.x - this.r,
       width: this.r*2,
-      height: this.r*2
+      height: this.r*2,
+	  background-color: color
     }
   }).appendTo('.page_container'); 
 }
