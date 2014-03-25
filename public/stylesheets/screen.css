@@ -128,8 +128,7 @@ html {
   position: absolute;
   bottom: 20%;
   width: 40%;
-  left: 40%;
-  right: 40%;
+  left: 43%;
 }
 
 /* line 76, ../sass/screen.scss */
@@ -196,4 +195,19 @@ html {
 /* line 132, ../sass/screen.scss */
 .task:hover {
   font-size: 30px;
+}
+
+/*Animation Styles*/
+/* line 139, ../sass/screen.scss */
+#rainbarrel {
+  position: absolute;
+  bottom: 20%;
+  left: 10%;
+}
+
+/* line 145, ../sass/screen.scss */
+#geothermal {
+  position: absolute;
+  bottom: 10%;
+  left: 33%;
 }
