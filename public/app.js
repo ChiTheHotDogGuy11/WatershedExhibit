@@ -29,8 +29,6 @@ var IO = {
 	 * The client is successfully connected!
 	 */
 	onConnected : function(data) {
-		// Cache a copy of the client's socket.IO session ID on the App
-		//App.mySocketId = IO.socket.socket.sessionid;
 		alert("Connected by client!");
 	},
 
