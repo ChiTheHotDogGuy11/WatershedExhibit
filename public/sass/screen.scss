@@ -14,6 +14,7 @@ $screen-width: 1920px;
 $screen-height: 1080px;
 $corner-container-height: 20%;
 $corner-container-width: 30%;
+$piece-color: #CC0000;
 
 body{
 	background-color: $background;
@@ -34,6 +35,15 @@ body{
 	right: 40px;
 	cursor: pointer;
 
+}
+
+.piece{
+  background-color: $piece-color;
+  position: absolute;
+  cursor: pointer;
+  border-radius: 50%;
+  -moz-border-radius: 50%; 
+  -webkit-border-radius: 50%; 
 }
 
 #question_mark{
