@@ -12,7 +12,9 @@ function bin2String(array) {
 //The number of pieces that exist on the board.
 var numPieces = 4;
 //Array to store the pieces.
-var pieces;
+var pieces = [];
+
+var boundingList = []; 
 
 /**
  * All the code relevant to Socket.IO is collected in the IO namespace.
@@ -43,7 +45,7 @@ var IO = {
 	 * The client is successfully connected!
 	 */
 	onConnected : function(data) {
-		alert("Connected by client!");
+		//alert("Connected by client!");
 		//The potential colors of the pieces.
 		var colors = ["blue", "orange", "red", "black"];
 		//Initialize the pieces.
@@ -51,6 +53,14 @@ var IO = {
 			var curPiece = new Piece(i, colors[i]);
 			pieces.push(curPiece);
 		}
+    var house = new BoundingBox($(".house"), function(id){
+      visibilities[id] = FADING_IN;
+      console.log(id + " " + visibilities[id]);
+    }, function(id){
+      visibilities[id] = FADING_OUT;
+      console.log(id + " " + visibilities[id]);
+    });
+    boundingList.push(house);
 	},
 
 
@@ -74,20 +84,26 @@ var IO = {
 				//The floats passed are percentages of the screen
 				xPercent = parseFloat(coords[0]);
 				yPercent = parseFloat(coords[1]);
+        if(xPercent < -10){
+          continue;
+        }
 				//Scale the percentages to absolute values on screen
 				xCoord = xPercent * windowW;
 				yCoord = yPercent * windowH;
-				pieceIndex = Math.floor(i/2);
-				pieces[pieceIndex].move(xCoord, yCoord);
+				//pieceIndex = Math.floor(i);
+        //var curID = pieces[pieceIndex].id;
+        //console.log(pieceIndex);
+        //$("#" + curID + "circle").css("left", xCoord+"px");
+        //$("#" + curID + "circle").css("top", yCoord+"px");
+        //console.log(xCoord + " " + yCoord);
+				pieces[i].move(xCoord, yCoord);
                 //buffer.push(parseFloat(coords[0]));
                 //buffer.push(parseFloat(coords[1]));
             }
         }
-
     },
 };
 
-var boundingList = []; 
 
 function BoundingBox(ref, inAction, outAction)
 {
@@ -130,29 +146,42 @@ function Piece(id, color)
 
   //Create our div object for a new piece
   this.ref = $('<div/>', {
-    id: id,
+    id: id+"circle",
     class: 'piece',
     css: {
       top: this.y - this.r,
       left: this.x - this.r,
       width: this.r*2,
       height: this.r*2,
-	  background-color: color
+	   backgroundColor: color
     }
   }).appendTo('.page_container'); 
+
 }
 
 Piece.prototype.move = function(x,y) {
   //Update our coordinates
   this.x = x;
   this.y = y;
-  
+
   //Move its circle along with the piece
-  this.ref.animate({
+  this.ref.css({
     left: this.x-this.r,
     top: this.y-this.r 
-  }, 'fast');
+  });
 
+  //this.ref.left = this.x - this.r;
+  //this.ref.top = this.y - this.r;
+
+  // for(var i = 0; i < boundingList.length; i++){
+  //   var box = boundingList[i];
+  //   console.log(this.x + " " + this.y + " " + box.x() + " " + box.y() + " " + box.width() + " " + box.height());
+  //   if((this.x > box.x() && this.x < box.x() + box.width()) &&
+  //     (this.y > box.y() && this.y < box.y() + box.height())){
+  //   }
+  //   else{
+  //   }
+  // }
   //Search the boundingList for a matching containing box
   for(var i = 0; i < boundingList.length; i++)
   {
@@ -162,20 +191,22 @@ Piece.prototype.move = function(x,y) {
       if (this.curBox != boundingList[i])
       {
         //If we left another box, then we need to perfom it's out action
-        if (this.curBox == null)
+        if (this.curBox != null)
         {
-          this.curBox.outAction(this);
+          this.curBox.outAction(this.id);
         }
         //Perfom the inaction for our new box
-        boundingList[i].inAction(this);
+        boundingList[i].inAction(this.id);
         this.curBox = boundingList[i];
       }
       return;
     }
   }
   //We aren't in a box -- perform the outAction
-  curBox.outAction(this);
-  curBox = null;
+  if (this.curBox != null){
+    this.curBox.outAction(this.id);
+    this.curBox = null;
+  }
 } 
 
 //Checks if a circular object aka a piece, crosses our bounding box
