@@ -69,13 +69,13 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 }
 
 /*Setting up some colors from color scheme*/
-/* line 18, ../sass/screen.scss */
+/* line 19, ../sass/screen.scss */
 body {
   background-color: #e0f4f6;
   font-family: Arial, sans-serif;
 }
 
-/* line 27, ../sass/screen.scss */
+/* line 28, ../sass/screen.scss */
 .circle {
   border-radius: 50%;
   width: 20%;
@@ -87,7 +87,17 @@ body {
   cursor: pointer;
 }
 
-/* line 39, ../sass/screen.scss */
+/* line 40, ../sass/screen.scss */
+.piece {
+  background-color: #cc0000;
+  position: absolute;
+  cursor: pointer;
+  border-radius: 50%;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+}
+
+/* line 49, ../sass/screen.scss */
 #question_mark {
   position: absolute;
   margin: 0 auto;
@@ -99,7 +109,7 @@ body {
   color: white;
 }
 
-/* line 50, ../sass/screen.scss */
+/* line 60, ../sass/screen.scss */
 .house {
   position: absolute;
   bottom: 20%;
@@ -107,7 +117,7 @@ body {
   left: 43%;
 }
 
-/* line 58, ../sass/screen.scss */
+/* line 68, ../sass/screen.scss */
 .info_panel {
   position: absolute;
   bottom: 20%;
@@ -117,7 +127,7 @@ body {
   width: 30%;
 }
 
-/* line 67, ../sass/screen.scss */
+/* line 77, ../sass/screen.scss */
 .pieces_start_container {
   background-color: #196966;
   height: 20%;
@@ -127,7 +137,7 @@ body {
   bottom: 0;
 }
 
-/* line 77, ../sass/screen.scss */
+/* line 87, ../sass/screen.scss */
 .pieces_start_prompt {
   width: 70%;
   height: 10px;
@@ -140,7 +150,7 @@ body {
   color: white;
 }
 
-/* line 89, ../sass/screen.scss */
+/* line 99, ../sass/screen.scss */
 .shopping_cart_container {
   background-color: #196966;
   height: 20%;
@@ -150,7 +160,7 @@ body {
   top: 0;
 }
 
-/* line 98, ../sass/screen.scss */
+/* line 108, ../sass/screen.scss */
 .shopping_cart_prompt {
   width: 60%;
   height: 10px;
@@ -163,25 +173,25 @@ body {
   color: white;
 }
 
-/* line 110, ../sass/screen.scss */
+/* line 120, ../sass/screen.scss */
 .task {
   padding: 20px;
   font-size: 20px;
 }
-/* line 114, ../sass/screen.scss */
+/* line 124, ../sass/screen.scss */
 .task:hover {
   font-size: 30px;
 }
 
 /*Animation Styles*/
-/* line 121, ../sass/screen.scss */
+/* line 131, ../sass/screen.scss */
 #rainbarrel {
   position: absolute;
   bottom: 20%;
   left: 10%;
 }
 
-/* line 127, ../sass/screen.scss */
+/* line 137, ../sass/screen.scss */
 #geothermal {
   position: absolute;
   bottom: 10%;

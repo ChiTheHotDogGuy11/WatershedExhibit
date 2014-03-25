@@ -1,4 +1,13 @@
-  'use strict';
+function bin2String(array) {
+  var result = "";
+  for (var i = 0; i < array.length; i++) {
+    result += String.fromCharCode(parseInt(array[i], 2));
+  }
+  return result;
+}
+
+
+'use strict';
 
 /**
  * All the code relevant to Socket.IO is collected in the IO namespace.
@@ -34,9 +43,96 @@ var IO = {
 		alert("Connected by client!");
 	},
 
-	onUpdate : function(data) {
-		console.log(data);
-	},
+
+    onUpdate : function(data) {
+        data = data.message;
+        var buffer = [];
+        var allCoords = data.toString().split('~');
+        for(var i = 0; i < allCoords.length; i++){
+            var coords = allCoords[i].split(',');
+            if(coords.length >=2 ){
+                buffer.push(parseFloat(coords[0]));
+                buffer.push(parseFloat(coords[1]));
+            }
+        }
+        console.log(data);
+        if(buffer.length >=2 ){
+            console.log(buffer[0] + " " + buffer[1]);
+        }
+
+    },
 };
+
+var boundingMap = {}; 
+
+function BoundingBox(ref)
+{
+  this.ref = ref;
+  this.x = function() {
+    return $(ref).position().left;
+  }
+  this.y = function() {
+    return $(ref).position().top
+  }
+  this.height = function() {
+    return $(ref).height();
+  }
+  this.width = function() {
+    return $(ref).width();
+  }
+}
+
+function Piece(id)
+{
+  this.id = id;
+  this.x = 0;
+  this.y = 0;
+  this.r = 30;
+  this.ref = $(".page_container").append($('<div/>', {
+    id: id,
+    class: 'piece',
+    css: {
+      top: this.y - this.r,
+      left: this.x - this.r,
+      width: this.r,
+      height: this.r
+    }
+  })); 
+  this.move = function(x,y) {
+    this.x = x;
+    this.y = y;
+    this.ref.animate({
+      left: this.x-this.r,
+      top: this.y-this.r 
+    }, 'fast');
+  };
+}
+
+BoundingBox.prototype.collision = function(circle)
+{
+  var circleDistance_x = Math.abs(circle.x - this.x());
+  var circleDistance_y = Math.abs(circle.y - this.y());
+
+  if (circleDistance_x > (this.width()/2 + circle.r)) {return false;}
+  if (circleDistance_y > (this.height()/2 + circle.r)) { return false;}
+
+  if (circleDistance_x <= (this.width()/2)) { return true; }
+  if (circleDistance_y <= (this.height()/2)) {return true; }
+
+  var cornerDistance = Math.pow((circleDistance_x - this.width()/2),2) +
+                    Math.pow((circleDistance_y - this.height()/2),2);
+  
+  return (cornerDistance <= Math.pow(circle.r,2));
+}
+
+
+function checkIntersection(object)
+{
+  for(var box in boundingMap){
+    if(box.left)
+    {
+    }
+  }
+}
 
 IO.init();
