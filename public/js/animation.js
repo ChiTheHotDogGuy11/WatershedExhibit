@@ -10,7 +10,7 @@ var children = {};
 var animGroupId;
 
 function initTwo(){
-	var params = {width: 1440, height: 960};
+	var params = {width: 1000, height: 600};
 	var two = new Two(params).appendTo(document.getElementById("houseAnimContainer"));
 	var shapes = [];
 	$('#houseContainer').children('g').each(function(){
