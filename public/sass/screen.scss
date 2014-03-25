@@ -19,10 +19,18 @@ $piece-color: #CC0000;
 body{
 	background-color: $background;
 	font-family: Arial, sans-serif;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}
+
+html {
+  height: 100%;
 }
 
 .page_container{
-
+  height: 100%;
+  width: 100%;
 }
 
 .circle{
