@@ -14,14 +14,23 @@ $screen-width: 1920px;
 $screen-height: 1080px;
 $corner-container-height: 20%;
 $corner-container-width: 30%;
+$piece-color: #CC0000;
 
 body{
 	background-color: $background;
 	font-family: Arial, sans-serif;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}
+
+html {
+  height: 100%;
 }
 
 .page_container{
-
+  height: 100%;
+  width: 100%;
 }
 
 .circle{
@@ -34,6 +43,15 @@ body{
 	right: 40px;
 	cursor: pointer;
 
+}
+
+.piece{
+  background-color: $piece-color;
+  position: absolute;
+  cursor: pointer;
+  border-radius: 50%;
+  -moz-border-radius: 50%; 
+  -webkit-border-radius: 50%; 
 }
 
 #question_mark{
@@ -51,8 +69,8 @@ body{
 	position: absolute;
 	bottom: 20%;
 	width: 40%;
-	left: 40%;
-	right: 40%;
+	left: 43%;
+
 }
 
 .info_panel{
@@ -115,3 +133,19 @@ body{
 		font-size: 30px;
 	}
 }
+
+/*Animation Styles*/
+
+#rainbarrel {
+	position: absolute;
+	bottom: 20%;
+	left: 10%;
+}
+
+#geothermal {
+	position: absolute;
+	bottom: 10%;
+	left: 33%;
+}
+
+
