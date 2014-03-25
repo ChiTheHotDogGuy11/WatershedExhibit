@@ -1,4 +1,13 @@
-  'use strict';
+function bin2String(array) {
+  var result = "";
+  for (var i = 0; i < array.length; i++) {
+    result += String.fromCharCode(parseInt(array[i], 2));
+  }
+  return result;
+}
+
+
+'use strict';
 
 /**
  * All the code relevant to Socket.IO is collected in the IO namespace.
@@ -34,12 +43,26 @@ var IO = {
 		alert("Connected by client!");
 	},
 
-	onUpdate : function(data) {
-		console.log(data);
-	},
+
+    onUpdate : function(data) {
+        data = data.message;
+        var buffer = [];
+        var allCoords = data.toString().split('~');
+        for(var i = 0; i < allCoords.length; i++){
+            var coords = allCoords[i].split(',');
+            if(coords.length >=2 ){
+                buffer.push(parseFloat(coords[0]));
+                buffer.push(parseFloat(coords[1]));
+            }
+        }
+        console.log(data);
+        if(buffer.length >=2 ){
+            console.log(buffer[0] + " " + buffer[1]);
+        }
+
+    },
 };
 
-//IO.init();
 var boundingMap = {}; 
 
 function BoundingBox(ref)
@@ -111,3 +134,5 @@ function checkIntersection(object)
     }
   }
 }
+
+IO.init();
