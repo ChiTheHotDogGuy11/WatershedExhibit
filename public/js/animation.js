@@ -97,6 +97,9 @@ $(document).ready(function(){
 				groupId++;
 			});
 		visibilities[2] = 0;
+		visibilities[0] = 0;
+		visibilities[1] = 0;
+		visibilities[3] = 0;
 		initTwo();
 	}, 'xml');
 });
