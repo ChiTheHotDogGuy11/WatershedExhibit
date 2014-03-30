@@ -80,16 +80,31 @@ p {
   bottom: 140px;
 }
 
-.circle{
-	border-radius: 50%;
-	width: 20%;
-	height: 20%;
-	background-color: $button-color;
-	position: absolute;
-	bottom: 0;
-	right: 40px;
-	cursor: pointer;
+#budget_meter_label{
+position: absolute;
+top: 8%;
+width: 50%;
+right: 123%;
+	
+}
+.meter{
+	border-radius: 20px;
+	border: black solid 1px;
+	width: 40%;
+	height: 15%;
+	background-color: white;
+	position: relative;
+	top: 5%;
+	right: 45%;
+	overflow: hidden;
 
+	.meter_level{
+		width: 50%;
+		height: 100%;
+		background-color: $button-color;
+		transition-duration: 2s;
+
+	}
 }
 
 .piece{
