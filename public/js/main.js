@@ -11,4 +11,12 @@ $(document).ready(function(){
 
 	});
 
+	var updateMeter = function(initial, remaining){
+		var meterPercentage = remaining/initial*100 + "%";
+		$(".meter_level").css("width", meterPercentage);
+		console.log(meterPercentage);
+	}
+
+	updateMeter(1000,20);
+
 });
