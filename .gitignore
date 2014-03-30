@@ -26,3 +26,6 @@ node_modules/
 
 .sass-cache/
 *.scssc
+
+# Banish DS Store
+.DS_Store
