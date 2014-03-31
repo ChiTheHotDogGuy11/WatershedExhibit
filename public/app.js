@@ -16,6 +16,24 @@ var pieces = [];
 
 var boundingList = []; 
 
+function initPieces(){
+    var colors = ["blue", "orange", "red", "black"];
+    //Initialize the pieces.
+    for (var i = 0; i < numPieces; i++) {
+      var curPiece = new Piece(i, colors[i]);
+      pieces.push(curPiece);
+    }
+    var house = new BoundingBox($(".house"), function(id){
+      visibilities[id] = FADING_IN;
+      console.log(id + " " + visibilities[id]);
+    }, function(id){
+      visibilities[id] = FADING_OUT;
+      console.log(id + " " + visibilities[id]);
+    });
+    boundingList.push(house);
+    pieces[0].move(300, 300);
+}
+
 /**
  * All the code relevant to Socket.IO is collected in the IO namespace.
  *
@@ -47,21 +65,6 @@ var IO = {
 	onConnected : function(data) {
 		//alert("Connected by client!");
 		//The potential colors of the pieces.
-		var colors = ["blue", "orange", "red", "black"];
-		//Initialize the pieces.
-		for (var i = 0; i < numPieces; i++) {
-			var curPiece = new Piece(i, colors[i]);
-			pieces.push(curPiece);
-		}
-    var house = new BoundingBox($(".house"), function(id){
-      visibilities[id] = FADING_IN;
-      console.log(id + " " + visibilities[id]);
-    }, function(id){
-      visibilities[id] = FADING_OUT;
-      console.log(id + " " + visibilities[id]);
-    });
-    boundingList.push(house);
-    pieces[0].move(300, 300);
 	},
 
 
@@ -113,26 +116,16 @@ var IO = {
 
 var yScale = .64941;
 var xScale = .77584;
+var yShift;
+var xShift;
 
 function calibrate()
 {
-  $('.overlay').show();
+  $('#calibration').show();
   $('#point1').show();
 
-  var x1;
-  var y1;
-
-  var x2;
-  var y2;
-
-  var x3;
-  var y3;
-
-  var top;
-  var bottom;
-
-  var left;
-  var right;
+  var x1,y1,x2,y2,x3,y3;
+  var top,bottom,left,right;
 
   var counter = 0
 
@@ -164,12 +157,14 @@ function calibrate()
         bottom = $('#point3').position().top;
 
         $('#point3').hide();
-        $('.overlay').hide();
+        $('#calibration').hide();
 
         x3 = pieces[0].x;
         y3 = pieces[0].y;
-        yScale = (Math.abs(y1) + Math.abs(y3))/(bottom - top);
-        xScale = (Math.abs(x1) + Math.abs(x2))/(right - left);
+        yScale = (bottom - top)/(Math.abs(y1) + Math.abs(y3));
+        xScale = (right - left)/(Math.abs(x1) + Math.abs(x2));
+        yShift = y1;
+        xShift = x1;
         counter = 0;
       }
     }
@@ -300,7 +295,7 @@ Piece.prototype.move = function(x,y) {
     .css('left', y);
 
   //move info circle
-  this.animGroup.translation.set(x, y);
+  //this.animGroup.translation.set(x, y);
 
   //Move its circle along with the piece
   this.ref.css({
@@ -355,3 +350,10 @@ BoundingBox.prototype.collision = function(circle)
 
 //Create our socket connection to the server
 IO.init();
+
+$(function() {
+/*  $('#preferences').show(function() {
+    google.maps.event.trigger(map, 'resize');
+  })
+*/
+});

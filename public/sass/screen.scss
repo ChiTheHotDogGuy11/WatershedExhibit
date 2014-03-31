@@ -3,6 +3,7 @@
  * Import this file using the following HTML or equivalent:
  * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
 
+
 /*This is the reset file that comes with compass*/
 @import "compass/reset";
 
@@ -17,6 +18,7 @@ $corner-container-width: 30%;
 $piece-color: #CC0000;
 
 body{
+	background-image: url('../images/background.png');
 	background-color: $background;
 	font-family: Arial, sans-serif;
   height: 100%;
@@ -47,7 +49,7 @@ p {
 }
 
 .overlay {
-  z-index: 10;
+  z-index: 200;
   height: 100%;
   width: 100%;
   background: rgba(0,0,0,0.5);
@@ -234,3 +236,108 @@ right: 123%;
 }
 
 
+/* Google Map Styles */
+
+#map-canvas {
+  height: 100%;
+  margin: 0px;
+  padding: 0px
+}
+.controls {
+  margin-top: 16px;
+  border: 1px solid transparent;
+  border-radius: 2px 0 0 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  height: 32px;
+  outline: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+#map-container {
+  margin-left: auto;
+  margin-right: auto;
+  width: 40%;
+  height: 40%;
+  margin-top: 100px;
+  padding:30px;
+  background-color: white;
+  border-radius: 10px
+}
+
+#pac-input {
+  background-color: #fff;
+  padding: 0 11px 0 13px;
+  width: 400px;
+  font-family: Roboto;
+  font-size: 15px;
+  font-weight: 300;
+  text-overflow: ellipsis;
+}
+
+#pac-input:focus {
+  border-color: #4d90fe;
+  margin-left: -1px;
+  padding-left: 14px;  /* Regular padding-left + 1. */
+  width: 401px;
+}
+
+.pac-container {
+  font-family: Roboto;
+}
+
+#type-selector {
+  color: #fff;
+  background-color: #4d90fe;
+  padding: 5px 11px 0px 11px;
+}
+
+#type-selector label {
+  font-family: Roboto;
+  font-size: 13px;
+  font-weight: 300;
+}
+
+/* ------ shan's stuff ------- */
+
+#backgroundOverlay{
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  z-index: -1;
+}
+
+.bigButtonText{
+  margin-top: 30px;
+  text-align: center;
+  font-size: 24pt;
+}
+
+#startButton{
+  width: 350px;
+  height: 100px;
+  position: absolute;
+  top: 50%;
+  left: 40%;
+  color: white;
+  background-color: black;
+  z-index: 10000;
+}
+
+.nextButton{
+  position: relative;
+  width: 350px;
+  height: 80px;
+  left: 40%;
+  color: white;
+  background-color: black;
+  z-index: 10000;
+}
+
+.instrText{
+  margin-top: 300px;
+  color: white;
+  font-size: 24pt;
+  text-align: center;
+}
