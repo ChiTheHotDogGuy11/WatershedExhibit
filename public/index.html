@@ -7,6 +7,7 @@
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places,weather"></script>
     
     <script src="js/jquery-1.11.0.js"></script>
+		<script  src="js/globals.js"></script>
 		<script src="js/main.js"></script>
 		<!-- If Socket.IO is used with Express, then the /socket.io/ path will
         serve the proper Socket.IO javascript files used by the browser -->
@@ -16,12 +17,12 @@
     <!-- Nice UI tools for interface elements -->
     <script src="js/simple-slider.min.js"></script>
     <link href="stylesheets/simple-slider.css" rel="stylesheet" type="text/css" />
-
-		<!-- app.js is where all the client-side game logic lives-->
-		<script src="app.js"></script>
 		<!-- Simulate having pieces present when we can't make connection to server. -->
 		<script src="js/test.js"></script>
+		<!-- app.js is where all the client-side game logic lives-->
+		<script src="app.js"></script>
 		<script src="js/map.js"></script>
+        <script src="js/Budget.js"></script>
   </head>
 	<body>
 		<div id="backgroundOverlay"></div>
@@ -69,9 +70,13 @@
 		</div>
 			<!--img href="images/worker.gif" src="images/worker.gif" alt="worker" width="3%"/>
 			<img href="images/worker.gif" src="images/worker.gif" alt="worker" width="3%" class="worker_flip"/-->
-
-			<div class="info_panel" style="display: none;">
-			<!-- <div class="info_panel">
+            <div id="checkout-area" style="position:absolute;top:0px;right:0px;width:300px;
+                height:150px;background-color:black;color:white;text-align:center;">Checkout Area</div>
+            <button id="checkout-button" disabled style="position:absolute;top:200px;
+            right:100px;width:100px;height:80px;">Purchase</button>
+            <p id="budget" style="margin:0px auto; width:500px;font-size: 24pt;">Budget: $<span id="amountLeft"></span></p>
+			<!--<div class="info_panel" style="display: none;">
+			 <div class="info_panel">
 				<h2>Geothermal Heating</h2>
 				<img href="images/geothermal.gif" src="images/geothermal.gif" alt="geothermal heating/cooling animation" width="50%"/>
 				<p>Heat from the earth can be used as an energy source in many ways, from large and complex power stations to small and relatively simple pumping systems. This heat energy is known as geothermal energy.
@@ -81,7 +86,7 @@
 				<div class="panel_cost">
 					Cost: $30,000
 				</div>
-			</div> -->
+			</div>-->
 		</div> 
     <div id="calibration" class="overlay">
       <div id="point1" class="calibrate-point piece"></div>
