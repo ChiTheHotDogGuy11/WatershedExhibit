@@ -1,15 +1,3 @@
-var FADING_IN = 0;
-var FADING_OUT = 1;
-var VISIBLE = 2;
-var INVISIBLE = -1;
-
-var visibilities = {};
-var keys = {};
-var children = {};
-var animGroupId;
-
-var two; //two.js object
-
 function initTwo(){
 	var params = {fullscreen: true};
 	two = new Two(params).appendTo(document.getElementById("houseAnimContainer"));
@@ -22,7 +10,7 @@ function initTwo(){
 		shapes.push(_shape);
 	});
 
-	console.log(shapes[1]);
+	//console.log(shapes[1]);
 	two.bind('update', function(frameCount) {
 		for(var id in visibilities){
 			var vis = visibilities[id];
