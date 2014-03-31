@@ -3,23 +3,26 @@ var FADING_OUT = 1;
 var VISIBLE = 2;
 var INVISIBLE = -1;
 
-// vis -1 = hide, 0 = fade in, 1 = fade out, 2 = fully visible
 var visibilities = {};
 var keys = {};
 var children = {};
 var animGroupId;
 
+var two; //two.js object
+
 function initTwo(){
-	var params = {width: 1000, height: 600};
-	var two = new Two(params).appendTo(document.getElementById("houseAnimContainer"));
+	var params = {fullscreen: true};
+	two = new Two(params).appendTo(document.getElementById("houseAnimContainer"));
 	var shapes = [];
 	$('#houseContainer').children('g').each(function(){
 		var _shape = two.interpret(this);
+		_shape.translation.set(720, 320);
 		_shape.opacity = 0;
 		_shape.scale = 1;
 		shapes.push(_shape);
 	});
 
+	console.log(shapes[1]);
 	two.bind('update', function(frameCount) {
 		for(var id in visibilities){
 			var vis = visibilities[id];
@@ -61,45 +64,12 @@ function initTwo(){
 	}).play();
 }
 
-function initButtons(){
-	$("#rbButtons").click(function(){
-		visibilities[0] = FADING_IN;
-	})
-	$("#rbButtonh").click(function(){
-		animating = false;
-		visibilities[0] = FADING_OUT;
-	});
-	$("#gwButtons").click(function(){
-		visibilities[1] = FADING_IN;
-	})
-	$("#gwButtonh").click(function(){
-		animating = false;
-		visibilities[1] = FADING_OUT;
-	});
-	$("#spButtons").click(function(){
-		visibilities[3] = FADING_IN;
-	})
-	$("#spButtonh").click(function(){
-		animating = false;
-		visibilities[3] = FADING_OUT;
-	});
-}
-
-$(document).ready(function(){
-	$.get("images/house.svg", null, function(data){
-		var svgNode = $("svg", data);
-		var groupId = 0;
-		$("#houseContainer").html($(svgNode).html())
-			.css("display", "none")
-			.children('g').each(function(){
-				visibilities[groupId] = -1;
-				this.setAttribute("id", groupId+"g");
-				groupId++;
-			});
-		visibilities[2] = 0;
-		visibilities[0] = 0;
-		visibilities[1] = 0;
-		visibilities[3] = 0;
-		initTwo();
+function loadSvg(path, name, callback){
+	$.get(path, null, function(data){
+		var svgNode = $('svg', data);
+		svgNode.attr('id', name)
+			.css('display', 'none');
+		$('#assets').append(svgNode);
+		callback(svgNode);
 	}, 'xml');
-});
+}

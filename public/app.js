@@ -61,6 +61,7 @@ var IO = {
       console.log(id + " " + visibilities[id]);
     });
     boundingList.push(house);
+    pieces[0].move(300, 300);
 	},
 
 
@@ -231,13 +232,75 @@ function Piece(id, color)
     }
   }).appendTo('.page_container'); 
 
+  // create info panel
+  this.infopanel = $('<div/>').attr('id', id+'infopanel')
+    .attr('class', 'info-panel')
+    .css({
+      top: this.x,
+      left: this.y,
+      marginLeft: 150,
+      marginTop: -80,
+      width: 400,
+      height: 160
+    }).hide();
+  $('#info-panels').append(this.infopanel);
+
+  this.initAnimation();
+  
+}
+
+Piece.prototype.initAnimation = function(){
+  // init info panel animation in two.js
+
+  // info circle
+  var circle = two.interpret(document.getElementById('info-circle')).center();
+  circle.scale = 0.5;
+  // info icon
+  var icon = two.interpret(document.getElementById('info-icon')).center();
+  icon.scale = 0.15;
+
+  var angle = 0;
+  var paused = false;
+  var panel = this.infopanel;
+
+  // Update the renderer in order to generate corresponding DOM Elements.
+  two.update();
+  $(icon._renderer.elem).click(function(){
+    paused = !paused;
+    if(paused){
+      panel.show();
+    }
+    else{
+      panel.hide();
+    }
+  });
+
+  // bind update callback
+  two.bind('update', function(){
+    if(!paused){
+      angle += 0.5;
+      var x = Math.cos(angle * Math.PI / 180) * 110;
+      var y = Math.sin(angle * Math.PI / 180) * 110;
+      icon.translation.set(x, y);
+    }
+  });
+
+  // save animation handle
+  var group = two.makeGroup(circle, icon);
+  this.animGroup = group;
 }
 
 Piece.prototype.move = function(x,y) {
-  console.log(x + " " +y);
   //Update our coordinates
   this.x = x;
   this.y = y;
+
+  // move info panel
+  this.infopanel.css('top', x)
+    .css('left', y);
+
+  //move info circle
+  this.animGroup.translation.set(x, y);
 
   //Move its circle along with the piece
   this.ref.css({
@@ -245,18 +308,6 @@ Piece.prototype.move = function(x,y) {
     top: this.y-this.r 
   });
 
-  //this.ref.left = this.x - this.r;
-  //this.ref.top = this.y - this.r;
-
-  // for(var i = 0; i < boundingList.length; i++){
-  //   var box = boundingList[i];
-  //   console.log(this.x + " " + this.y + " " + box.x() + " " + box.y() + " " + box.width() + " " + box.height());
-  //   if((this.x > box.x() && this.x < box.x() + box.width()) &&
-  //     (this.y > box.y() && this.y < box.y() + box.height())){
-  //   }
-  //   else{
-  //   }
-  // }
   //Search the boundingList for a matching containing box
   for(var i = 0; i < boundingList.length; i++)
   {
