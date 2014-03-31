@@ -1,15 +1,3 @@
-var FADING_IN = 0;
-var FADING_OUT = 1;
-var VISIBLE = 2;
-var INVISIBLE = -1;
-
-var visibilities = {};
-var keys = {};
-var children = {};
-var animGroupId;
-
-var two; //two.js object
-
 function initTwo(){
 	var params = {fullscreen: true};
 	two = new Two(params).appendTo(document.getElementById("houseAnimContainer"));

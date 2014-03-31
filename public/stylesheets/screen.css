@@ -3,7 +3,7 @@
  * Import this file using the following HTML or equivalent:
  * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
 /*This is the reset file that comes with compass*/
-/* line 17, ../../../../../.rvm/gems/ruby-2.0.0-p247/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 17, ../../../../../../.rvm/gems/ruby-2.0.0-p353/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -25,45 +25,45 @@ time, mark, audio, video {
   vertical-align: baseline;
 }
 
-/* line 22, ../../../../../.rvm/gems/ruby-2.0.0-p247/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 22, ../../../../../../.rvm/gems/ruby-2.0.0-p353/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 html {
   line-height: 1;
 }
 
-/* line 24, ../../../../../.rvm/gems/ruby-2.0.0-p247/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 24, ../../../../../../.rvm/gems/ruby-2.0.0-p353/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 ol, ul {
   list-style: none;
 }
 
-/* line 26, ../../../../../.rvm/gems/ruby-2.0.0-p247/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 26, ../../../../../../.rvm/gems/ruby-2.0.0-p353/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 table {
   border-collapse: collapse;
   border-spacing: 0;
 }
 
-/* line 28, ../../../../../.rvm/gems/ruby-2.0.0-p247/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 28, ../../../../../../.rvm/gems/ruby-2.0.0-p353/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 caption, th, td {
   text-align: left;
   font-weight: normal;
   vertical-align: middle;
 }
 
-/* line 30, ../../../../../.rvm/gems/ruby-2.0.0-p247/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 30, ../../../../../../.rvm/gems/ruby-2.0.0-p353/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 q, blockquote {
   quotes: none;
 }
-/* line 103, ../../../../../.rvm/gems/ruby-2.0.0-p247/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 103, ../../../../../../.rvm/gems/ruby-2.0.0-p353/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 q:before, q:after, blockquote:before, blockquote:after {
   content: "";
   content: none;
 }
 
-/* line 32, ../../../../../.rvm/gems/ruby-2.0.0-p247/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 32, ../../../../../../.rvm/gems/ruby-2.0.0-p353/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 a img {
   border: none;
 }
 
-/* line 116, ../../../../../.rvm/gems/ruby-2.0.0-p247/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 116, ../../../../../../.rvm/gems/ruby-2.0.0-p353/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
   display: block;
 }
@@ -350,7 +350,21 @@ p {
   border-radius: 10px;
 }
 
+<<<<<<< HEAD
 /* line 282, ../sass/screen.scss */
+=======
+/* line 268, ../sass/screen.scss */
+.modal {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 100px;
+  padding: 30px;
+  background-color: white;
+  border-radius: 10px;
+}
+
+/* line 277, ../sass/screen.scss */
+>>>>>>> e468d0603a5a6c472dc414211aa3e2730b9fa087
 #pac-input {
   background-color: #fff;
   padding: 0 11px 0 13px;
@@ -361,7 +375,11 @@ p {
   text-overflow: ellipsis;
 }
 
+<<<<<<< HEAD
 /* line 292, ../sass/screen.scss */
+=======
+/* line 287, ../sass/screen.scss */
+>>>>>>> e468d0603a5a6c472dc414211aa3e2730b9fa087
 #pac-input:focus {
   border-color: #4d90fe;
   margin-left: -1px;
@@ -370,19 +388,31 @@ p {
   width: 401px;
 }
 
+<<<<<<< HEAD
 /* line 299, ../sass/screen.scss */
+=======
+/* line 294, ../sass/screen.scss */
+>>>>>>> e468d0603a5a6c472dc414211aa3e2730b9fa087
 .pac-container {
   font-family: Roboto;
 }
 
+<<<<<<< HEAD
 /* line 303, ../sass/screen.scss */
+=======
+/* line 298, ../sass/screen.scss */
+>>>>>>> e468d0603a5a6c472dc414211aa3e2730b9fa087
 #type-selector {
   color: #fff;
   background-color: #4d90fe;
   padding: 5px 11px 0px 11px;
 }
 
+<<<<<<< HEAD
 /* line 309, ../sass/screen.scss */
+=======
+/* line 304, ../sass/screen.scss */
+>>>>>>> e468d0603a5a6c472dc414211aa3e2730b9fa087
 #type-selector label {
   font-family: Roboto;
   font-size: 13px;
@@ -390,7 +420,11 @@ p {
 }
 
 /* ------ shan's stuff ------- */
+<<<<<<< HEAD
 /* line 317, ../sass/screen.scss */
+=======
+/* line 312, ../sass/screen.scss */
+>>>>>>> e468d0603a5a6c472dc414211aa3e2730b9fa087
 #backgroundOverlay {
   width: 100%;
   height: 100%;
@@ -399,14 +433,22 @@ p {
   z-index: -1;
 }
 
+<<<<<<< HEAD
 /* line 325, ../sass/screen.scss */
+=======
+/* line 320, ../sass/screen.scss */
+>>>>>>> e468d0603a5a6c472dc414211aa3e2730b9fa087
 .bigButtonText {
   margin-top: 30px;
   text-align: center;
   font-size: 24pt;
 }
 
+<<<<<<< HEAD
 /* line 331, ../sass/screen.scss */
+=======
+/* line 326, ../sass/screen.scss */
+>>>>>>> e468d0603a5a6c472dc414211aa3e2730b9fa087
 #startButton {
   width: 350px;
   height: 100px;
@@ -418,7 +460,11 @@ p {
   z-index: 10000;
 }
 
+<<<<<<< HEAD
 /* line 342, ../sass/screen.scss */
+=======
+/* line 337, ../sass/screen.scss */
+>>>>>>> e468d0603a5a6c472dc414211aa3e2730b9fa087
 .nextButton {
   position: relative;
   width: 350px;
@@ -429,7 +475,11 @@ p {
   z-index: 10000;
 }
 
+<<<<<<< HEAD
 /* line 352, ../sass/screen.scss */
+=======
+/* line 347, ../sass/screen.scss */
+>>>>>>> e468d0603a5a6c472dc414211aa3e2730b9fa087
 .instrText {
   margin-top: 300px;
   color: white;

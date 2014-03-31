@@ -76,6 +76,11 @@ function initElements(){
 		$('#instrScreen3').hide();
 		$('#backgroundOverlay').hide();
 		initGameScreen();
+		// initAnim();
+  //       if (IS_TESTING) Test.init();
+  //       else initPieces();
+  //       initBudget();
+  //       initCheckout();
 		showGameScreen();
 	})
 

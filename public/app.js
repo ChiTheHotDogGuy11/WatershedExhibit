@@ -21,7 +21,6 @@ function bin2String(array) {
   return result;
 }
 
-
 'use strict';
 
 //The number of pieces that exist on the board.
@@ -55,6 +54,56 @@ function initPieces(){
     pieces[0].move(300, 300);
     pieces[1].move(1000, 700);
     pieces[2].move(1200, 200);
+}
+
+function initBudget() {
+    var budget = new Budget(30000);
+}
+
+function initCheckout() {
+    if (CHECKOUT_METHOD === 0) {
+        $("#checkout-button").click(function() {
+            for (var i = 0; i < inCheckout.length; i++) {
+                var curId = inCheckout[i];
+                var isPurchased = (purchasedFeatures.indexOf(curId) !== -1);
+                if (!isPurchased) {
+                    var curPiece = pieces[curId];
+                    budget.subtractAmount(curPiece.cost);
+                    purchasedFeatures.push(curId);
+                }
+            }
+        });
+        var checkoutArea = new BoundingBox($("#checkout-area"), 
+            //in action
+            function(id) {
+                $("#checkout-button").prop('disabled', false);
+                if (inCheckout.indexOf(id) == -1) inCheckout.push(id);
+            }, 
+            //out action
+            function(id) {
+                var index = inCheckout.indexOf(id);
+                if (index > -1) inCheckout.splice(index, 1);
+                if (inCheckout.length == 0) {
+                    $("#checkout-button").prop('disabled', true);
+                }
+            }
+        );
+        boundingList.push(checkoutArea);
+    }
+    //DON'T DO: IT WILL CRASH!
+    else if (CHECKOUT_METHOD === 1) {
+        $("#checkout-area").css('display', 'none');
+        var house = new BoundingBox($("#houseAnimContainer"),
+            function(id){
+                console.log("collision with house");
+                visibilities[id] = FADING_IN;
+            },
+            function(id){
+                visibilities[id] = FADING_OUT;
+            }
+        );
+        boundingList.push(house);
+    }
 }
 
 /**
@@ -137,11 +186,6 @@ var IO = {
     },
 };
 
-var yScale = .64941;
-var xScale = .77584;
-var yShift;
-var xShift;
-
 function calibrate()
 {
   $('#calibration').show();
@@ -195,8 +239,6 @@ function calibrate()
   //Then go through, record the points
 
 }
-
-var boundingList = []; 
 
 function BoundingBox(ref, inAction, outAction)
 {
@@ -260,6 +302,9 @@ function Piece(id, color)
   //unique ID for our piece
   this.id = id;
   
+  //Set arbitrary cost for now
+  this.cost = 10000;
+  
   //Coordinates and size of our piece
   this.x = 0;
   this.y = 0;
@@ -269,6 +314,8 @@ function Piece(id, color)
   //The current bounding box
   this.curBox = null;
 
+  var backgroundColor = 'transparent';
+  if (IS_TESTING) backgroundColor = color;
   //Create our div object for a new piece
   this.ref = {};
   this.ref['anchor'] = $('<div/>', {
@@ -279,7 +326,7 @@ function Piece(id, color)
       left: this.x - this.r,
       width: this.r*2,
       height: this.r*2,
-	   backgroundColor: 'transparent'
+	  backgroundColor: backgroundColor
     }
   }).appendTo('.page_container'); 
 
@@ -300,7 +347,8 @@ function Piece(id, color)
     .hide();
   this.ref['anchor'].append(this.ref['infopanel']);
 
-  this.initAnimation();
+  //It seems like this always crashes if we don't have actual pieces.
+  //this.initAnimation();
   
 }
 
@@ -378,7 +426,7 @@ Piece.prototype.move = function(x,y) {
       //Don't do anything if we stayed in the same box
       if (this.curBox != boundingList[i])
       {
-        //If we left another box, then we need to perfom it's out action
+        //If we left another box, then we need to perform it's out action
         if (this.curBox != null)
         {
           this.curBox.outAction(this.id);
@@ -417,10 +465,36 @@ BoundingBox.prototype.collision = function(circle)
 
 //Create our socket connection to the server
 IO.init();
+var initialInvestment = 40000;
+var yearSavings = 2700; 
 
 $(function() {
 /*  $('#preferences').show(function() {
     google.maps.event.trigger(map, 'resize');
   })
 */
+  $('#endScreen').show(function() {
+    google.setOnLoadCallback(drawChart);
+    function drawChart() {
+      var data = new google.visualization.DataTable(); 
+      
+      data.addColumn('string', 'Year');
+      data.addColumn('number', 'Initial Investment');
+      data.addColumn('number', 'Net Savings');
+
+      for(var tmp = 2014; tmp < 2030; tmp++)
+      {
+        //TODO update this with the actual year graph
+        data.addRow([tmp.toString(),initialInvestment,(tmp-2014)*yearSavings]);
+      }
+
+      var options = {
+        title: 'Savings Over Time'
+      };
+
+      var chart = new google.visualization.LineChart(document.getElementById('end_chart'));
+      chart.draw(data,options);
+    }
+  });
+
 });
