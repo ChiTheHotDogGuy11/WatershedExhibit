@@ -94,10 +94,23 @@ function initElements(){
 
 	$('#instrNextButton3').click(function(){
 		$('#instrScreen3').hide();
+		$('#qtnScreen1').show();
+	})
+	var qtnButton1Next = function(){
+		$('#qtnScreen1').hide();
+		$('#qtnScreen2').show();
+	};
+	$('#qtnButton11').click(qtnButton1Next);
+	$('#qtnButton12').click(qtnButton1Next);
+	$('#qtnButton13').click(qtnButton1Next);
+	var qtnButton2Next = function(){
+		$('#qtnScreen2').hide();
 		$('#backgroundOverlay').hide();
 		initGameScreen();
 		showGameScreen();
-	})
+	};
+	$('#qtnButton21').click(qtnButton2Next);
+	$('#qtnButton22').click(qtnButton2Next);
 
 	$('#backgroundOverlay').show();
 	$('#startScreen').show();
@@ -106,6 +119,8 @@ function initElements(){
 	$('#instrScreen2').hide();
 	$('#instrScreen3').hide();
 	$('#_endScreen').hide();
+	$('#qtnScreen1').hide();
+	$('#qtnScreen2').hide();
 }
 
 // Insert JS here

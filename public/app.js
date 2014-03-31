@@ -24,7 +24,7 @@ function bin2String(array) {
 'use strict';
 
 //The number of pieces that exist on the board.
-var numPieces = 3;
+var numPieces = 4;
 //Array to store the pieces.
 var pieces = [];
 
@@ -51,9 +51,9 @@ function initPieces(){
       updateMeter();
     });
     boundingList.push(house);
-    pieces[0].move(300, 300);
+    pieces[0].move(-300, -300);
     pieces[1].move(-1000, -700);
-    pieces[2].move(1200, 200);
+    pieces[2].move(-1200, -200);
 }
 
 function initCheckout() {
@@ -162,8 +162,8 @@ var IO = {
 				//Scale the percentages to absolute values on screen
         //var middle = windowW / 2;
         //var perfectY = windowH * .6;
-				xCoord = (xPercent+xShift) * windowW * xScale + 200;
-				yCoord = (yPercent+yShift) * windowH * yScale + 200;
+				xCoord = (xPercent+xShift) * windowW * xScale;
+				yCoord = (yPercent+yShift) * windowH * yScale;
     //     var distFromMidX = Math.abs(middle - xCoord);
     //     var distFromMidY = Math.abs(perfectY - yCoord);
     //     xCoord *= (.8 * distFromMidX);
@@ -181,6 +181,12 @@ var IO = {
         }
     },
 };
+
+
+var yShift = .6452;
+var xShift = .8245;
+var yScale = 80;
+var xScale = 80;
 
 function calibrate()
 {
@@ -398,6 +404,7 @@ Piece.prototype.initAnimation = function(){
 }
 
 Piece.prototype.move = function(x,y) {
+  console.log(x + " " + y);
   //Update our coordinates
   this.x = x;
   this.y = y;
