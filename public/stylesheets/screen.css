@@ -71,6 +71,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 /*Setting up some colors from color scheme*/
 /* line 19, ../sass/screen.scss */
 body {
+  background-image: url('../images/background.png');
   background-color: #e0f4f6;
   font-family: Arial, sans-serif;
   height: 100%;
@@ -291,4 +292,9 @@ p {
   position: absolute;
   bottom: 10%;
   left: 33%;
+}
+
+.info-panel {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
 }
