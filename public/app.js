@@ -93,8 +93,8 @@ var IO = {
 				//Scale the percentages to absolute values on screen
         //var middle = windowW / 2;
         //var perfectY = windowH * .6;
-				xCoord = xPercent * windowW * xScale + 200;
-				yCoord = yPercent * windowH * yScale + 200;
+				xCoord = (xPercent+xShift) * windowW * xScale + 200;
+				yCoord = (yPercent+yShift) * windowH * yScale + 200;
     //     var distFromMidX = Math.abs(middle - xCoord);
     //     var distFromMidY = Math.abs(perfectY - yCoord);
     //     xCoord *= (.8 * distFromMidX);
