@@ -106,6 +106,9 @@ function initElements(){
 	$('#instrScreen2').hide();
 	$('#instrScreen3').hide();
 	$('#_endScreen').hide();
+	$('#calibrate').click(function(){
+		calibrate();
+	});
 }
 
 // Insert JS here
