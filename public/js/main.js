@@ -1,16 +1,41 @@
-function showGameScreen(){
-// Function to call once receive meter data from server
-	var updateMeter = function(initial, remaining){
-		var meterPercentage = remaining/initial*100 + "%";
-		$(".meter_level").css("width", meterPercentage);
-	}
+// function convertCoord(a, b, c, p, na, nb, nc){
+// 	// get baricentric coordinate
+// 	var va = new Two.Vector(a.x, a.y);
+// 	var vb = new Two.Vector(b.x, b.y);
+// 	var vc = new Two.Vector(c.x, c.y);
+// 	var vp = new Two.Vector(p.x, p.y);
+// 	var v0 = vb-va;
+// 	var v1 = vc-va;
+// 	var v2 = vp-va;
+// 	float d00 = v0.dot(v0);
+// 	float d01 = v0.dot(v1);
+// 	float d11 = v1.dot(v1);
+// 	float d20 = v2.dot(v0);
+// 	float d21 = v2.dot(v1);
+// 	float denom = d00*d11-d01*d01;
+// 	var v = (d11*d20-d01*d21) / denom;
+// 	var w = (d00*d21-d01*d20) / denom;
+// 	u = 1.0f - v - w;
+// 	var result = Two.Vector(na.x, na.y) * v + Two.Vector(nb.x, nb.y) * w + Two.Vecotr(nc.x, nc.y) * u;
+// 	console.log(result.x + " " + result.y);
+// }
 
-	updateMeter(1000,20);	
+function showGameScreen(){
+	$('#budgetMeter').show();
+// Function to call once receive meter data from server
+	updateMeter();	
 }
 
-function initAnim(){
-	loadSvg('images/info-circle.svg', 'info-circle', function(){});
-	loadSvg('images/info-icon.svg', 'info-icon', function(){})
+function initGameScreen(){
+	loadSvg('images/saving-icon.svg', 'saving-icon', function(){
+	loadSvg('images/price-icon.svg', 'price-icon', function(){
+	loadSvg('images/info-circle.svg', 'info-circle', function(){
+	loadSvg('images/info-icon.svg', 'info-icon', function(){
+		initPieces();
+	});
+	});
+	});
+	});
 	loadSvg('images/house.svg', 'houseContainer', function(node){
 		var groupId = 0;
 		node.children('g').each(function(){
@@ -18,12 +43,17 @@ function initAnim(){
 			this.setAttribute('id', groupId+'g');
 			groupId++;
 		});
-		visibilities[0] = 0;
-		visibilities[1] = 0;
 		visibilities[2] = 0;
-		visibilities[3] = 0;
 		initTwo();
 	});	
+	$('#submitButton').click(function(){
+		if(availableBudget < 0){
+			alert('You have exceeded your budget! Try removing some features!');
+		}
+		else{
+			// go to ending screen;
+		}
+	});
 }
 
 function initElements(){
@@ -45,13 +75,13 @@ function initElements(){
 	$('#instrNextButton3').click(function(){
 		$('#instrScreen3').hide();
 		$('#backgroundOverlay').hide();
-		initAnim();
-		initPieces();
+		initGameScreen();
 		showGameScreen();
 	})
 
 	$('#backgroundOverlay').show();
 	$('#startScreen').show();
+	$('#budgetMeter').hide();
 	$('#instrScreen').hide();
 	$('#instrScreen2').hide();
 	$('#instrScreen3').hide();
@@ -59,7 +89,7 @@ function initElements(){
 
 // Insert JS here
 $(document).ready(function(){
+	//convertCoord({x: 0, y: 0}, {x: 100, y: 0}, {x: 0, y: 100},{x: 30, y: 30}, {x: 0, y: 0}, {x: 100, y: 0}, {x: 0, y: 100})
+	initBudget();
 	initElements();
-	//showGameScreen();
-
 });

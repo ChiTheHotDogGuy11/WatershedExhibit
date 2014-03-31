@@ -1,3 +1,18 @@
+var totalBudget;
+var availableBudget;
+var yearlySaving;
+
+function initBudget(){
+  totalBudget = 35000;
+  availableBudget = 35000;
+  yearlySaving = 0;
+}
+
+function updateMeter(){
+    var meterPercentage = availableBudget/totalBudget*100 + "%";
+    $(".meter_level").css("width", meterPercentage);
+}
+
 function bin2String(array) {
   var result = "";
   for (var i = 0; i < array.length; i++) {
@@ -10,7 +25,7 @@ function bin2String(array) {
 'use strict';
 
 //The number of pieces that exist on the board.
-var numPieces = 4;
+var numPieces = 3;
 //Array to store the pieces.
 var pieces = [];
 
@@ -23,15 +38,23 @@ function initPieces(){
       var curPiece = new Piece(i, colors[i]);
       pieces.push(curPiece);
     }
-    var house = new BoundingBox($(".house"), function(id){
-      visibilities[id] = FADING_IN;
-      console.log(id + " " + visibilities[id]);
+    var house = new BoundingBox($("#screen"), function(id){
+      var animId = animMapping[featureMapping[id]];
+      visibilities[animId] = FADING_IN;
+      availableBudget -= costs[id];
+      yearlySaving += savings[id];
+      updateMeter();
     }, function(id){
-      visibilities[id] = FADING_OUT;
-      console.log(id + " " + visibilities[id]);
+      var animId = animMapping[featureMapping[id]];
+      visibilities[animId] = FADING_IN;
+      availableBudget += cost[id];
+      yearlySaving -= savings[id];
+      updateMeter();
     });
     boundingList.push(house);
     pieces[0].move(300, 300);
+    pieces[1].move(1000, 700);
+    pieces[2].move(1200, 200);
 }
 
 /**
@@ -201,6 +224,37 @@ function BoundingBox(ref, inAction, outAction)
   }
 }
 
+/* ----- class Piece ------ */
+
+/* ----- initialization helpers ------- */
+
+function setTranslation(piece, angle, diam){
+  var x = Math.cos(angle * Math.PI / 180) * diam;
+  var y = Math.sin(angle * Math.PI / 180) * diam;
+  piece.translation.set(x, y);
+}
+
+function setTranslationCSS(elem, angle, diam){
+  elem.css('-webkit-transform', 'rotate(' + angle + 'deg) translate(' + diam + 'px, 0px)');
+}
+
+function makeIcon(domName, scale, angle){
+  var icon = two.interpret(document.getElementById(domName)).center();
+  icon.scale = scale;
+  icon.angle = angle;
+  return icon;
+}
+
+function makeTag(tagname, angle, text, parent){
+  var tag = $('<div id='+ tagname + '/>')
+    .html('<span class="info-circle-tag">'+text+'</span>');
+  tag.angle = angle;
+  parent.append(tag);
+  return tag;
+}
+
+/* ------ constructor -------- */
+
 function Piece(id, color)
 {
   //unique ID for our piece
@@ -210,12 +264,14 @@ function Piece(id, color)
   this.x = 0;
   this.y = 0;
   this.r = 30;
+  this.diam = 110;
   
   //The current bounding box
   this.curBox = null;
 
   //Create our div object for a new piece
-  this.ref = $('<div/>', {
+  this.ref = {};
+  this.ref['anchor'] = $('<div/>', {
     id: id+"circle",
     class: 'piece',
     css: {
@@ -227,22 +283,27 @@ function Piece(id, color)
     }
   }).appendTo('.page_container'); 
 
+  // create tags that rotate around the info circles
+
+  // name tag
+  this.ref['nametag'] = makeTag(this.id+'nametag', 0, featureNames[this.id], this.ref['anchor']);
+  this.ref['pricetag'] = makeTag(this.id+'pricetag', 30, 'Installation Cost: $'+costs[this.id], this.ref['anchor']);
+  this.ref['savingtag'] = makeTag(this.id+'pricetag', 60, 'Saving: $' + savings[this.id]+'/yr', this.ref['anchor']);
+
   // create info panel
-  this.infopanel = $('<div/>').attr('id', id+'infopanel')
+  this.ref['infopanel'] = $('<div/>').attr('id', id+'infopanel')
     .attr('class', 'info-panel')
     .css({
       top: this.x,
       left: this.y,
-      marginLeft: 150,
-      marginTop: -80,
-      width: 400,
-      height: 160
-    }).hide();
-  $('#info-panels').append(this.infopanel);
+    })
+    .hide();
+  this.ref['anchor'].append(this.ref['infopanel']);
 
   this.initAnimation();
   
 }
+
 
 Piece.prototype.initAnimation = function(){
   // init info panel animation in two.js
@@ -251,37 +312,44 @@ Piece.prototype.initAnimation = function(){
   var circle = two.interpret(document.getElementById('info-circle')).center();
   circle.scale = 0.5;
   // info icon
-  var icon = two.interpret(document.getElementById('info-icon')).center();
-  icon.scale = 0.15;
+  this.ref['infoicon'] = makeIcon('info-icon', 0.15, 0);
+  this.ref['priceicon'] = makeIcon('price-icon', 0.12, 30);
+  this.ref['savingicon'] = makeIcon('saving-icon', 0.15, 60);
 
-  var angle = 0;
+  var angle = Math.random() * 360;
   var paused = false;
-  var panel = this.infopanel;
+  var me = this;
 
   // Update the renderer in order to generate corresponding DOM Elements.
   two.update();
-  $(icon._renderer.elem).click(function(){
+  $(this.ref['infoicon']._renderer.elem).click(function(){
     paused = !paused;
-    if(paused){
-      panel.show();
-    }
-    else{
-      panel.hide();
-    }
+    paused ? me.ref['infopanel'].html(infoPanelTexts[me.id+'info']).show() : me.ref['infopanel'].hide();
+  });
+  $(this.ref['priceicon']._renderer.elem).click(function(){
+    paused = !paused;
+    paused ? me.ref['infopanel'].html(infoPanelTexts[me.id+'price']).show() : me.ref['infopanel'].hide();
+  });
+  $(this.ref['savingicon']._renderer.elem).click(function(){
+    paused = !paused;
+    paused ? me.ref['infopanel'].html(infoPanelTexts[me.id+'saving']).show() : me.ref['infopanel'].hide();
   });
 
   // bind update callback
   two.bind('update', function(){
     if(!paused){
-      angle += 0.5;
-      var x = Math.cos(angle * Math.PI / 180) * 110;
-      var y = Math.sin(angle * Math.PI / 180) * 110;
-      icon.translation.set(x, y);
+      angle += 0.1;
+      setTranslation(me.ref['infoicon'], me.ref['infoicon'].angle+angle, me.diam);
+      setTranslation(me.ref['priceicon'], me.ref['priceicon'].angle+angle, me.diam);
+      setTranslation(me.ref['savingicon'], me.ref['savingicon'].angle+angle, me.diam);
+      setTranslationCSS(me.ref['nametag'], me.ref['nametag'].angle+angle, me.diam * 1.5);
+      setTranslationCSS(me.ref['pricetag'], me.ref['pricetag'].angle+angle, me.diam * 1.5);
+      setTranslationCSS(me.ref['savingtag'], me.ref['savingtag'].angle+angle, me.diam * 1.5);
     }
   });
 
   // save animation handle
-  var group = two.makeGroup(circle, icon);
+  var group = two.makeGroup(circle, this.ref['infoicon'], this.ref['priceicon'], this.ref['savingicon']);
   this.animGroup = group;
 }
 
@@ -289,16 +357,15 @@ Piece.prototype.move = function(x,y) {
   //Update our coordinates
   this.x = x;
   this.y = y;
-
   // move info panel
-  this.infopanel.css('top', x)
-    .css('left', y);
+  // this.infopanel.css('top', x)
+  //   .css('left', y);
 
   //move info circle
-  //this.animGroup.translation.set(x, y);
+  this.animGroup.translation.set(x, y);
 
   //Move its circle along with the piece
-  this.ref.css({
+  this.ref['anchor'].css({
     left: this.x-this.r,
     top: this.y-this.r 
   });
