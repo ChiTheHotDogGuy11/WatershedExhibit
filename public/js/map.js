@@ -1,8 +1,9 @@
+var map;
 
 function initialize() {
 
   var markers = [];
-  var map = new google.maps.Map(document.getElementById('map-canvas'), {
+  map = new google.maps.Map(document.getElementById('map-canvas'), {
     mapTypeId: google.maps.MapTypeId.ROADMAP
   });
 
@@ -62,8 +63,12 @@ function initialize() {
 
       bounds.extend(place.geometry.location);
     }
-
-    map.fitBounds(bounds);
+    if (places.length == 1) {
+       map.setCenter(places[0].geometry.location);
+       map.setZoom(12);
+    } else {
+      map.fitBounds(bounds);
+    }
   });
   // [END region_getplaces]
 
@@ -77,9 +82,11 @@ function initialize() {
 
 if (typeof String.prototype.startsWith != 'function') {
     String.prototype.startsWith = function (str){
-          return this.slice(0, str.length) == str;
-            };
+      return this.slice(0, str.length) == str;
+    };
 }
+
+google.maps.event.addDomListener(window, 'load', initialize);
 
 var NOAA = {
 
@@ -110,5 +117,23 @@ var NOAA = {
   }
 }
 
+var soil = {
 
-google.maps.event.addDomListener(window, 'load', initialize);
+  get_data: function(lat,lon,callback) {
+    $.ajax({
+      url: "http://casoilresource.lawr.ucdavis.edu/gmap/get_mapunit_data.php?lat="+lat+"&lon="+lon,
+      dataType: "jsonp",
+      success: function(data) {
+        console.log(data);
+      },
+      error: function(jqXHR, textStatus,ex) {
+        console.log(textStatus);
+      }
+    });
+  }
+}
+
+function getMapCenter() {
+  obj = map.getCenter();
+  return {lat: obj.lat(), lon: obj.lng()}
+}

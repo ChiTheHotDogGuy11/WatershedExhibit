@@ -3,13 +3,20 @@
 	<head>
 		<title>Watershed Exhibit</title>
 		<link rel="stylesheet" type="text/css" href="stylesheets/screen.css"> 
-		<script src="js/jquery-1.11.0.js"></script>
+    <!-- Google Maps Library for Prefernces -->
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places,weather"></script>
+    
+    <script src="js/jquery-1.11.0.js"></script>
 		<script src="js/main.js"></script>
 		<!-- If Socket.IO is used with Express, then the /socket.io/ path will
         serve the proper Socket.IO javascript files used by the browser -->
 		<script src="/socket.io/socket.io.js"></script>
 		<script src="js/two.js"></script>
 		<script src="js/animation.js"></script>
+    <!-- Nice UI tools for interface elements -->
+    <script src="js/simple-slider.min.js"></script>
+    <link href="stylesheets/simple-slider.css" rel="stylesheet" type="text/css" />
+
 		<!-- app.js is where all the client-side game logic lives-->
 		<script src="app.js"></script>
 		<script src="js/map.js"></script>
@@ -61,10 +68,19 @@
 				<img href="images/geothermal.gif" src="images/geothermal.gif" alt="geothermal heating/cooling animation" width="25%" height="20%"/>
 			</div> -->
 		</div> 
-    <div class="overlay">
+    <div id="calibration" class="overlay">
       <div id="point1" class="calibrate-point piece"></div>
       <div id="point2" class="calibrate-point piece"></div>
       <div id="point3" class="calibrate-point piece"></div>
+    </div>
+    <div id="preferences" class="overlay">
+      <div id="map-container">
+        <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+        <div id="map-canvas"></div>
+        <form id="preferences-form">
+          <input type="text" data-slider="true" data-slider-values="100,500,1000" data-slider-equal-steps="true">
+        </form>
+      </div>
     </div>
 	</body>
 </html>
