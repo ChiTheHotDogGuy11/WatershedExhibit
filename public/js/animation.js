@@ -16,13 +16,12 @@ function initTwo(){
 	var shapes = [];
 	$('#houseContainer').children('g').each(function(){
 		var _shape = two.interpret(this);
-		_shape.translation.set(720, 320);
+		_shape.translation.set(520, 260);
 		_shape.opacity = 0;
 		_shape.scale = 1;
 		shapes.push(_shape);
 	});
 
-	console.log(shapes[1]);
 	two.bind('update', function(frameCount) {
 		for(var id in visibilities){
 			var vis = visibilities[id];

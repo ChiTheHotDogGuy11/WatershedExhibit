@@ -86,24 +86,38 @@ p {
 position: absolute;
 top: 8%;
 width: 50%;
-right: 123%;
+right: 100%;
+color: white;
 	
 }
+
+#submitButton{
+  position: absolute;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  left: -50%;
+  top: 50%;
+  height: 45%;
+  width: 130%;
+  text-align: center;
+  font-size: 50pt;
+}
+
 .meter{
 	border-radius: 20px;
 	border: black solid 1px;
-	width: 40%;
+	width: 80%;
 	height: 15%;
 	background-color: white;
 	position: relative;
 	top: 5%;
-	right: 45%;
+	right: 5%;
 	overflow: hidden;
 
 	.meter_level{
 		width: 50%;
 		height: 100%;
-		background-color: $button-color;
+		background-color: #ff6633;
 		transition-duration: 2s;
 
 	}
@@ -182,10 +196,10 @@ right: 123%;
 	color: white;
 }
 
-.shopping_cart_container{
-	background-color: $button-color;
+.budget_meter_container{
+	background-color: transparent;
 	height: $corner-container-height;
-	width: $corner-container-width;
+	width: 300px;
 	position: absolute;
 	right: 0;
 	top: 0;
@@ -340,4 +354,23 @@ right: 123%;
   color: white;
   font-size: 24pt;
   text-align: center;
+}
+
+.info-panel{
+	position: absolute;
+	background-color: rgba(0, 0, 0, 0.5);
+  margin-top: -50px;
+	margin-left: 180px;
+  width: 400px;
+  height: 160px;
+  color: white;
+  padding: 5px;
+}
+
+.info-circle-tag{
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 2px;
+  white-space: nowrap; 
+  font-size: 18pt;
 }

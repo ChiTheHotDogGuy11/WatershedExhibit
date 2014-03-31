@@ -146,30 +146,44 @@ p {
   position: absolute;
   top: 8%;
   width: 50%;
-  right: 123%;
+  right: 100%;
+  color: white;
 }
 
-/* line 92, ../sass/screen.scss */
+/* line 94, ../sass/screen.scss */
+#submitButton {
+  position: absolute;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  left: -50%;
+  top: 50%;
+  height: 45%;
+  width: 130%;
+  text-align: center;
+  font-size: 50pt;
+}
+
+/* line 106, ../sass/screen.scss */
 .meter {
   border-radius: 20px;
   border: black solid 1px;
-  width: 40%;
+  width: 80%;
   height: 15%;
   background-color: white;
   position: relative;
   top: 5%;
-  right: 45%;
+  right: 5%;
   overflow: hidden;
 }
-/* line 103, ../sass/screen.scss */
+/* line 117, ../sass/screen.scss */
 .meter .meter_level {
   width: 50%;
   height: 100%;
-  background-color: #196966;
+  background-color: #ff6633;
   transition-duration: 2s;
 }
 
-/* line 112, ../sass/screen.scss */
+/* line 126, ../sass/screen.scss */
 .piece {
   background-color: #cc0000;
   position: absolute;
@@ -179,7 +193,7 @@ p {
   -webkit-border-radius: 50%;
 }
 
-/* line 121, ../sass/screen.scss */
+/* line 135, ../sass/screen.scss */
 #question_mark {
   position: absolute;
   margin: 0 auto;
@@ -191,7 +205,7 @@ p {
   color: white;
 }
 
-/* line 132, ../sass/screen.scss */
+/* line 146, ../sass/screen.scss */
 .house {
   position: absolute;
   /*	bottom: 20%;
@@ -199,7 +213,7 @@ p {
   	left: 43%;*/
 }
 
-/* line 140, ../sass/screen.scss */
+/* line 154, ../sass/screen.scss */
 .info_panel {
   position: absolute;
   bottom: 20%;
@@ -210,20 +224,20 @@ p {
   background-color: white;
   width: 26%;
 }
-/* line 150, ../sass/screen.scss */
+/* line 164, ../sass/screen.scss */
 .info_panel img {
   float: right;
   padding-left: 5px;
   padding-bottom: 5px;
 }
-/* line 156, ../sass/screen.scss */
+/* line 170, ../sass/screen.scss */
 .info_panel .panel_cost {
   font-style: italic;
   font-size: 18px;
   color: green;
 }
 
-/* line 163, ../sass/screen.scss */
+/* line 177, ../sass/screen.scss */
 .pieces_start_container {
   background-color: #196966;
   height: 20%;
@@ -233,7 +247,7 @@ p {
   bottom: 0;
 }
 
-/* line 173, ../sass/screen.scss */
+/* line 187, ../sass/screen.scss */
 .pieces_start_prompt {
   width: 70%;
   height: 10px;
@@ -246,17 +260,17 @@ p {
   color: white;
 }
 
-/* line 185, ../sass/screen.scss */
-.shopping_cart_container {
-  background-color: #196966;
+/* line 199, ../sass/screen.scss */
+.budget_meter_container {
+  background-color: transparent;
   height: 20%;
-  width: 30%;
+  width: 300px;
   position: absolute;
   right: 0;
   top: 0;
 }
 
-/* line 194, ../sass/screen.scss */
+/* line 208, ../sass/screen.scss */
 .shopping_cart_prompt {
   width: 60%;
   height: 10px;
@@ -269,17 +283,17 @@ p {
   color: white;
 }
 
-/* line 206, ../sass/screen.scss */
+/* line 220, ../sass/screen.scss */
 .task {
   padding: 20px;
   font-size: 20px;
 }
-/* line 210, ../sass/screen.scss */
+/* line 224, ../sass/screen.scss */
 .task:hover {
   font-size: 30px;
 }
 
-/* line 215, ../sass/screen.scss */
+/* line 229, ../sass/screen.scss */
 .worker_flip {
   -moz-transform: scaleX(-1);
   -o-transform: scaleX(-1);
@@ -290,14 +304,14 @@ p {
 }
 
 /*Animation Styles*/
-/* line 226, ../sass/screen.scss */
+/* line 240, ../sass/screen.scss */
 #rainbarrel {
   position: absolute;
   bottom: 20%;
   left: 10%;
 }
 
-/* line 232, ../sass/screen.scss */
+/* line 246, ../sass/screen.scss */
 #geothermal {
   position: absolute;
   bottom: 10%;
@@ -305,14 +319,14 @@ p {
 }
 
 /* Google Map Styles */
-/* line 241, ../sass/screen.scss */
+/* line 255, ../sass/screen.scss */
 #map-canvas {
   height: 100%;
   margin: 0px;
   padding: 0px;
 }
 
-/* line 246, ../sass/screen.scss */
+/* line 260, ../sass/screen.scss */
 .controls {
   margin-top: 16px;
   border: 1px solid transparent;
@@ -324,7 +338,7 @@ p {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
-/* line 257, ../sass/screen.scss */
+/* line 271, ../sass/screen.scss */
 #map-container {
   margin-left: auto;
   margin-right: auto;
@@ -336,7 +350,7 @@ p {
   border-radius: 10px;
 }
 
-/* line 268, ../sass/screen.scss */
+/* line 282, ../sass/screen.scss */
 #pac-input {
   background-color: #fff;
   padding: 0 11px 0 13px;
@@ -347,7 +361,7 @@ p {
   text-overflow: ellipsis;
 }
 
-/* line 278, ../sass/screen.scss */
+/* line 292, ../sass/screen.scss */
 #pac-input:focus {
   border-color: #4d90fe;
   margin-left: -1px;
@@ -356,19 +370,19 @@ p {
   width: 401px;
 }
 
-/* line 285, ../sass/screen.scss */
+/* line 299, ../sass/screen.scss */
 .pac-container {
   font-family: Roboto;
 }
 
-/* line 289, ../sass/screen.scss */
+/* line 303, ../sass/screen.scss */
 #type-selector {
   color: #fff;
   background-color: #4d90fe;
   padding: 5px 11px 0px 11px;
 }
 
-/* line 295, ../sass/screen.scss */
+/* line 309, ../sass/screen.scss */
 #type-selector label {
   font-family: Roboto;
   font-size: 13px;
@@ -376,7 +390,7 @@ p {
 }
 
 /* ------ shan's stuff ------- */
-/* line 303, ../sass/screen.scss */
+/* line 317, ../sass/screen.scss */
 #backgroundOverlay {
   width: 100%;
   height: 100%;
@@ -385,14 +399,14 @@ p {
   z-index: -1;
 }
 
-/* line 311, ../sass/screen.scss */
+/* line 325, ../sass/screen.scss */
 .bigButtonText {
   margin-top: 30px;
   text-align: center;
   font-size: 24pt;
 }
 
-/* line 317, ../sass/screen.scss */
+/* line 331, ../sass/screen.scss */
 #startButton {
   width: 350px;
   height: 100px;
@@ -404,7 +418,7 @@ p {
   z-index: 10000;
 }
 
-/* line 328, ../sass/screen.scss */
+/* line 342, ../sass/screen.scss */
 .nextButton {
   position: relative;
   width: 350px;
@@ -415,10 +429,31 @@ p {
   z-index: 10000;
 }
 
-/* line 338, ../sass/screen.scss */
+/* line 352, ../sass/screen.scss */
 .instrText {
   margin-top: 300px;
   color: white;
   font-size: 24pt;
   text-align: center;
+}
+
+/* line 359, ../sass/screen.scss */
+.info-panel {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.5);
+  margin-top: -50px;
+  margin-left: 180px;
+  width: 400px;
+  height: 160px;
+  color: white;
+  padding: 5px;
+}
+
+/* line 370, ../sass/screen.scss */
+.info-circle-tag {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 2px;
+  white-space: nowrap;
+  font-size: 18pt;
 }
