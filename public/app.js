@@ -349,7 +349,8 @@ BoundingBox.prototype.collision = function(circle)
 IO.init();
 
 $(function() {
-  $('#preferences').show(function() {
+/*  $('#preferences').show(function() {
     google.maps.event.trigger(map, 'resize');
   })
+*/
 });
