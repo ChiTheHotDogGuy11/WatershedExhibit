@@ -51,7 +51,27 @@ function initGameScreen(){
 			alert('You have exceeded your budget! Try removing some features!');
 		}
 		else{
-			// go to ending screen;
+		  $('#endScreen').show(function() {
+
+		      var data = new google.visualization.DataTable(); 
+		      
+		      data.addColumn('string', 'Year');
+		      data.addColumn('number', 'Initial Investment');
+		      data.addColumn('number', 'Net Savings');
+
+		      for(var tmp = 2014; tmp < 2030; tmp++)
+		      {
+		        //TODO update this with the actual year graph
+		        data.addRow([tmp.toString(),initialInvestment,(tmp-2014)*yearSavings]);
+		      }
+
+		      var options = {
+		        title: 'Savings Over Time'
+		      };
+
+		      var chart = new google.visualization.LineChart(document.getElementById('end_chart'));
+		      chart.draw(data,options);
+		  });
 		}
 	});
 }
@@ -76,11 +96,6 @@ function initElements(){
 		$('#instrScreen3').hide();
 		$('#backgroundOverlay').hide();
 		initGameScreen();
-		//initAnim();
-  //       if (IS_TESTING) Test.init();
-  //       else initPieces();
-  //       initBudget();
-  //       initCheckout();
 		showGameScreen();
 	})
 
@@ -90,6 +105,7 @@ function initElements(){
 	$('#instrScreen').hide();
 	$('#instrScreen2').hide();
 	$('#instrScreen3').hide();
+	$('#_endScreen').hide();
 }
 
 // Insert JS here
