@@ -27,14 +27,21 @@
 		</style>
   </head>
 	<body>
-		<div style="position: absolute;">
-			<svg id="houseContainer"></svg>
+		<div id="info-panels" style="position: absolute;"></div>
+		<div id="assets" style="position: absolute;">
 			<div id="houseAnimContainer" style="position: absolute;	top: 300px; left: 500px"></div>
 		</div>
 		<div class="page_container">
 			<div class="task">
 				Task
 			</div>
+			<div class="house">
+			<svg id="houseContainer"></svg>
+			<div id="houseAnimContainer" style="position: absolute;	top: 300px; left: 500px"></div>
+		</div>
+			<!-- <img href="images/worker.gif" src="images/worker.gif" alt="worker" width="3%"/>
+			<img href="images/worker.gif" src="images/worker.gif" alt="worker" width="3%" class="worker_flip"/> -->
+
 			<div class="pieces_start_container">
 			<div class="pieces_start_prompt">Place Pieces Here!</div>
 			</div>
@@ -50,7 +57,7 @@
 			</div>
 			<div class="house" style="background-color:none; z-index: 100; position: absolute; width: 450px; height: 320px; left: 720px; top: 300px">
 			</div>
-			<div class="info_panel">
+			<!-- <div class="info_panel">
 				<h2>Geothermal Heating</h2>
 				<img href="images/geothermal.gif" src="images/geothermal.gif" alt="geothermal heating/cooling animation" width="50%"/>
 				<p>Heat from the earth can be used as an energy source in many ways, from large and complex power stations to small and relatively simple pumping systems. This heat energy is known as geothermal energy.
@@ -60,12 +67,6 @@
 				<div class="panel_cost">
 					Cost: $30,000
 				</div>
-			</div>
-			<!-- <div id="rainbarrel">
-				<img href="images/rainbarrel.gif" src="images/rainbarrel.gif" alt="rain barrel animation"/>
-			</div>
-			<div id="geothermal">
-				<img href="images/geothermal.gif" src="images/geothermal.gif" alt="geothermal heating/cooling animation" width="25%" height="20%"/>
 			</div> -->
 		</div> 
     <div id="calibration" class="overlay">
