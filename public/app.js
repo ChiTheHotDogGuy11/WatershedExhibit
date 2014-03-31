@@ -391,10 +391,36 @@ BoundingBox.prototype.collision = function(circle)
 
 //Create our socket connection to the server
 IO.init();
+var initialInvestment = 40000;
+var yearSavings = 2700; 
 
 $(function() {
 /*  $('#preferences').show(function() {
     google.maps.event.trigger(map, 'resize');
   })
 */
+  $('#endScreen').show(function() {
+    google.setOnLoadCallback(drawChart);
+    function drawChart() {
+      var data = new google.visualization.DataTable(); 
+      
+      data.addColumn('string', 'Year');
+      data.addColumn('number', 'Initial Investment');
+      data.addColumn('number', 'Net Savings');
+
+      for(var tmp = 2014; tmp < 2030; tmp++)
+      {
+        //TODO update this with the actual year graph
+        data.addRow([tmp.toString(),initialInvestment,(tmp-2014)*yearSavings]);
+      }
+
+      var options = {
+        title: 'Savings Over Time'
+      };
+
+      var chart = new google.visualization.LineChart(document.getElementById('end_chart'));
+      chart.draw(data,options);
+    }
+  });
+
 });
