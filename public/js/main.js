@@ -76,7 +76,7 @@ function initElements(){
 		$('#instrScreen3').hide();
 		$('#backgroundOverlay').hide();
 		initGameScreen();
-		// initAnim();
+		//initAnim();
   //       if (IS_TESTING) Test.init();
   //       else initPieces();
   //       initBudget();
