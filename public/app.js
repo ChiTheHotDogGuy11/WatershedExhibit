@@ -112,26 +112,16 @@ var IO = {
 
 var yScale = .64941;
 var xScale = .77584;
+var yShift;
+var xShift;
 
 function calibrate()
 {
-  $('.overlay').show();
+  $('#calibration').show();
   $('#point1').show();
 
-  var x1;
-  var y1;
-
-  var x2;
-  var y2;
-
-  var x3;
-  var y3;
-
-  var top;
-  var bottom;
-
-  var left;
-  var right;
+  var x1,y1,x2,y2,x3,y3;
+  var top,bottom,left,right;
 
   var counter = 0
 
@@ -163,12 +153,14 @@ function calibrate()
         bottom = $('#point3').position().top;
 
         $('#point3').hide();
-        $('.overlay').hide();
+        $('#calibration').hide();
 
         x3 = pieces[0].x;
         y3 = pieces[0].y;
-        yScale = (Math.abs(y1) + Math.abs(y3))/(bottom - top);
-        xScale = (Math.abs(x1) + Math.abs(x2))/(right - left);
+        yScale = (bottom - top)/(Math.abs(y1) + Math.abs(y3));
+        xScale = (right - left)/(Math.abs(x1) + Math.abs(x2));
+        yShift = y1;
+        xShift = x1;
         counter = 0;
       }
     }
@@ -304,3 +296,9 @@ BoundingBox.prototype.collision = function(circle)
 
 //Create our socket connection to the server
 IO.init();
+
+$(function() {
+  $('#preferences').show(function() {
+    google.maps.event.trigger(map, 'resize');
+  })
+});
