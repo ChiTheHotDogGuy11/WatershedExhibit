@@ -3,21 +3,29 @@
 	<head>
 		<title>Watershed Exhibit</title>
 		<link rel="stylesheet" type="text/css" href="stylesheets/screen.css"> 
-		<script src="js/jquery-1.11.0.js"></script>
+    <!-- Google Maps Library for Prefernces -->
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places,weather"></script>
+    
+    <script src="js/jquery-1.11.0.js"></script>
 		<script src="js/main.js"></script>
 		<!-- If Socket.IO is used with Express, then the /socket.io/ path will
         serve the proper Socket.IO javascript files used by the browser -->
 		<script src="/socket.io/socket.io.js"></script>
 		<script src="js/two.js"></script>
 		<script src="js/animation.js"></script>
+    <!-- Nice UI tools for interface elements -->
+    <script src="js/simple-slider.min.js"></script>
+    <link href="stylesheets/simple-slider.css" rel="stylesheet" type="text/css" />
+
 		<!-- app.js is where all the client-side game logic lives-->
 		<script src="app.js"></script>
-		<style>
+		<script src="js/map.js"></script>
+    <style>
 			.house{
 
 			}
 		</style>
-	</head>
+  </head>
 	<body>
 		<div id="backgroundOverlay"></div>
 		<div id="startScreen">
@@ -65,22 +73,9 @@
 			<!--img href="images/worker.gif" src="images/worker.gif" alt="worker" width="3%"/>
 			<img href="images/worker.gif" src="images/worker.gif" alt="worker" width="3%" class="worker_flip"/-->
 
-			<div class="pieces_start_container" style="display: none;">
-			<div class="pieces_start_prompt">Place Pieces Here!</div>
-			</div>
-			<div class="shopping_cart_container">
-				<div id="budget_meter_label">
-					Budget Meter
-				</div>	
-				<div class="meter">
-					<div class="meter_level">
-					</div>	
-				</div>
-			<div class="shopping_cart_prompt" style="display: none;">Move system here to purchase</div>
-			</div>
-			<div class="house" style="background-color:none; z-index: 100; position: absolute; width: 450px; height: 320px; left: 720px; top: 300px">
-			</div>
 			<div class="info_panel" style="display: none;">
+			<!-- <div class="info_panel">
+>>>>>>> 147221dd683415dc661e9f5d7130ffa549d18b10
 				<h2>Geothermal Heating</h2>
 				<img href="images/geothermal.gif" src="images/geothermal.gif" alt="geothermal heating/cooling animation" width="50%"/>
 				<p>Heat from the earth can be used as an energy source in many ways, from large and complex power stations to small and relatively simple pumping systems. This heat energy is known as geothermal energy.
@@ -90,18 +85,21 @@
 				<div class="panel_cost">
 					Cost: $30,000
 				</div>
-			</div>
-			<!-- <div id="rainbarrel">
-				<img href="images/rainbarrel.gif" src="images/rainbarrel.gif" alt="rain barrel animation"/>
-			</div>
-			<div id="geothermal">
-				<img href="images/geothermal.gif" src="images/geothermal.gif" alt="geothermal heating/cooling animation" width="25%" height="20%"/>
 			</div> -->
 		</div> 
-    <div class="overlay">
+    <div id="calibration" class="overlay">
       <div id="point1" class="calibrate-point piece"></div>
       <div id="point2" class="calibrate-point piece"></div>
       <div id="point3" class="calibrate-point piece"></div>
+    </div>
+    <div id="preferences" class="overlay">
+      <div id="map-container">
+        <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+        <div id="map-canvas"></div>
+        <form id="preferences-form">
+          <input type="text" data-slider="true" data-slider-values="100,500,1000" data-slider-equal-steps="true">
+        </form>
+      </div>
     </div>
 	</body>
 </html>
