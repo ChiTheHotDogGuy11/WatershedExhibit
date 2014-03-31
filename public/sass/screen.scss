@@ -3,6 +3,7 @@
  * Import this file using the following HTML or equivalent:
  * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
 
+
 /*This is the reset file that comes with compass*/
 @import "compass/reset";
 
@@ -129,9 +130,9 @@ right: 123%;
 
 .house{
 	position: absolute;
-	bottom: 20%;
+/*	bottom: 20%;
 	width: 40%;
-	left: 43%;
+	left: 43%;*/
 
 }
 
@@ -208,6 +209,15 @@ right: 123%;
 	&:hover{
 		font-size: 30px;
 	}
+}
+
+.worker_flip{
+	-moz-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+  filter: FlipH;
+  -ms-filter: "FlipH";
 }
 
 /*Animation Styles*/
