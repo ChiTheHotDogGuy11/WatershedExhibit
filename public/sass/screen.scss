@@ -19,7 +19,6 @@ $piece-color: #CC0000;
 
 body{
 	background-image: url('../images/background.png');
-	background-color: $background;
 	font-family: Arial, sans-serif;
   height: 100%;
   width: 100%;
@@ -117,7 +116,7 @@ color: white;
 	.meter_level{
 		width: 50%;
 		height: 100%;
-		background-color: #ff6633;
+		background-color: #ff00;
 		transition-duration: 2s;
 
 	}
