@@ -18,6 +18,7 @@ $corner-container-width: 30%;
 $piece-color: #CC0000;
 
 body{
+	background-image: url('../images/background.png');
 	background-color: $background;
 	font-family: Arial, sans-serif;
   height: 100%;
@@ -297,3 +298,46 @@ right: 123%;
   font-weight: 300;
 }
 
+/* ------ shan's stuff ------- */
+
+#backgroundOverlay{
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  z-index: -1;
+}
+
+.bigButtonText{
+  margin-top: 30px;
+  text-align: center;
+  font-size: 24pt;
+}
+
+#startButton{
+  width: 350px;
+  height: 100px;
+  position: absolute;
+  top: 50%;
+  left: 40%;
+  color: white;
+  background-color: black;
+  z-index: 10000;
+}
+
+.nextButton{
+  position: relative;
+  width: 350px;
+  height: 80px;
+  left: 40%;
+  color: white;
+  background-color: black;
+  z-index: 10000;
+}
+
+.instrText{
+  margin-top: 300px;
+  color: white;
+  font-size: 24pt;
+  text-align: center;
+}
