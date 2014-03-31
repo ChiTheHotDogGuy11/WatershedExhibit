@@ -348,7 +348,7 @@ function Piece(id, color)
   this.ref['anchor'].append(this.ref['infopanel']);
 
   //It seems like this always crashes if we don't have actual pieces.
-  //this.initAnimation();
+  this.initAnimation();
   
 }
 
