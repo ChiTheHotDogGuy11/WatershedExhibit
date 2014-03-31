@@ -52,12 +52,8 @@ function initPieces(){
     });
     boundingList.push(house);
     pieces[0].move(300, 300);
-    pieces[1].move(1000, 700);
+    pieces[1].move(-1000, -700);
     pieces[2].move(1200, 200);
-}
-
-function initBudget() {
-    var budget = new Budget(30000);
 }
 
 function initCheckout() {
@@ -473,28 +469,5 @@ $(function() {
     google.maps.event.trigger(map, 'resize');
   })
 */
-  $('#endScreen').show(function() {
-    google.setOnLoadCallback(drawChart);
-    function drawChart() {
-      var data = new google.visualization.DataTable(); 
-      
-      data.addColumn('string', 'Year');
-      data.addColumn('number', 'Initial Investment');
-      data.addColumn('number', 'Net Savings');
-
-      for(var tmp = 2014; tmp < 2030; tmp++)
-      {
-        //TODO update this with the actual year graph
-        data.addRow([tmp.toString(),initialInvestment,(tmp-2014)*yearSavings]);
-      }
-
-      var options = {
-        title: 'Savings Over Time'
-      };
-
-      var chart = new google.visualization.LineChart(document.getElementById('end_chart'));
-      chart.draw(data,options);
-    }
-  });
 
 });
