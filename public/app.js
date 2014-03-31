@@ -8,13 +8,6 @@ function bin2String(array) {
 
 'use strict';
 
-//The number of pieces that exist on the board.
-var numPieces = 4;
-//Array to store the pieces.
-var pieces = [];
-
-var boundingList = []; 
-
 function initPieces(){
     var colors = ["blue", "orange", "red", "black"];
     //Initialize the pieces.
@@ -31,6 +24,56 @@ function initPieces(){
     });
     boundingList.push(house);
     pieces[0].move(300, 300);
+}
+
+function initBudget() {
+    var budget = new Budget(30000);
+}
+
+function initCheckout() {
+    if (CHECKOUT_METHOD === 0) {
+        $("#checkout-button").click(function() {
+            for (var i = 0; i < inCheckout.length; i++) {
+                var curId = inCheckout[i];
+                var isPurchased = (purchasedFeatures.indexOf(curId) !== -1);
+                if (!isPurchased) {
+                    var curPiece = pieces[curId];
+                    budget.subtractAmount(curPiece.cost);
+                    purchasedFeatures.push(curId);
+                }
+            }
+        });
+        var checkoutArea = new BoundingBox($("#checkout-area"), 
+            //in action
+            function(id) {
+                $("#checkout-button").prop('disabled', false);
+                if (inCheckout.indexOf(id) == -1) inCheckout.push(id);
+            }, 
+            //out action
+            function(id) {
+                var index = inCheckout.indexOf(id);
+                if (index > -1) inCheckout.splice(index, 1);
+                if (inCheckout.length == 0) {
+                    $("#checkout-button").prop('disabled', true);
+                }
+            }
+        );
+        boundingList.push(checkoutArea);
+    }
+    //DON'T DO: IT WILL CRASH!
+    else if (CHECKOUT_METHOD === 1) {
+        $("#checkout-area").css('display', 'none');
+        var house = new BoundingBox($("#houseAnimContainer"),
+            function(id){
+                console.log("collision with house");
+                visibilities[id] = FADING_IN;
+            },
+            function(id){
+                visibilities[id] = FADING_OUT;
+            }
+        );
+        boundingList.push(house);
+    }
 }
 
 /**
@@ -113,11 +156,6 @@ var IO = {
     },
 };
 
-var yScale = .64941;
-var xScale = .77584;
-var yShift;
-var xShift;
-
 function calibrate()
 {
   $('#calibration').show();
@@ -172,8 +210,6 @@ function calibrate()
 
 }
 
-var boundingList = []; 
-
 function BoundingBox(ref, inAction, outAction)
 {
   //Jquery reference for our bounding box
@@ -205,6 +241,9 @@ function Piece(id, color)
   //unique ID for our piece
   this.id = id;
   
+  //Set arbitrary cost for now
+  this.cost = 10000;
+  
   //Coordinates and size of our piece
   this.x = 0;
   this.y = 0;
@@ -213,6 +252,8 @@ function Piece(id, color)
   //The current bounding box
   this.curBox = null;
 
+  var backgroundColor = 'transparent';
+  if (IS_TESTING) backgroundColor = color;
   //Create our div object for a new piece
   this.ref = $('<div/>', {
     id: id+"circle",
@@ -222,7 +263,7 @@ function Piece(id, color)
       left: this.x - this.r,
       width: this.r*2,
       height: this.r*2,
-	   backgroundColor: 'transparent'
+	  backgroundColor: backgroundColor
     }
   }).appendTo('.page_container'); 
 
@@ -239,7 +280,8 @@ function Piece(id, color)
     }).hide();
   $('#info-panels').append(this.infopanel);
 
-  this.initAnimation();
+  //It seems like this always crashes if we don't have actual pieces.
+  //this.initAnimation();
   
 }
 
@@ -310,7 +352,7 @@ Piece.prototype.move = function(x,y) {
       //Don't do anything if we stayed in the same box
       if (this.curBox != boundingList[i])
       {
-        //If we left another box, then we need to perfom it's out action
+        //If we left another box, then we need to perform it's out action
         if (this.curBox != null)
         {
           this.curBox.outAction(this.id);
