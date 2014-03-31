@@ -121,6 +121,9 @@ function initElements(){
 	$('#_endScreen').hide();
 	$('#qtnScreen1').hide();
 	$('#qtnScreen2').hide();
+	$('#calibrate').click(function(){
+		calibrate();
+	});
 }
 
 // Insert JS here
