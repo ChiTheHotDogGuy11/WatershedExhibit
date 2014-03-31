@@ -16,6 +16,24 @@ var pieces = [];
 
 var boundingList = []; 
 
+function initPieces(){
+    var colors = ["blue", "orange", "red", "black"];
+    //Initialize the pieces.
+    for (var i = 0; i < numPieces; i++) {
+      var curPiece = new Piece(i, colors[i]);
+      pieces.push(curPiece);
+    }
+    var house = new BoundingBox($(".house"), function(id){
+      visibilities[id] = FADING_IN;
+      console.log(id + " " + visibilities[id]);
+    }, function(id){
+      visibilities[id] = FADING_OUT;
+      console.log(id + " " + visibilities[id]);
+    });
+    boundingList.push(house);
+    pieces[0].move(300, 300);
+}
+
 /**
  * All the code relevant to Socket.IO is collected in the IO namespace.
  *
@@ -47,21 +65,6 @@ var IO = {
 	onConnected : function(data) {
 		//alert("Connected by client!");
 		//The potential colors of the pieces.
-		var colors = ["blue", "orange", "red", "black"];
-		//Initialize the pieces.
-		for (var i = 0; i < numPieces; i++) {
-			var curPiece = new Piece(i, colors[i]);
-			pieces.push(curPiece);
-		}
-    var house = new BoundingBox($(".house"), function(id){
-      visibilities[id] = FADING_IN;
-      console.log(id + " " + visibilities[id]);
-    }, function(id){
-      visibilities[id] = FADING_OUT;
-      console.log(id + " " + visibilities[id]);
-    });
-    boundingList.push(house);
-    pieces[0].move(300, 300);
 	},
 
 
@@ -300,7 +303,7 @@ Piece.prototype.move = function(x,y) {
     .css('left', y);
 
   //move info circle
-  this.animGroup.translation.set(x, y);
+  //this.animGroup.translation.set(x, y);
 
   //Move its circle along with the piece
   this.ref.css({
