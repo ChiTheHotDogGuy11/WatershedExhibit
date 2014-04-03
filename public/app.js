@@ -46,7 +46,7 @@ function initPieces(){
     }, function(id){
       var animId = animMapping[featureMapping[id]];
       visibilities[animId] = FADING_IN;
-      availableBudget += cost[id];
+      availableBudget += costs[id];
       yearlySaving -= savings[id];
       updateMeter();
     });
@@ -54,6 +54,7 @@ function initPieces(){
     pieces[0].move(-300, -300);
     pieces[1].move(-1000, -700);
     pieces[2].move(-1200, -200);
+    pieces[3].move(-1000, -1000);
 }
 
 function initCheckout() {
@@ -95,6 +96,7 @@ function initCheckout() {
                 visibilities[id] = FADING_IN;
             },
             function(id){
+                console.log('exiting');
                 visibilities[id] = FADING_OUT;
             }
         );
@@ -162,8 +164,8 @@ var IO = {
 				//Scale the percentages to absolute values on screen
         //var middle = windowW / 2;
         //var perfectY = windowH * .6;
-				xCoord = (xPercent+xShift) * windowW * xScale;
-				yCoord = (yPercent+yShift) * windowH * yScale;
+				xCoord = (xPercent) * windowW * xScale + xShift;
+				yCoord = (yPercent) * windowH * yScale + yShift;
     //     var distFromMidX = Math.abs(middle - xCoord);
     //     var distFromMidY = Math.abs(perfectY - yCoord);
     //     xCoord *= (.8 * distFromMidX);
@@ -183,10 +185,10 @@ var IO = {
 };
 
 
-var yShift = .6452;
-var xShift = .8245;
-var yScale = 80;
-var xScale = 80;
+var yShift = 0;//100;//.6452;
+var xShift = 0;//136;//.8245;
+var yScale = 1;// 0.881;//80;
+var xScale = 1;//0.716;//80;
 
 function calibrate()
 {
@@ -195,6 +197,11 @@ function calibrate()
 
   var x1,y1,x2,y2,x3,y3;
   var top,bottom,left,right;
+
+  yShift = 0;
+  xShift = 0;
+  yScale = 1;
+  xScale = 1;
 
   var counter = 0
 
@@ -404,7 +411,6 @@ Piece.prototype.initAnimation = function(){
 }
 
 Piece.prototype.move = function(x,y) {
-  console.log(x + " " + y);
   //Update our coordinates
   this.x = x;
   this.y = y;
