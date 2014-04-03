@@ -22,6 +22,8 @@
 
 function showGameScreen(){
 	$('#budgetMeter').show();
+	$('#houseAnimContainer').show();
+	visibilities[2] = 0;
 // Function to call once receive meter data from server
 	updateMeter();	
 }
@@ -46,6 +48,7 @@ function initGameScreen(){
 		visibilities[2] = 0;
 		initTwo();
 	});	
+	$('#houseAnimContainer').hide();
 	$('#submitButton').click(function(){
 		if(availableBudget < 0){
 			alert('You have exceeded your budget! Try removing some features!');
@@ -106,7 +109,6 @@ function initElements(){
 	var qtnButton2Next = function(){
 		$('#qtnScreen2').hide();
 		$('#backgroundOverlay').hide();
-		initGameScreen();
 		showGameScreen();
 	};
 	$('#qtnButton21').click(qtnButton2Next);
@@ -128,7 +130,8 @@ function initElements(){
 
 // Insert JS here
 $(document).ready(function(){
-	//convertCoord({x: 0, y: 0}, {x: 100, y: 0}, {x: 0, y: 100},{x: 30, y: 30}, {x: 0, y: 0}, {x: 100, y: 0}, {x: 0, y: 100})
 	initBudget();
+	initGameScreen();
+	//convertCoord({x: 0, y: 0}, {x: 100, y: 0}, {x: 0, y: 100},{x: 30, y: 30}, {x: 0, y: 0}, {x: 100, y: 0}, {x: 0, y: 100})
 	initElements();
 });
