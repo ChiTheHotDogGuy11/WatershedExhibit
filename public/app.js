@@ -176,7 +176,7 @@ var IO = {
         //$("#" + curID + "circle").css("left", xCoord+"px");
         //$("#" + curID + "circle").css("top", yCoord+"px");
         //console.log(xCoord + " " + yCoord);
-				pieces[i].move(xCoord, yCoord);
+				pieces[i].setTag(xCoord, yCoord);
                 //buffer.push(parseFloat(coords[0]));
                 //buffer.push(parseFloat(coords[1]));
             }
@@ -304,6 +304,99 @@ function makeTag(tagname, angle, text, parent){
   return tag;
 }
 
+/*  ----- touch events object setup ----- */
+var TouchEvent = {
+
+  //List of ongoing touches
+  ongoingTouches: new Array,
+  //The threshold for determining if a tag matches a touch
+  threshold: 40,
+  init: function() {
+    var el = document.getElementsByTagName("body")[0];
+    el.addEventListener("touchstart", this.handleStart, false);
+    el.addEventListener("touchend", this.handleEnd, false);
+    el.addEventListener("touchcancel", this.handleEnd, false);
+    el.addEventListener("touchleave", this.handleEnd, false);
+    el.addEventListener("touchmove", this.handleMove, false);
+  },
+  handleStart: function(evt) {
+    evt.preventDefault();
+
+    var touches = evt.changedTouches;
+    for (var i = 0; i < touches.length; i++){
+      this.ongoingTouches.push(copyTouch(touches[i]));
+      this.assignToPiece(touch)
+      /* TODO recognize piece here otherwise do default */ 
+    }
+  },
+  handleEnd: function(evt) {
+    //We might want to remove this + the handleStart prevent default.
+    //this would allow .click to still work
+    //And probably work fine for our purposes??
+    evt.preventDefault();
+
+    var touches = evt.changedTouches;
+    for (var i = 0; i < touches.length; i++)
+    {
+      var idx = ongoingTouchIndexById(touches[i].identifier);
+      if (idx >= 0) { 
+        var touch = this.ongoingTouches[idx];
+        if(touch.piece != null) {
+          //TODO the thing we do when we remove the piece from the screen??
+          ongoingTouches.splice(idx,1);
+        } else {
+          //TODO actually make this a click event here?? (this would be a mouseup event)
+        }
+      }
+    }
+    
+  },
+  handleCancel: function(evt) {
+    //We treat cancels (like moving into the browser UI) as a pickup/end event
+    alert('Not supported');
+  },
+  handleMove: function(evt) {
+    evt.preventDefault();
+
+    var touches = evt.changedTouches;
+    for (var i = 0; i < touches.length; i++)
+    {
+      var idx = ongoingTouchIndexById(touches[i].identifier);
+      if (idx >= 0) { 
+        var touch = this.ongoingTouches[idx];
+        if(touch.piece == null) {
+          this.assignToPiece(touch)
+        } else {
+          touch.piece.moveTo(touch.pageX, touch.pageY);
+        }
+      }
+    }
+  },
+  ongoingTouchIndexById: function(idToFind) {
+    for (var i=0; i < this.ongoingTouches.length; i++){
+      var id = ongoingTouches[i].identifier;
+      if (id == idToFind){
+        return i;
+      }
+    }
+    return -1;
+  },
+  copyTouch: function(touch){
+    return { identifier: touch.identifier, pageX: touch.pageX, pageY: touch.pageY, piece: null};
+  },
+  assignToPiece: function(touch){
+    for(var i = 0; i < pieces.length; i++) {
+      if(Math.abs(piece.tagX - touch.pageX) < this.threshold && Math.abs(piece.tagY - touch.pageY) < this.threshold)
+      {
+        touch.piece = piece;
+        //TODO Some initialization of the piece
+        return;
+      }
+    }
+  }
+}
+
+
 /* ------ constructor -------- */
 
 function Piece(id, color)
@@ -320,6 +413,10 @@ function Piece(id, color)
   this.r = 30;
   this.diam = 110;
   
+  //Our tag location
+  this.tagX = 0;
+  this.tagY = 0;
+
   //The current bounding box
   this.curBox = null;
 
@@ -361,6 +458,10 @@ function Piece(id, color)
   
 }
 
+Piece.prototype.setTag = function(x,y) {
+  this.tagX = x;
+  this.tagY = y;
+}
 
 Piece.prototype.initAnimation = function(){
   // init info panel animation in two.js
