@@ -7,7 +7,8 @@ var clientPort = 8001;
 var express = require('express');
 // Import the 'path' module (packaged with Node.js)
 var path = require('path');
-
+//Have an HTTP Proxy for our cross server scripting
+var request = require('request');
 // Create a new instance of Express
 var app = express();
 
@@ -31,6 +32,25 @@ var server = net.createServer(function (socket) {
 server.listen(cppPort, '127.0.0.1');
 
 
+function apiProxy() {
+  return function (req,res,next) {
+    if (req.url.match(new RegExp('^\/api\/'))){
+      var go_to = decodeURIComponent(req.path.slice(5));
+      console.log(go_to);
+      request(go_to).pipe(res);
+    } else {
+      next();
+    }
+  }
+  proxy.on('error', function (err,req,res) {
+    res.writeHead(500, {
+      'Content-Type': 'text/plain'
+    });
+
+    res.end('Something went wrong. And we are reporting a custom error message.'); 
+    });
+  }
+
 /******************
  * CLIENT SETUP ***
  ******************/
@@ -41,10 +61,12 @@ app.configure(function() {
     // Turn down the logging activity
     app.use(express.logger('dev'));
 
+    app.use(apiProxy());
     // Serve static html, js, css, and image files from the 'public' directory
     app.use(express.static(path.join(__dirname,'public')));
 	
-	app.use( express.errorHandler({ dumpExceptions: true, showStack: true }));
+    app.use( express.errorHandler({ dumpExceptions: true, showStack: true }));
+
 });
 
 // Create a Node.js based http server on clientPort
