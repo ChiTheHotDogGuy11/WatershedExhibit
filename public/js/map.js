@@ -122,9 +122,8 @@ var soil = {
   get_data: function(lat,lon,callback) {
     $.ajax({
       url: "http://casoilresource.lawr.ucdavis.edu/gmap/get_mapunit_data.php?lat="+lat+"&lon="+lon,
-      dataType: "jsonp",
       success: function(data) {
-        console.log(data);
+        callback(data);
       },
       error: function(jqXHR, textStatus,ex) {
         console.log(textStatus);
@@ -132,6 +131,16 @@ var soil = {
     });
   }
 }
+
+//Allow us to pass cross domain ajax requests through our node proxy
+$(function(){
+  $.ajaxPrefilter(function(options) {
+    if (options.crossDomain) {
+      options.url = window.location.protocol + "/api/" + encodeURIComponent(options.url);
+      options.crossDomain = false;
+    }
+  });
+});
 
 function getMapCenter() {
   obj = map.getCenter();
