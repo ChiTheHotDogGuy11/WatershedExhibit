@@ -64,7 +64,7 @@ var Engine = (function () {
         }
       }
      
-      //No updated the output variables
+      //Now updated the output variables
       for(var key in out_variables) {
         if(out_variables.hasOwnProperty(key) && updated_values.hasOwnProperty(key)) {
            out_variables[key].push_value(updated_values[key])
@@ -118,7 +118,11 @@ var Engine = (function () {
 
   InVariable.prototype = Object.create( Variable.prototype );
   InVariable.prototype.constructor = InVariable;
-  InVariable.prototype.calculate_value = function (loc,events);
+  InVariable.prototype.calculate_value = function (loc,events){
+    var val = 0;
+    this.push_value(val)
+    return val;
+  };
 
   /**
    *  Define new systems by:
