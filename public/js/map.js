@@ -13,8 +13,8 @@ function initialize() {
   weatherLayer.setMap(map);
 
   var defaultBounds = new google.maps.LatLngBounds(
-      new google.maps.LatLng(40.0524, -74.652),
-      new google.maps.LatLng(40.5474, -74.810));
+      new google.maps.LatLng(47.971537, -131.132813),
+      new google.maps.LatLng(24.754314, -76.728516));
   map.fitBounds(defaultBounds);
 
   // Create the search box and link it to the UI element.
@@ -26,8 +26,7 @@ function initialize() {
     center = map.getCenter();
   });
 
-  var searchBox = new google.maps.places.SearchBox(
-    /** @type {HTMLInputElement} */(input));
+  var searchBox = new google.maps.places.SearchBox((input));
 
   // [START region_getplaces]
   // Listen for the event fired when the user selects an item from the
@@ -139,6 +138,13 @@ $(function(){
       options.url = window.location.protocol + "/api/" + encodeURIComponent(options.url);
       options.crossDomain = false;
     }
+  });
+
+  //Setup our datasliders to output their values when they are changed
+  $("[data-slider]").bind("slider:ready slider:changed", function(event,data) {
+    $(this)
+      .nextAll(".output:first")
+        .html(data.value);
   });
 });
 

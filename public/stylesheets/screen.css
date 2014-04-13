@@ -106,7 +106,7 @@ p {
 
 /* line 51, ../sass/screen.scss */
 .overlay {
-  z-index: 200;
+  z-index: 400;
   height: 100%;
   width: 100%;
   background: rgba(0, 0, 0, 0.5);
@@ -329,7 +329,7 @@ p {
   left: 40%;
   color: white;
   background-color: black;
-  z-index: 10000;
+  z-index: 300;
 }
 
 /* line 265, ../sass/screen.scss */
@@ -340,7 +340,7 @@ p {
   left: 40%;
   color: white;
   background-color: black;
-  z-index: 10000;
+  z-index: 300;
 }
 
 /* line 275, ../sass/screen.scss */
@@ -450,18 +450,51 @@ p {
 }
 
 /* line 19, ../sass/customization.scss */
-#map-container {
+#preferences-container {
   margin-left: auto;
   margin-right: auto;
-  width: 40%;
-  height: 40%;
   margin-top: 100px;
   padding: 30px;
   background-color: white;
   border-radius: 10px;
+  width: 40%;
+  height: 40%;
 }
 
-/* line 30, ../sass/customization.scss */
+/* line 31, ../sass/customization.scss */
+#map-container {
+  height: 80%;
+}
+
+/* line 35, ../sass/customization.scss */
+.form-center {
+  overflow: hidden;
+  padding: 10px;
+}
+/* line 40, ../sass/customization.scss */
+.form-center form {
+  margin: 0 auto;
+}
+/* line 44, ../sass/customization.scss */
+.form-center label, .form-center input {
+  float: left;
+}
+/* line 47, ../sass/customization.scss */
+.form-center label {
+  clear: left;
+  display: block;
+  margin-top: 3px;
+  width: 60px;
+}
+
+/* line 55, ../sass/customization.scss */
+.slider {
+  padding-bottom: 25px;
+  left: 70px;
+  display: inline-block;
+}
+
+/* line 61, ../sass/customization.scss */
 #pac-input {
   background-color: #fff;
   padding: 0 11px 0 13px;
@@ -472,7 +505,7 @@ p {
   text-overflow: ellipsis;
 }
 
-/* line 40, ../sass/customization.scss */
+/* line 71, ../sass/customization.scss */
 #pac-input:focus {
   border-color: #4d90fe;
   margin-left: -1px;
@@ -481,21 +514,27 @@ p {
   width: 401px;
 }
 
-/* line 47, ../sass/customization.scss */
+/* line 78, ../sass/customization.scss */
 .pac-container {
   font-family: Roboto;
 }
 
-/* line 51, ../sass/customization.scss */
+/* line 82, ../sass/customization.scss */
 #type-selector {
   color: #fff;
   background-color: #4d90fe;
   padding: 5px 11px 0px 11px;
 }
 
-/* line 57, ../sass/customization.scss */
+/* line 88, ../sass/customization.scss */
 #type-selector label {
   font-family: Roboto;
   font-size: 13px;
   font-weight: 300;
+}
+
+/* line 94, ../sass/customization.scss */
+#preferences-form {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }

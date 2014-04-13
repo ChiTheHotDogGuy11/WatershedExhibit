@@ -18,8 +18,8 @@
 		<script src="js/constants.js"></script>
 		<script src="js/animation.js"></script>
     <!-- Nice UI tools for interface elements -->
-    <!--script src="js/simple-slider.min.js"></script-->
-    <!--link href="stylesheets/simple-slider.css" rel="stylesheet" type="text/css" /-->
+    <script src="js/simple-slider.min.js"></script>
+    <link href="stylesheets/simple-slider.css" rel="stylesheet" type="text/css"/>
 		<!-- Simulate having pieces present when we can't make connection to server. -->
 		<script src="js/test.js"></script>
 		<!-- app.js is where all the client-side game logic lives-->
@@ -101,13 +101,21 @@
       <div id="point3" class="calibrate-point piece"></div>
     </div>
     <div id="preferences" class="overlay">
-      <div id="map-container">
-        <input id="pac-input" class="controls" type="text" placeholder="Search Box">
-        <div id="map-canvas"></div>
-        <form id="preferences-form">
-          <input type="text" data-slider="true" data-slider-values="100,500,1000" data-slider-equal-steps="true">
-        </form>
-      </div>
+      <div id="preferences-container">
+        <div id="map-container">
+          <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+          <div id="map-canvas"></div>
+        </div>
+        <div class="form-center">
+          <form id="preferences-form">
+            <label>Budget</label>
+            <input type="text" data-slider="true" data-slider-snap="true" data-slider-values="100,500,1000" data-slider-equal-steps="true">
+            <span class="output"></span>
+            <label>House Size</label>
+            <input type="text" data-slider="true" data-slider-snap="true" data-slider-values="100,500,1000" data-slider-equal-steps="true">
+            <span class="output"></span>
+          </form>
+        </div>
     </div>
 	</body>
 </html>
