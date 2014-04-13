@@ -49,7 +49,7 @@ p {
 }
 
 .overlay {
-  z-index: 200;
+  z-index: 400;
   height: 100%;
   width: 100%;
   background: rgba(0,0,0,0.5);
@@ -259,7 +259,7 @@ color: white;
   left: 40%;
   color: white;
   background-color: black;
-  z-index: 10000;
+  z-index: 300;
 }
 
 .nextButton{
@@ -269,7 +269,7 @@ color: white;
   left: 40%;
   color: white;
   background-color: black;
-  z-index: 10000;
+  z-index: 300;
 }
 
 .instrText{
