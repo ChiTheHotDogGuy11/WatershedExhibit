@@ -570,5 +570,7 @@ $(function() {
     google.maps.event.trigger(map, 'resize');
   })
 
-
+  $('#preferences form').submit(function (event) {
+    event.preventDefault();
+  });
 });
