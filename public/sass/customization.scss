@@ -32,6 +32,38 @@
   height: 80%;
 }
 
+.gm-style-iw {
+
+  h3 {
+    padding-bottom: 7px;
+  }
+
+  strong {
+    font-weight: bold;
+  }
+
+  button {
+    margin-top: 5px;
+    color: #fff;
+    background-color: #428bca;
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid #357ebd;
+    white-space: nowrap;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    border-radius: 4px;
+    -webkit-user-select: none;
+  }
+
+}
+
 .form-center {
   
   overflow: hidden;

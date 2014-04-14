@@ -12,15 +12,50 @@ function initialize() {
 //  });
 //  weatherLayer.setMap(map);
 
-  var kmzLayer = new google.maps.KmlLayer({
-    url: 'http://localhost:8001/all-climate-zones.kml'
-  });
-  kmzLayer.setMap(map);
-
   var defaultBounds = new google.maps.LatLngBounds(
       new google.maps.LatLng(47.971537, -131.132813),
       new google.maps.LatLng(24.754314, -76.728516));
   map.fitBounds(defaultBounds);
+
+  var kmzLayer = new google.maps.KmlLayer({
+    url: 'https://raw.githubusercontent.com/ChiTheHotDogGuy11/WatershedExhibit/master/public/all-climate-zones.kml',
+    preserveViewport: true,
+    map: map,
+    suppressInfoWindows: true
+  });
+
+  var curWindow = null;
+
+  google.maps.event.addListener(kmzLayer, 'click', function(kmlEvt) {
+    //TODO Something more here -- get the location
+    
+    var content = "<h2>"+kmlEvt.featureData.name+"</h2>\n"+kmlEvt.featureData.description;
+    content += "<button class='info_button'>Choose Location</button>";
+
+    if (curWindow != null) {
+      curWindow.close();
+    }
+    curWindow = new google.maps.InfoWindow({
+      content: content,
+    });
+
+    curWindow.open(map);
+    curWindow.setPosition(kmlEvt.latLng);
+
+    $('.info_button').click(function (event) {
+      var dist = 30;
+      var box = new google.maps.LatLngBounds(
+          destinationFrom(kmlEvt.latLng.lat(),kmlEvt.latLng.lng(),225,dist),
+          destinationFrom(kmlEvt.latLng.lat(),kmlEvt.latLng.lng(),45,dist));
+      
+      //Get Station Info
+      NOAA.request("stations",{extent: box.toUrlValue()},function(data) {console.log(data)});
+    
+      //Get Electricity Rates
+      rates.get_data(kmlEvt.latLng.lat(),kmlEvt.latLng.lng(),function(data) {console.log(data)});
+    });
+  });
+
 
   // Create the search box and link it to the UI element.
   var input = /** @type {HTMLInputElement} */(
@@ -31,7 +66,7 @@ function initialize() {
     center = map.getCenter();
   });
 
-  var searchBox = new google.maps.places.SearchBox((input));
+  var searchBox = new google.maps.places.SearchBox((input), {bounds: defaultBounds});
 
   // [START region_getplaces]
   // Listen for the event fired when the user selects an item from the
@@ -145,6 +180,41 @@ var soil = {
   }
 }
 
+var rates = {
+
+  get_data: function(lat,lon,callback) {
+    $.ajax({
+      url: 'http://developer.nrel.gov/api/utility_rates/v3.json',
+      data: {api_key: 'uqFVoJMelgQIZZfEhM5tSGKlSkWMFu6TN78nKGjX', lat: lat, lon: lon},
+      success: function(data) {
+        callback(data);
+      },
+    });
+  }
+
+}
+
+var geothermal = { 
+  
+  get_data: function(zip,fuel,square_feet,callback) {
+    $.ajax({
+      url: 'http://anroth.yourvirtualhvac.com/consumer/house/',
+      beforeSend: function(xhr, settings) {
+        settings.url = window.location.protocol + "/api/" + encodeURIComponent(options.url);
+        options.crossDomain = false;
+      },
+      data: {
+        house_age: 15,
+        zipcode: zip,
+        square_foot: square_feet,
+        house_fuel: fuel,
+        fuel: fuel
+      }
+    });
+  }
+
+}
+
 //Allow us to pass cross domain ajax requests through our node proxy
 $(function(){
   /*
@@ -164,6 +234,37 @@ $(function(){
         .html(data.value);
   });
 });
+
+if (typeof(Number.prototype.toRad) === "undefined") {
+  Number.prototype.toRad = function() {
+    return this * Math.PI / 180;
+  }
+}
+
+if (typeof(Number.prototype.toDeg) === "undefined") {
+  Number.prototype.toDeg = function() {
+    return this * 180 / Math.PI;
+  }
+}
+
+var destinationFrom = function(lat,lng,brng, dist) {
+    this._radius = 6371;
+    dist = typeof(dist) == 'number' ? dist : typeof(dist) == 'string'
+           && dist.trim() != '' ? +dist : NaN;
+    dist = dist / this._radius;
+    brng = brng.toRad();  
+    var lat1 = lat.toRad(),
+        lon1 = lng.toRad();
+    var lat2 = Math.asin(Math.sin(lat1) * Math.cos(dist) +
+        Math.cos(lat1) * Math.sin(dist) *
+        Math.cos(brng));
+    var lon2 = lon1 + Math.atan2(Math.sin(brng) * Math.sin(dist) *
+        Math.cos(lat1), Math.cos(dist) -
+        Math.sin(lat1) * Math.sin(lat2));
+    lon2 = (lon2 + 3 * Math.PI) % (2 * Math.PI) - Math.PI;
+    return new google.maps.LatLng(lat2.toDeg(),lon2.toDeg());
+}
+
 
 function getMapCenter() {
   obj = map.getCenter();
