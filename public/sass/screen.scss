@@ -49,7 +49,7 @@ p {
 }
 
 .overlay {
-  z-index: 200;
+  z-index: 400;
   height: 100%;
   width: 100%;
   background: rgba(0,0,0,0.5);
@@ -59,6 +59,7 @@ p {
   display: none;
 }
 
+<<<<<<< HEAD
 .calibrate-point {
   
   width: 60px;
@@ -94,6 +95,8 @@ p {
   bottom: 140px;
 }
 
+=======
+>>>>>>> 7cd8b3d9bbddb3000d3fed56738ed5b2261ce09b
 #budget_meter_label{
 position: absolute;
 top: 8%;
@@ -261,36 +264,6 @@ color: white;
 	left: 33%;
 }
 
-
-/* Google Map Styles */
-
-#map-canvas {
-  height: 100%;
-  margin: 0px;
-  padding: 0px
-}
-.controls {
-  margin-top: 16px;
-  border: 1px solid transparent;
-  border-radius: 2px 0 0 2px;
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  height: 32px;
-  outline: none;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-}
-
-#map-container {
-  margin-left: auto;
-  margin-right: auto;
-  width: 40%;
-  height: 40%;
-  margin-top: 100px;
-  padding:30px;
-  background-color: white;
-  border-radius: 10px
-}
-
 .modal{
   margin-left: auto;
   margin-right: auto;
@@ -298,39 +271,6 @@ color: white;
   padding: 30px;
   background-color: white;
   border-radius: 10px;
-}
-
-#pac-input {
-  background-color: #fff;
-  padding: 0 11px 0 13px;
-  width: 400px;
-  font-family: Roboto;
-  font-size: 15px;
-  font-weight: 300;
-  text-overflow: ellipsis;
-}
-
-#pac-input:focus {
-  border-color: #4d90fe;
-  margin-left: -1px;
-  padding-left: 14px;  /* Regular padding-left + 1. */
-  width: 401px;
-}
-
-.pac-container {
-  font-family: Roboto;
-}
-
-#type-selector {
-  color: #fff;
-  background-color: #4d90fe;
-  padding: 5px 11px 0px 11px;
-}
-
-#type-selector label {
-  font-family: Roboto;
-  font-size: 13px;
-  font-weight: 300;
 }
 
 /* ------ shan's stuff ------- */
@@ -357,7 +297,7 @@ color: white;
   left: 40%;
   color: white;
   background-color: black;
-  z-index: 10000;
+  z-index: 300;
 }
 
 .nextButton{
@@ -367,7 +307,7 @@ color: white;
   left: 40%;
   color: white;
   background-color: black;
-  z-index: 10000;
+  z-index: 300;
 }
 
 .instrText{
@@ -395,3 +335,6 @@ color: white;
   white-space: nowrap; 
   font-size: 18pt;
 }
+
+@import 'pieces';
+@import 'customization';
