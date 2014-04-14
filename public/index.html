@@ -4,8 +4,8 @@
 		<title>Watershed Exhibit</title>
 		<link rel="stylesheet" type="text/css" href="stylesheets/screen.css"> 
     <!-- Google Maps Library for Prefernces -->
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places,weather"></script>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places,weather&sensor=false"></script>
     <script type="text/javascript">
        google.load("visualization", "1", {packages:["corechart"]});
     </script>
@@ -108,12 +108,19 @@
         </div>
         <div class="form-center">
           <form id="preferences-form">
-            <label>Budget</label>
-            <input type="text" data-slider="true" data-slider-snap="true" data-slider-values="100,500,1000" data-slider-equal-steps="true">
-            <span class="output"></span>
-            <label>House Size</label>
-            <input type="text" data-slider="true" data-slider-snap="true" data-slider-values="100,500,1000" data-slider-equal-steps="true">
-            <span class="output"></span>
+            <div>
+              <label>Budget</label>
+              <input type="text" data-slider="true" data-slider-snap="true" data-slider-values="100,500,1000" data-slider-equal-steps="true">
+              <span class="output"></span>
+            </div>
+            <div>
+              <label>House Size</label>
+              <input type="text" data-slider="true" data-slider-snap="true" data-slider-values="100,500,1000" data-slider-equal-steps="true">
+              <span class="output"></span>
+            </div>
+            <div>
+              <input type="submit">
+            </div>
           </form>
         </div>
     </div>
