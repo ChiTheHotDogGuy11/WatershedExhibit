@@ -15,6 +15,8 @@ var Engine = (function () {
   var in_variables = {};
   var out_variables = {};
   var loc = null;
+  // A container for the events. See event.js
+  var event_manager = new EventManager();
   
   function new_system(params_hash){
     var tmp = new System(params_hash);
@@ -40,14 +42,16 @@ var Engine = (function () {
     //Run the simulation for the number of steps we have defined
     for (var i = 0; i < steps; i++)
     {
-      //Determine if/which event is going to occur
 
       //Update our inVariables
       var in_vars = {}
+      //Fire the event timer to decide if/which event occurs and 
+      //step along the events already in progress.
+      event_manager.timer_fired();
+      var ongoing_events = event_manager.get_ongoing_events();
       for(var key in in_variables) {
-        if(in_variables.hasOwnProperty(key)) {
-          //Do something with events here to do a calculation??  
-          in_vars[key] = in_variables.calculate_value(loc,events);
+        if(in_variables.hasOwnProperty(key)) { 
+          in_vars[key] = in_variables.calculate_value(loc, ongoing_events);
         }
       }
       
