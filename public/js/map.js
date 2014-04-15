@@ -256,6 +256,7 @@ var NREL = {
   get_geothermal: function(lat,lon,fuel,square_feet,callback) {
     //Fuel Types: natural_gas, oil, propane, electricity
     //age: old, mid, new
+    var self = this;
     $.ajax({
       url: 'http://www.waterfurnace.com/savings-calculator/v3.1.1/calculate.aspx',
       method: 'post',
@@ -279,9 +280,32 @@ var NREL = {
         coolsetpoint: 70,
         numresidents: 4,
       },
-      success: callback
+      success: function(data) {
+        var csv = self.parse_csv(data);
+        callback({
+            heating_old: csv[1],
+            cooling_old: csv[2],
+            heating_new: csv[3],
+            cooling_new: csv[4],
+            hot_water_old: csv[5],
+            hot_water_new: csv[6],
+            heating_carbon_old: csv[7],
+            cooling_carbon_old: csv[8],
+            heating_carbon_new: csv[9],
+            cooling_carbon_new: csv[10],
+          }); 
+      }
     });
-  }
+  },
+  parse_csv: function(data) {
+    var textLines = data.split(/\r\n|\n/);
+    var output = new Array();
+    for (var i = 0; i < textLines.length; i++)
+    {
+      output.push(textLines[i].split(','));
+    }
+    return output;
+  },
 }
 
 //Allow us to pass cross domain ajax requests through our node proxy
