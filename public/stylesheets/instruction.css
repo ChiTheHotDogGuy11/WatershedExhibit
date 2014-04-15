@@ -1,5 +1,48 @@
-/* line 1, ../sass/instruction.scss */
+/* line 3, ../sass/instruction.scss */
 .instruction_page {
   background-color: #D8F5D5;
   background-image: url("../images/instruction-bgx2.png");
+  font-family: 'Exo', Arial, sans-serif;
+  margin: 2% 12%;
+  display: relative;
+}
+
+/* line 11, ../sass/instruction.scss */
+.instruction_header {
+  font-size: 50px;
+  color: #3d3d3d;
+  margin-bottom: 2%;
+}
+
+/* line 17, ../sass/instruction.scss */
+.instruction_paragraph {
+  color: #3d3d3d;
+  font-weight: 300;
+}
+/* line 20, ../sass/instruction.scss */
+.instruction_paragraph img {
+  float: right;
+}
+
+/* line 25, ../sass/instruction.scss */
+.instruction_next_button {
+  padding: 1% 4%;
+  position: absolute;
+  bottom: 10%;
+  right: 0;
+  display: inline-block;
+  font-size: 25px;
+  color: white;
+  background-color: #3B3B3B;
+  /*::after{
+  	content: "";
+    background-color: #196966;
+    opacity: 0.8;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: -1;   
+  }*/
 }
