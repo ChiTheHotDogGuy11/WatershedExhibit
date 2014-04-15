@@ -9,6 +9,7 @@ var express = require('express');
 var path = require('path');
 //Have an HTTP Proxy for our cross server scripting
 var request = require('request');
+
 // Create a new instance of Express
 var app = express();
 
@@ -37,7 +38,11 @@ function apiProxy() {
     if (req.url.match(new RegExp('^\/api\/'))){
       var go_to = decodeURIComponent(req.path.slice(5));
       console.log(go_to);
-      request(go_to).pipe(res);
+      if (req.method == 'POST') {
+        req.pipe(request.post(go_to, {form: req.body})).pipe(res);
+      } else {
+        request(go_to).pipe(res);
+      }
     } else {
       next();
     }
