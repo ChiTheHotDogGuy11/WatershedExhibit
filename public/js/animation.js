@@ -4,7 +4,7 @@ function initTwo(){
 	var shapes = [];
 	$('#houseContainer').children('g').each(function(){
 		var _shape = two.interpret(this);
-		_shape.translation.set(520, 260);
+		_shape.translation.set(280, 180);
 		_shape.opacity = 0;
 		_shape.scale = 1;
 		shapes.push(_shape);

@@ -128,10 +128,42 @@ function initElements(){
 	});
 }
 
+function _initElements(){
+	$('#backgroundOverlay').hide();
+	$('#startScreen').hide();
+	$('#budgetMeter').hide();
+	$('#instrScreen').hide();
+	$('#instrScreen2').hide();
+	$('#instrScreen3').hide();
+	$('#_endScreen').hide();
+	$('#qtnScreen1').hide();
+	$('#qtnScreen2').hide();
+	showGameScreen();
+}
+
 // Insert JS here
 $(document).ready(function(){
+	var budget = new Binding(document.getElementById('budgetValue'), 60, function(value){
+		this.innerHTML = '$' + value + 'k/$60k';
+	})
+	budget.change(30);
 	initBudget();
 	initGameScreen();
 	//convertCoord({x: 0, y: 0}, {x: 100, y: 0}, {x: 0, y: 100},{x: 30, y: 30}, {x: 0, y: 0}, {x: 100, y: 0}, {x: 0, y: 100})
-	initElements();
+	_initElements();
+	var data = [];
+	var data2 = [];
+	var data3 = [];
+	var data4 = [];
+	var stackedChart = new StackedChart('gameChart')
+		.bind(true, function(){return data}, 'Electricity bill')
+		.bind(false, function(){return data2}, 'Water bill')
+		.bind(true, function(){return data4}, 'Water run-off');
+
+	setInterval(function(){
+	 	data.push(Math.random()*10);
+	 	data2.push(Math.random()*10);
+	 	data3.push(Math.random()*10);
+	 	data4.push(Math.random()*10);
+	}, 1000);
 });
