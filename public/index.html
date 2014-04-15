@@ -12,7 +12,7 @@
     <script src="js/jquery-1.11.0.js"></script>
 		<script  src="js/globals.js"></script>
 		<!-- If Socket.IO is used with Express, then the /socket.io/ path will
-        serve the proper Socket.IO javascript files used by the browser -->
+		serve the proper Socket.IO javascript files used by the browser -->
 		<script src="/socket.io/socket.io.js"></script>
 		<script src="js/two.js"></script>
 		<script src="js/constants.js"></script>
@@ -34,6 +34,9 @@
 		<div id="startScreen">
 			<div id="startButton">
 				<p class="bigButtonText">Start Game</p>
+			</div>
+			<div id="calibrate">
+				<p>Calibrate</p>
 			</div>
 		</div>
 		<div id="instrScreen">
@@ -66,8 +69,8 @@
 		</div>
 		<div id="screen" style="left: 0px; top: 0px; width: 1920px; height: 1920px;"></div>
 		<div id="endScreen" class="overlay">
-      		<div id="end_chart" class="modal" style="width: 30%; height 40%"></div>
-  		</div>
+			<div id="end_chart" class="modal" style="width: 30%; height 40%"></div>
+		</div>
 		<div id="assets" style="position: absolute;">
 			<div id="houseAnimContainer" style="position: absolute;	top: 300px; left: 500px"></div>
 		</div>
@@ -97,9 +100,9 @@
 			<div class="info_panel" style="display: none;">
 		</div> 
     <div id="calibration" class="overlay">
-      <div id="point1" class="calibrate-point piece"></div>
-      <div id="point2" class="calibrate-point piece"></div>
-      <div id="point3" class="calibrate-point piece"></div>
+    	<div id="point1" class="calibrate-point piece"></div>
+    	<div id="point2" class="calibrate-point piece"></div>
+    	<div id="point3" class="calibrate-point piece"></div>
     </div>
     <div id="preferences" class="overlay">
       <div id="preferences-container">
@@ -124,6 +127,7 @@
             </div>
           </form>
         </div>
+      </div>
     </div>
-	</body>
-</html>
+  </body>
+ </html>
