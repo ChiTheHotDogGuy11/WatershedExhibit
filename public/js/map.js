@@ -49,13 +49,43 @@ function initialize() {
           destinationFrom(kmlEvt.latLng.lat(),kmlEvt.latLng.lng(),45,dist));
       
       //Get Station Info
-      NOAA.request("stations",{extent: box.toUrlValue()},function(data) {console.log(data)});
+      NOAA.stations_for_area(box,function(data) {
+        NOAA.data_for_stations("datacategories", {}, data, function(data) {
+          console.log(data.removeDups("id"));
+        });
+      });
     
       //Get Electricity Rates
-      rates.get_data(kmlEvt.latLng.lat(),kmlEvt.latLng.lng(),function(data) {console.log(data)});
+      NREL.get_rates(kmlEvt.latLng.lat(),kmlEvt.latLng.lng(),function(data) {console.log(data)});
+      //Solar potential for area
+      NREL.get_solar(kmlEvt.latLng.lat(),kmlEvt.latLng.lng(),100,function(data) {console.log(data)});
+      //Get the geothermal info
+      NREL.get_geothermal(kmlEvt.latLng.lat(),kmlEvt.latLng.lng(),"natural_gas",2000,function(data){ console.log(data)});  
+      
+      //Get our zip code
+      geocode.find_zip(kmlEvt.latLng, function(data) {
+      });
     });
   });
 
+  var geocode = {
+    geocoder: new google.maps.Geocoder(),
+    find_zip: function(latlng,callback) {
+      this.geocoder.geocode({'latLng': latlng}, function(results,status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+          if (results[0]) {
+            var result = results[0];
+            var zip = "";
+            for(var i=0, len=result.address_components.length; i<len; i++) {
+              var ac = result.address_components[i];
+              if(ac.types.indexOf("postal_code") >= 0) zip = ac.long_name;
+            }
+            callback(zip);
+          }
+        }
+      });
+    } 
+  }
 
   // Create the search box and link it to the UI element.
   var input = /** @type {HTMLInputElement} */(
@@ -135,16 +165,19 @@ var NOAA = {
       headers: {token: this.key},
       data: mergeData
     }).done(function(data){
-      var offset = data.metadata.resultset.offset;
-      if (data.results.length >= mergeData.limit)
-      {
-        var reqData = $.extend({},mergeData,{offset: offset + 1000});
-        var prevData = data;
-        NOAA.request(item,reqData,function(data){
-           retFunc(prevData.results.concat(data));
-        });
-      } else {
-        retFunc(data.results);
+      if(!data.hasOwnProperty("metadata")) { retFunc([]); }
+      else {
+        var offset = data.metadata.resultset.offset;
+        if (data.results.length >= mergeData.limit)
+        {
+          var reqData = $.extend({},mergeData,{offset: offset + 1000});
+          var prevData = data;
+          NOAA.request(item,reqData,function(data){
+             retFunc(prevData.results.concat(data));
+          });
+        } else {
+          retFunc(data.results);
+        }
       }
     });
   },
@@ -157,6 +190,25 @@ var NOAA = {
     var cities = this.request("locations",{locationcategoryid: "CNTY"},function(data){
       callback($.grep(data, function(e){return e.name.startsWith(cnty)}));      
     });
+  },
+  stations_for_area: function(latLng, callback) {
+    this.request("stations", {extent: latLng.toUrlValue()}, function(data){
+      callback(data);
+    });
+  },
+  data_for_stations: function(item,params,stations,callback) {
+    //For each stations, find what information we want
+    var me = this;
+    if (stations.length < 1) {
+      callback([]);
+    } else {
+      this.request(item, $.extend({},params,{stationid: stations[0].id}), function(data) {
+        var prevData = data;
+        me.data_for_stations(item,params,stations.slice(1), function(data) {
+          callback(prevData.concat(data)); 
+        });
+      });
+    }
   },
   normal_annual: function(location) {
     this.request("data",{datasetid: "NORMAL_ANN", startdate: "2010-01-01", enddate: "2010-01-01", locationid: location}, function (data){
@@ -180,39 +232,80 @@ var soil = {
   }
 }
 
-var rates = {
-
-  get_data: function(lat,lon,callback) {
+var NREL = {
+  api_key: 'uqFVoJMelgQIZZfEhM5tSGKlSkWMFu6TN78nKGjX',
+  get_rates: function(lat,lon,callback) {
     $.ajax({
       url: 'http://developer.nrel.gov/api/utility_rates/v3.json',
-      data: {api_key: 'uqFVoJMelgQIZZfEhM5tSGKlSkWMFu6TN78nKGjX', lat: lat, lon: lon},
-      success: function(data) {
-        callback(data);
-      },
+      data: {api_key: this.api_key, lat: lat, lon: lon},
+      success: callback, 
     });
-  }
-
-}
-
-var geothermal = { 
-  
-  get_data: function(zip,fuel,square_feet,callback) {
+  },
+  get_solar: function(lat,lon,size,callback) {
     $.ajax({
-      url: 'http://anroth.yourvirtualhvac.com/consumer/house/',
+      url: 'http://developer.nrel.gov/api/pvwatts/v4.json',
+      data: {
+        api_key: this.api_key,
+        lat: lat,
+        lon: lon,
+        system_size: size,
+      },
+      success: callback,
+    });
+  },
+  get_geothermal: function(lat,lon,fuel,square_feet,callback) {
+    //Fuel Types: natural_gas, oil, propane, electricity
+    //age: old, mid, new
+    var self = this;
+    $.ajax({
+      url: 'http://www.waterfurnace.com/savings-calculator/v3.1.1/calculate.aspx',
+      method: 'post',
       beforeSend: function(xhr, settings) {
-        settings.url = window.location.protocol + "/api/" + encodeURIComponent(options.url);
-        options.crossDomain = false;
+        settings.url = window.location.protocol + "/api/" + encodeURIComponent(settings.url);
+        settings.crossDomain = false;
       },
       data: {
-        house_age: 15,
-        zipcode: zip,
-        square_foot: square_feet,
-        house_fuel: fuel,
-        fuel: fuel
+        homeage: 10,
+        sqft: square_feet,
+        address: '',
+        zipcode: '',
+        fuelrate: '',
+        electricrate: '',
+        long: lon,
+        lat: lat,
+        state: '',
+        fuelsource: 'gas',
+        auxfuelsource: '',
+        heatsetpoint: 70,
+        coolsetpoint: 70,
+        numresidents: 4,
+      },
+      success: function(data) {
+        var csv = self.parse_csv(data);
+        callback({
+            heating_old: csv[1],
+            cooling_old: csv[2],
+            heating_new: csv[3],
+            cooling_new: csv[4],
+            hot_water_old: csv[5],
+            hot_water_new: csv[6],
+            heating_carbon_old: csv[7],
+            cooling_carbon_old: csv[8],
+            heating_carbon_new: csv[9],
+            cooling_carbon_new: csv[10],
+          }); 
       }
     });
-  }
-
+  },
+  parse_csv: function(data) {
+    var textLines = data.split(/\r\n|\n/);
+    var output = new Array();
+    for (var i = 0; i < textLines.length; i++)
+    {
+      output.push(textLines[i].split(','));
+    }
+    return output;
+  },
 }
 
 //Allow us to pass cross domain ajax requests through our node proxy
@@ -234,6 +327,19 @@ $(function(){
         .html(data.value);
   });
 });
+
+
+Array.prototype.removeDups = function (property){
+  var arr = {};
+
+  for ( var i=0; i < this.length; i++ )
+      arr[this[i][property]] = this[i];
+
+  var tmp = new Array();
+  for ( key in arr )
+      tmp.push(arr[key]);
+  return tmp;
+}
 
 if (typeof(Number.prototype.toRad) === "undefined") {
   Number.prototype.toRad = function() {
