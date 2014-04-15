@@ -2,12 +2,6 @@ var totalBudget;
 var availableBudget;
 var yearlySaving;
 
-function initBudget(){
-  totalBudget = 35000;
-  availableBudget = 35000;
-  yearlySaving = 0;
-}
-
 function updateMeter(){
     var meterPercentage = availableBudget/totalBudget*100 + "%";
     $(".meter_level").css("width", meterPercentage);

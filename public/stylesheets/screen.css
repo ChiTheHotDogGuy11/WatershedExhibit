@@ -126,44 +126,6 @@ p {
 }
 
 /* line 71, ../sass/screen.scss */
-.calibrate-point {
-  width: 60px;
-  height: 60px;
-  display: none;
-}
-
-/* line 79, ../sass/screen.scss */
-#calibrate {
-  position: fixed;
-  bottom: 10px;
-  right: 10px;
-  padding: 10px;
-  background-color: rgba(0, 0, 0, 0.7);
-}
-/* line 86, ../sass/screen.scss */
-#calibrate p {
-  color: white;
-}
-
-/* line 91, ../sass/screen.scss */
-#point1 {
-  top: 80px;
-  left: 80px;
-}
-
-/* line 96, ../sass/screen.scss */
-#point2 {
-  top: 80px;
-  right: 140px;
-}
-
-/* line 101, ../sass/screen.scss */
-#point3 {
-  left: 80px;
-  bottom: 140px;
-}
-
-/* line 106, ../sass/screen.scss */
 #budget_meter_label {
   position: absolute;
   top: 8%;
@@ -172,7 +134,7 @@ p {
   color: white;
 }
 
-/* line 115, ../sass/screen.scss */
+/* line 80, ../sass/screen.scss */
 #submitButton {
   position: absolute;
   color: white;
@@ -185,7 +147,7 @@ p {
   font-size: 50pt;
 }
 
-/* line 127, ../sass/screen.scss */
+/* line 92, ../sass/screen.scss */
 .meter {
   border-radius: 20px;
   border: black solid 1px;
@@ -197,7 +159,7 @@ p {
   right: 5%;
   overflow: hidden;
 }
-/* line 138, ../sass/screen.scss */
+/* line 103, ../sass/screen.scss */
 .meter .meter_level {
   width: 50%;
   height: 100%;
@@ -205,7 +167,7 @@ p {
   transition-duration: 2s;
 }
 
-/* line 147, ../sass/screen.scss */
+/* line 112, ../sass/screen.scss */
 .piece {
   background-color: #cc0000;
   position: absolute;
@@ -215,7 +177,7 @@ p {
   -webkit-border-radius: 50%;
 }
 
-/* line 156, ../sass/screen.scss */
+/* line 121, ../sass/screen.scss */
 #question_mark {
   position: absolute;
   margin: 0 auto;
@@ -227,7 +189,7 @@ p {
   color: white;
 }
 
-/* line 167, ../sass/screen.scss */
+/* line 132, ../sass/screen.scss */
 .house {
   position: absolute;
   /*	bottom: 20%;
@@ -235,7 +197,7 @@ p {
   	left: 43%;*/
 }
 
-/* line 175, ../sass/screen.scss */
+/* line 140, ../sass/screen.scss */
 .info_panel {
   position: absolute;
   bottom: 20%;
@@ -246,20 +208,20 @@ p {
   background-color: white;
   width: 26%;
 }
-/* line 185, ../sass/screen.scss */
+/* line 150, ../sass/screen.scss */
 .info_panel img {
   float: right;
   padding-left: 5px;
   padding-bottom: 5px;
 }
-/* line 191, ../sass/screen.scss */
+/* line 156, ../sass/screen.scss */
 .info_panel .panel_cost {
   font-style: italic;
   font-size: 18px;
   color: green;
 }
 
-/* line 198, ../sass/screen.scss */
+/* line 163, ../sass/screen.scss */
 .pieces_start_container {
   background-color: #196966;
   height: 20%;
@@ -269,7 +231,7 @@ p {
   bottom: 0;
 }
 
-/* line 208, ../sass/screen.scss */
+/* line 173, ../sass/screen.scss */
 .pieces_start_prompt {
   width: 70%;
   height: 10px;
@@ -282,7 +244,7 @@ p {
   color: white;
 }
 
-/* line 220, ../sass/screen.scss */
+/* line 185, ../sass/screen.scss */
 .budget_meter_container {
   background-color: transparent;
   height: 20%;
@@ -292,7 +254,7 @@ p {
   top: 0;
 }
 
-/* line 229, ../sass/screen.scss */
+/* line 194, ../sass/screen.scss */
 .shopping_cart_prompt {
   width: 60%;
   height: 10px;
@@ -305,17 +267,17 @@ p {
   color: white;
 }
 
-/* line 241, ../sass/screen.scss */
+/* line 206, ../sass/screen.scss */
 .task {
   padding: 20px;
   font-size: 20px;
 }
-/* line 245, ../sass/screen.scss */
+/* line 210, ../sass/screen.scss */
 .task:hover {
   font-size: 30px;
 }
 
-/* line 250, ../sass/screen.scss */
+/* line 215, ../sass/screen.scss */
 .worker_flip {
   -moz-transform: scaleX(-1);
   -o-transform: scaleX(-1);
@@ -326,21 +288,21 @@ p {
 }
 
 /*Animation Styles*/
-/* line 261, ../sass/screen.scss */
+/* line 226, ../sass/screen.scss */
 #rainbarrel {
   position: absolute;
   bottom: 20%;
   left: 10%;
 }
 
-/* line 267, ../sass/screen.scss */
+/* line 232, ../sass/screen.scss */
 #geothermal {
   position: absolute;
   bottom: 10%;
   left: 33%;
 }
 
-/* line 273, ../sass/screen.scss */
+/* line 238, ../sass/screen.scss */
 .modal {
   margin-left: auto;
   margin-right: auto;
@@ -351,7 +313,7 @@ p {
 }
 
 /* ------ shan's stuff ------- */
-/* line 284, ../sass/screen.scss */
+/* line 249, ../sass/screen.scss */
 #backgroundOverlay {
   width: 100%;
   height: 100%;
@@ -360,14 +322,14 @@ p {
   z-index: -1;
 }
 
-/* line 292, ../sass/screen.scss */
+/* line 257, ../sass/screen.scss */
 .bigButtonText {
   margin-top: 30px;
   text-align: center;
   font-size: 24pt;
 }
 
-/* line 298, ../sass/screen.scss */
+/* line 263, ../sass/screen.scss */
 #startButton {
   width: 350px;
   height: 100px;
@@ -379,7 +341,7 @@ p {
   z-index: 300;
 }
 
-/* line 309, ../sass/screen.scss */
+/* line 274, ../sass/screen.scss */
 .nextButton {
   position: relative;
   width: 350px;
@@ -390,7 +352,7 @@ p {
   z-index: 300;
 }
 
-/* line 319, ../sass/screen.scss */
+/* line 284, ../sass/screen.scss */
 .instrText {
   margin-top: 300px;
   color: white;
@@ -398,7 +360,7 @@ p {
   text-align: center;
 }
 
-/* line 326, ../sass/screen.scss */
+/* line 291, ../sass/screen.scss */
 .info-panel {
   position: absolute;
   background-color: rgba(0, 0, 0, 0.5);
@@ -410,7 +372,7 @@ p {
   padding: 5px;
 }
 
-/* line 337, ../sass/screen.scss */
+/* line 302, ../sass/screen.scss */
 .info-circle-tag {
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
@@ -419,7 +381,7 @@ p {
   font-size: 18pt;
 }
 
-/* line 345, ../sass/screen.scss */
+/* line 310, ../sass/screen.scss */
 .game-panel {
   background-color: rgba(0, 0, 0, 0.5);
   border-radius: 10px;
@@ -428,14 +390,14 @@ p {
   display: inline-block;
 }
 
-/* line 353, ../sass/screen.scss */
+/* line 318, ../sass/screen.scss */
 .game-panel-transparent {
   background-color: transparent;
   border-radius: 10px;
   margin: 10px;
 }
 
-/* line 359, ../sass/screen.scss */
+/* line 324, ../sass/screen.scss */
 #play-btn {
   width: 90px;
   height: 90px;
@@ -443,7 +405,7 @@ p {
   margin-bottom: 10px;
 }
 
-/* line 366, ../sass/screen.scss */
+/* line 331, ../sass/screen.scss */
 #next-btn {
   width: 45px;
   height: 45px;
@@ -452,7 +414,7 @@ p {
   vertical-align: bottom;
 }
 
-/* line 374, ../sass/screen.scss */
+/* line 339, ../sass/screen.scss */
 #end-btn {
   width: 45px;
   height: 45px;
@@ -461,21 +423,21 @@ p {
   vertical-align: bottom;
 }
 
-/* line 382, ../sass/screen.scss */
+/* line 347, ../sass/screen.scss */
 #close-btn {
   margin-left: -15px;
   width: 45px;
   height: 45px;
 }
 
-/* line 388, ../sass/screen.scss */
+/* line 353, ../sass/screen.scss */
 #help-btn {
   margin-left: 5px;
   width: 45px;
   height: 45px;
 }
 
-/* line 394, ../sass/screen.scss */
+/* line 359, ../sass/screen.scss */
 #time-tag {
   position: absolute;
   top: 10px;
@@ -483,12 +445,12 @@ p {
   font-size: 10pt;
 }
 
-/* line 401, ../sass/screen.scss */
+/* line 366, ../sass/screen.scss */
 #gameChart {
   padding-top: 15px;
 }
 
-/* line 406, ../sass/screen.scss */
+/* line 371, ../sass/screen.scss */
 .stacked-chart-axis path,
 .stacked-chart-axis line {
   fill: none;
@@ -496,14 +458,14 @@ p {
   shape-rendering: crispEdges;
 }
 
-/* line 412, ../sass/screen.scss */
+/* line 377, ../sass/screen.scss */
 .stacked-chart-data-rect {
   background-color: white;
   width: 10px;
   height: 10px;
 }
 
-/* line 418, ../sass/screen.scss */
+/* line 383, ../sass/screen.scss */
 #panelContainer-bottom {
   width: 100%;
   position: fixed;
@@ -511,13 +473,13 @@ p {
   display: inline-block;
 }
 
-/* line 425, ../sass/screen.scss */
+/* line 390, ../sass/screen.scss */
 #panelContainer-top {
   width: 100%;
   display: inline-block;
 }
 
-/* line 430, ../sass/screen.scss */
+/* line 395, ../sass/screen.scss */
 #budgetValue {
   color: white;
   font-size: 22pt;
@@ -525,14 +487,14 @@ p {
   font-family: ExoLight;
 }
 
-/* line 437, ../sass/screen.scss */
+/* line 402, ../sass/screen.scss */
 #budgetLable {
   color: white;
   font-size: 15pt;
   margin-top: 10px;
 }
 
-/* line 443, ../sass/screen.scss */
+/* line 408, ../sass/screen.scss */
 #budgetMeterBg {
   position: absolute;
   border-radius: 5px;
@@ -543,7 +505,7 @@ p {
   left: 180px;
 }
 
-/* line 453, ../sass/screen.scss */
+/* line 418, ../sass/screen.scss */
 #budgetMeterBar {
   position: absolute;
   border-radius: 5px;
@@ -582,33 +544,24 @@ p {
 
 /* Piece Ending Container Styles */
 /* line 28, ../sass/pieces.scss */
+#piecesContainer {
+  position: absolute;
+  top: 450px;
+  left: 600px;
+}
+
+/* line 34, ../sass/pieces.scss */
 .piecePlacement {
   border-radius: 50%;
   -moz-border-radius: 50%;
   -webkit-border-radius: 50%;
   width: 80px;
   height: 80px;
-  background-color: rgba(150, 150, 150, 0.6);
+  background-color: rgba(0, 0, 0, 0.3);
   border: 2px dashed #969696;
   position: relative;
-}
-
-/* line 41, ../sass/pieces.scss */
-#solarContainer {
-  top: 80px;
-  left: 70px;
-}
-
-/* line 46, ../sass/pieces.scss */
-#rainBarrelContainer {
-  top: 100px;
-  left: 50px;
-}
-
-/* line 51, ../sass/pieces.scss */
-#geothermalContainer {
-  top: 300px;
-  left: 70px;
+  display: inline-block;
+  margin: 5px;
 }
 
 /* Google Map Styles */
@@ -648,20 +601,49 @@ p {
   height: 80%;
 }
 
-/* line 35, ../sass/customization.scss */
+/* line 37, ../sass/customization.scss */
+.gm-style-iw h3 {
+  padding-bottom: 7px;
+}
+/* line 41, ../sass/customization.scss */
+.gm-style-iw strong {
+  font-weight: bold;
+}
+/* line 45, ../sass/customization.scss */
+.gm-style-iw button {
+  margin-top: 5px;
+  color: #fff;
+  background-color: #428bca;
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: 400;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid #357ebd;
+  white-space: nowrap;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  border-radius: 4px;
+  -webkit-user-select: none;
+}
+
+/* line 67, ../sass/customization.scss */
 .form-center {
   overflow: hidden;
   padding: 10px;
 }
-/* line 40, ../sass/customization.scss */
+/* line 72, ../sass/customization.scss */
 .form-center form {
   margin: 0 auto;
 }
-/* line 44, ../sass/customization.scss */
+/* line 76, ../sass/customization.scss */
 .form-center label, .form-center input {
   float: left;
 }
-/* line 47, ../sass/customization.scss */
+/* line 79, ../sass/customization.scss */
 .form-center label {
   clear: left;
   display: block;
@@ -669,14 +651,14 @@ p {
   width: 90px;
 }
 
-/* line 55, ../sass/customization.scss */
+/* line 87, ../sass/customization.scss */
 .slider {
   padding-bottom: 25px;
   left: 70px;
   display: inline-block;
 }
 
-/* line 61, ../sass/customization.scss */
+/* line 93, ../sass/customization.scss */
 #pac-input {
   background-color: #fff;
   padding: 0 11px 0 13px;
@@ -687,7 +669,7 @@ p {
   text-overflow: ellipsis;
 }
 
-/* line 71, ../sass/customization.scss */
+/* line 103, ../sass/customization.scss */
 #pac-input:focus {
   border-color: #4d90fe;
   margin-left: -1px;
@@ -696,26 +678,26 @@ p {
   width: 401px;
 }
 
-/* line 78, ../sass/customization.scss */
+/* line 110, ../sass/customization.scss */
 .pac-container {
   font-family: Roboto;
 }
 
-/* line 82, ../sass/customization.scss */
+/* line 114, ../sass/customization.scss */
 #type-selector {
   color: #fff;
   background-color: #4d90fe;
   padding: 5px 11px 0px 11px;
 }
 
-/* line 88, ../sass/customization.scss */
+/* line 120, ../sass/customization.scss */
 #type-selector label {
   font-family: Roboto;
   font-size: 13px;
   font-weight: 300;
 }
 
-/* line 94, ../sass/customization.scss */
+/* line 126, ../sass/customization.scss */
 #preferences-form {
   margin-top: 10px;
   margin-bottom: 10px;
