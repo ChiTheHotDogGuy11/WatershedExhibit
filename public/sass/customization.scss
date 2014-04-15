@@ -16,15 +16,46 @@
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
-#map-container {
+#preferences-container{
   margin-left: auto;
   margin-right: auto;
-  width: 40%;
-  height: 40%;
   margin-top: 100px;
   padding:30px;
   background-color: white;
-  border-radius: 10px
+  border-radius: 10px;
+  width: 70%;
+  height: 70%;
+
+}
+
+#map-container {
+  height: 80%;
+}
+
+.form-center {
+  
+  overflow: hidden;
+  padding: 10px;
+
+  form {
+    margin: 0 auto;
+  }
+
+  label, input {
+    float: left;
+  }
+  label {
+    clear: left;
+    display: block;
+    margin-top:3px; 
+    width:90px;
+  }
+}
+
+.slider {
+  padding-bottom: 25px;
+  left: 70px;
+  display: inline-block;
 }
 
 #pac-input {
@@ -60,3 +91,7 @@
   font-weight: 300;
 }
 
+#preferences-form {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

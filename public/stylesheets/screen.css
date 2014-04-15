@@ -69,43 +69,53 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 }
 
 /*Setting up some colors from color scheme*/
-/* line 20, ../sass/screen.scss */
+@font-face {
+  font-family: Exo;
+  src: url(../fonts/Exo-Regular.otf);
+}
+
+@font-face {
+  font-family: ExoLight;
+  src: url(../fonts/Exo-Light.otf);
+}
+
+/* line 30, ../sass/screen.scss */
 body {
   background-image: url("../images/background.png");
-  font-family: Arial, sans-serif;
+  font-family: Exo;
   height: 100%;
   width: 100%;
   margin: 0;
   overflow: hidden;
 }
 
-/* line 29, ../sass/screen.scss */
+/* line 39, ../sass/screen.scss */
 html {
   height: 100%;
   overflow: hidden;
 }
 
-/* line 34, ../sass/screen.scss */
+/* line 44, ../sass/screen.scss */
 h2 {
   font-size: 18px;
   margin-bottom: 20px;
 }
 
-/* line 39, ../sass/screen.scss */
+/* line 49, ../sass/screen.scss */
 p {
   font-size: 14px;
 }
 
-/* line 44, ../sass/screen.scss */
+/* line 54, ../sass/screen.scss */
 .page_container {
   height: 100%;
   width: 100%;
   overflow: hidden;
 }
 
-/* line 50, ../sass/screen.scss */
+/* line 60, ../sass/screen.scss */
 .overlay {
-  z-index: 200;
+  z-index: 400;
   height: 100%;
   width: 100%;
   background: rgba(0, 0, 0, 0.5);
@@ -115,14 +125,14 @@ p {
   display: none;
 }
 
-/* line 61, ../sass/screen.scss */
+/* line 71, ../sass/screen.scss */
 .calibrate-point {
   width: 60px;
   height: 60px;
   display: none;
 }
 
-/* line 69, ../sass/screen.scss */
+/* line 79, ../sass/screen.scss */
 #calibrate {
   position: fixed;
   bottom: 10px;
@@ -130,30 +140,30 @@ p {
   padding: 10px;
   background-color: rgba(0, 0, 0, 0.7);
 }
-/* line 76, ../sass/screen.scss */
+/* line 86, ../sass/screen.scss */
 #calibrate p {
   color: white;
 }
 
-/* line 81, ../sass/screen.scss */
+/* line 91, ../sass/screen.scss */
 #point1 {
   top: 80px;
   left: 80px;
 }
 
-/* line 86, ../sass/screen.scss */
+/* line 96, ../sass/screen.scss */
 #point2 {
   top: 80px;
   right: 140px;
 }
 
-/* line 91, ../sass/screen.scss */
+/* line 101, ../sass/screen.scss */
 #point3 {
   left: 80px;
   bottom: 140px;
 }
 
-/* line 96, ../sass/screen.scss */
+/* line 106, ../sass/screen.scss */
 #budget_meter_label {
   position: absolute;
   top: 8%;
@@ -162,7 +172,7 @@ p {
   color: white;
 }
 
-/* line 105, ../sass/screen.scss */
+/* line 115, ../sass/screen.scss */
 #submitButton {
   position: absolute;
   color: white;
@@ -175,7 +185,7 @@ p {
   font-size: 50pt;
 }
 
-/* line 117, ../sass/screen.scss */
+/* line 127, ../sass/screen.scss */
 .meter {
   border-radius: 20px;
   border: black solid 1px;
@@ -187,7 +197,7 @@ p {
   right: 5%;
   overflow: hidden;
 }
-/* line 128, ../sass/screen.scss */
+/* line 138, ../sass/screen.scss */
 .meter .meter_level {
   width: 50%;
   height: 100%;
@@ -195,7 +205,7 @@ p {
   transition-duration: 2s;
 }
 
-/* line 137, ../sass/screen.scss */
+/* line 147, ../sass/screen.scss */
 .piece {
   background-color: #cc0000;
   position: absolute;
@@ -205,7 +215,7 @@ p {
   -webkit-border-radius: 50%;
 }
 
-/* line 146, ../sass/screen.scss */
+/* line 156, ../sass/screen.scss */
 #question_mark {
   position: absolute;
   margin: 0 auto;
@@ -217,7 +227,7 @@ p {
   color: white;
 }
 
-/* line 157, ../sass/screen.scss */
+/* line 167, ../sass/screen.scss */
 .house {
   position: absolute;
   /*	bottom: 20%;
@@ -225,7 +235,7 @@ p {
   	left: 43%;*/
 }
 
-/* line 165, ../sass/screen.scss */
+/* line 175, ../sass/screen.scss */
 .info_panel {
   position: absolute;
   bottom: 20%;
@@ -236,20 +246,20 @@ p {
   background-color: white;
   width: 26%;
 }
-/* line 175, ../sass/screen.scss */
+/* line 185, ../sass/screen.scss */
 .info_panel img {
   float: right;
   padding-left: 5px;
   padding-bottom: 5px;
 }
-/* line 181, ../sass/screen.scss */
+/* line 191, ../sass/screen.scss */
 .info_panel .panel_cost {
   font-style: italic;
   font-size: 18px;
   color: green;
 }
 
-/* line 188, ../sass/screen.scss */
+/* line 198, ../sass/screen.scss */
 .pieces_start_container {
   background-color: #196966;
   height: 20%;
@@ -259,7 +269,7 @@ p {
   bottom: 0;
 }
 
-/* line 198, ../sass/screen.scss */
+/* line 208, ../sass/screen.scss */
 .pieces_start_prompt {
   width: 70%;
   height: 10px;
@@ -272,7 +282,7 @@ p {
   color: white;
 }
 
-/* line 210, ../sass/screen.scss */
+/* line 220, ../sass/screen.scss */
 .budget_meter_container {
   background-color: transparent;
   height: 20%;
@@ -282,7 +292,7 @@ p {
   top: 0;
 }
 
-/* line 219, ../sass/screen.scss */
+/* line 229, ../sass/screen.scss */
 .shopping_cart_prompt {
   width: 60%;
   height: 10px;
@@ -295,17 +305,17 @@ p {
   color: white;
 }
 
-/* line 231, ../sass/screen.scss */
+/* line 241, ../sass/screen.scss */
 .task {
   padding: 20px;
   font-size: 20px;
 }
-/* line 235, ../sass/screen.scss */
+/* line 245, ../sass/screen.scss */
 .task:hover {
   font-size: 30px;
 }
 
-/* line 240, ../sass/screen.scss */
+/* line 250, ../sass/screen.scss */
 .worker_flip {
   -moz-transform: scaleX(-1);
   -o-transform: scaleX(-1);
@@ -316,21 +326,21 @@ p {
 }
 
 /*Animation Styles*/
-/* line 251, ../sass/screen.scss */
+/* line 261, ../sass/screen.scss */
 #rainbarrel {
   position: absolute;
   bottom: 20%;
   left: 10%;
 }
 
-/* line 257, ../sass/screen.scss */
+/* line 267, ../sass/screen.scss */
 #geothermal {
   position: absolute;
   bottom: 10%;
   left: 33%;
 }
 
-/* line 263, ../sass/screen.scss */
+/* line 273, ../sass/screen.scss */
 .modal {
   margin-left: auto;
   margin-right: auto;
@@ -341,7 +351,7 @@ p {
 }
 
 /* ------ shan's stuff ------- */
-/* line 274, ../sass/screen.scss */
+/* line 284, ../sass/screen.scss */
 #backgroundOverlay {
   width: 100%;
   height: 100%;
@@ -350,14 +360,14 @@ p {
   z-index: -1;
 }
 
-/* line 282, ../sass/screen.scss */
+/* line 292, ../sass/screen.scss */
 .bigButtonText {
   margin-top: 30px;
   text-align: center;
   font-size: 24pt;
 }
 
-/* line 288, ../sass/screen.scss */
+/* line 298, ../sass/screen.scss */
 #startButton {
   width: 350px;
   height: 100px;
@@ -366,10 +376,10 @@ p {
   left: 40%;
   color: white;
   background-color: black;
-  z-index: 10000;
+  z-index: 300;
 }
 
-/* line 299, ../sass/screen.scss */
+/* line 309, ../sass/screen.scss */
 .nextButton {
   position: relative;
   width: 350px;
@@ -377,10 +387,10 @@ p {
   left: 40%;
   color: white;
   background-color: black;
-  z-index: 10000;
+  z-index: 300;
 }
 
-/* line 309, ../sass/screen.scss */
+/* line 319, ../sass/screen.scss */
 .instrText {
   margin-top: 300px;
   color: white;
@@ -388,7 +398,7 @@ p {
   text-align: center;
 }
 
-/* line 316, ../sass/screen.scss */
+/* line 326, ../sass/screen.scss */
 .info-panel {
   position: absolute;
   background-color: rgba(0, 0, 0, 0.5);
@@ -400,13 +410,148 @@ p {
   padding: 5px;
 }
 
-/* line 327, ../sass/screen.scss */
+/* line 337, ../sass/screen.scss */
 .info-circle-tag {
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
   padding: 2px;
   white-space: nowrap;
   font-size: 18pt;
+}
+
+/* line 345, ../sass/screen.scss */
+.game-panel {
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  margin: 10px;
+  color: white;
+  display: inline-block;
+}
+
+/* line 353, ../sass/screen.scss */
+.game-panel-transparent {
+  background-color: transparent;
+  border-radius: 10px;
+  margin: 10px;
+}
+
+/* line 359, ../sass/screen.scss */
+#play-btn {
+  width: 90px;
+  height: 90px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/* line 366, ../sass/screen.scss */
+#next-btn {
+  width: 45px;
+  height: 45px;
+  margin-bottom: 10px;
+  margin-left: 5px;
+  vertical-align: bottom;
+}
+
+/* line 374, ../sass/screen.scss */
+#end-btn {
+  width: 45px;
+  height: 45px;
+  margin-bottom: 10px;
+  margin-left: 5px;
+  vertical-align: bottom;
+}
+
+/* line 382, ../sass/screen.scss */
+#close-btn {
+  margin-left: -15px;
+  width: 45px;
+  height: 45px;
+}
+
+/* line 388, ../sass/screen.scss */
+#help-btn {
+  margin-left: 5px;
+  width: 45px;
+  height: 45px;
+}
+
+/* line 394, ../sass/screen.scss */
+#time-tag {
+  position: absolute;
+  top: 10px;
+  left: 115px;
+  font-size: 10pt;
+}
+
+/* line 401, ../sass/screen.scss */
+#gameChart {
+  padding-top: 15px;
+}
+
+/* line 406, ../sass/screen.scss */
+.stacked-chart-axis path,
+.stacked-chart-axis line {
+  fill: none;
+  stroke: black;
+  shape-rendering: crispEdges;
+}
+
+/* line 412, ../sass/screen.scss */
+.stacked-chart-data-rect {
+  background-color: white;
+  width: 10px;
+  height: 10px;
+}
+
+/* line 418, ../sass/screen.scss */
+#panelContainer-bottom {
+  width: 100%;
+  position: fixed;
+  bottom: 0px;
+  display: inline-block;
+}
+
+/* line 425, ../sass/screen.scss */
+#panelContainer-top {
+  width: 100%;
+  display: inline-block;
+}
+
+/* line 430, ../sass/screen.scss */
+#budgetValue {
+  color: white;
+  font-size: 22pt;
+  margin-top: 20px;
+  font-family: ExoLight;
+}
+
+/* line 437, ../sass/screen.scss */
+#budgetLable {
+  color: white;
+  font-size: 15pt;
+  margin-top: 10px;
+}
+
+/* line 443, ../sass/screen.scss */
+#budgetMeterBg {
+  position: absolute;
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.5);
+  width: 40px;
+  height: 80px;
+  top: 15px;
+  left: 180px;
+}
+
+/* line 453, ../sass/screen.scss */
+#budgetMeterBar {
+  position: absolute;
+  border-radius: 5px;
+  top: 50px;
+  left: 180px;
+  width: 40px;
+  height: 45px;
+  background-color: #ff6666;
 }
 
 /* Calibraton Styles */
@@ -487,18 +632,51 @@ p {
 }
 
 /* line 19, ../sass/customization.scss */
-#map-container {
+#preferences-container {
   margin-left: auto;
   margin-right: auto;
-  width: 40%;
-  height: 40%;
   margin-top: 100px;
   padding: 30px;
   background-color: white;
   border-radius: 10px;
+  width: 70%;
+  height: 70%;
 }
 
-/* line 30, ../sass/customization.scss */
+/* line 31, ../sass/customization.scss */
+#map-container {
+  height: 80%;
+}
+
+/* line 35, ../sass/customization.scss */
+.form-center {
+  overflow: hidden;
+  padding: 10px;
+}
+/* line 40, ../sass/customization.scss */
+.form-center form {
+  margin: 0 auto;
+}
+/* line 44, ../sass/customization.scss */
+.form-center label, .form-center input {
+  float: left;
+}
+/* line 47, ../sass/customization.scss */
+.form-center label {
+  clear: left;
+  display: block;
+  margin-top: 3px;
+  width: 90px;
+}
+
+/* line 55, ../sass/customization.scss */
+.slider {
+  padding-bottom: 25px;
+  left: 70px;
+  display: inline-block;
+}
+
+/* line 61, ../sass/customization.scss */
 #pac-input {
   background-color: #fff;
   padding: 0 11px 0 13px;
@@ -509,7 +687,7 @@ p {
   text-overflow: ellipsis;
 }
 
-/* line 40, ../sass/customization.scss */
+/* line 71, ../sass/customization.scss */
 #pac-input:focus {
   border-color: #4d90fe;
   margin-left: -1px;
@@ -518,21 +696,27 @@ p {
   width: 401px;
 }
 
-/* line 47, ../sass/customization.scss */
+/* line 78, ../sass/customization.scss */
 .pac-container {
   font-family: Roboto;
 }
 
-/* line 51, ../sass/customization.scss */
+/* line 82, ../sass/customization.scss */
 #type-selector {
   color: #fff;
   background-color: #4d90fe;
   padding: 5px 11px 0px 11px;
 }
 
-/* line 57, ../sass/customization.scss */
+/* line 88, ../sass/customization.scss */
 #type-selector label {
   font-family: Roboto;
   font-size: 13px;
   font-weight: 300;
+}
+
+/* line 94, ../sass/customization.scss */
+#preferences-form {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
