@@ -8,9 +8,9 @@ function showGameScreen(){
 
 
 function initBudget(){
-  totalBudget = 35000;
-  availableBudget = 35000;
-  yearlySaving = 0;
+  // totalBudget = 35000;
+  // availableBudget = 35000;
+  // yearlySaving = 0;
   var budget = new Binding(document.getElementById('budgetValue'), 60, function(value){
     this.innerHTML = '$' + value + 'k/$60k';
   })
@@ -18,7 +18,13 @@ function initBudget(){
 }
 
 function initBudgetTemp(){
-	$('#houseContainer')
+	/*var img = new Image();
+	$('<img></img>').load(function(){
+		$('#househouse').prepend($(this));
+		$(this).show();
+	}).attr({
+		src: 'images/houses/largeHouse.png',
+	})*/
 }
 
 
@@ -137,7 +143,8 @@ function _initElements(){
 
 // Insert JS here
 $(document).ready(function(){
-	initBudget();
+	initBudgetTemp();
+	//initBudget();
 	//initGameScreen();
 	//convertCoord({x: 0, y: 0}, {x: 100, y: 0}, {x: 0, y: 100},{x: 30, y: 30}, {x: 0, y: 0}, {x: 100, y: 0}, {x: 0, y: 100})
 	_initElements();
@@ -150,10 +157,38 @@ $(document).ready(function(){
 		.bind(false, function(){return data2}, 'Water bill')
 		.bind(true, function(){return data4}, 'Water run-off');
 
+	var water_params = {
+        name: "water_consumption",
+        on_update: function(newVal) {
+        	if(this.name in Engine.out_variables){
+        		data2.push(Engine.out_variables[this.name].current_value()/500);
+        	}
+        }, 
+        init_value: 1000
+    };
+    Engine.new_out_variable(water_params);
+
+    var barrel_params = {
+        vars: ["rain"],
+        calculation_function: function(in_vars, out_vars) {
+          if(out_vars["water_consumption"] < 5000){
+          	out_vars["water_consumption"] += 1000;
+          	
+          }
+          else{
+          	out_vars["water_consumption"] = 0;
+          }
+          return out_vars;
+        },
+        piece: undefined,
+        name: "rain_barrels"
+    };
+    Engine.new_system(barrel_params);
+
 	setInterval(function(){
 	 	data.push(Math.random()*10);
-	 	data2.push(Math.random()*10);
 	 	data3.push(Math.random()*10);
 	 	data4.push(Math.random()*10);
+	 	Engine.simulate(1);
 	}, 1000);
 });
