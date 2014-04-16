@@ -358,8 +358,11 @@ var Engine = (function () {
     new_in_variable: new_in_variable,
     set_location: set_location,
     simulate: simulate,
-    new_event: new_event
-      
+    new_event: new_event,
+    out_variables: out_variables,
+    systems: systems,
+    in_variables: in_variables,
+    event_manager: event_manager,
   }
 
 })(Engine || {});
