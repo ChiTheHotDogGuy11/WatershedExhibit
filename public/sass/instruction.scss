@@ -1,15 +1,16 @@
 $font-color: #3d3d3d;
 
+
 .instruction_page{
 	background-color: #D8F5D5;
 	background-image: url('../images/instruction-bgx2.png');
 	font-family: 'Exo', Arial, sans-serif;
-	margin: 2% 12%;
-	display: relative;
+	margin: 5% 12%;
+
 }
 
 .instruction_header{
-	font-size: 50px;
+	font-size: 58px;
 	color: $font-color;
 	margin-bottom: 2%;
 }
@@ -17,6 +18,7 @@ $font-color: #3d3d3d;
 .instruction_paragraph{
 	color: $font-color;
 	font-weight: 300;
+	font-size: 22px;
 	img{
 		float: right;
 	}
@@ -26,11 +28,12 @@ $font-color: #3d3d3d;
 	padding: 1% 4%;
 	position: absolute;
 	bottom: 10%;
-	right: 0;
+	right: 8%;
+	border-radius: 12px;
 	display: inline-block;
-	font-size: 25px;
+	font-size: 28px;
 	color: white;
-	background-color: #3B3B3B;
+	background-color: #428bca;;
 	/*::after{
 		content: "";
 	  background-color: #196966;
