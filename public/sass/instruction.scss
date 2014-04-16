@@ -1,0 +1,47 @@
+$font-color: #3d3d3d;
+
+.instruction_page{
+	background-color: #D8F5D5;
+	background-image: url('../images/instruction-bgx2.png');
+	font-family: 'Exo', Arial, sans-serif;
+	margin: 2% 12%;
+	display: relative;
+}
+
+.instruction_header{
+	font-size: 50px;
+	color: $font-color;
+	margin-bottom: 2%;
+}
+
+.instruction_paragraph{
+	color: $font-color;
+	font-weight: 300;
+	img{
+		float: right;
+	}
+}
+
+.instruction_next_button{
+	padding: 1% 4%;
+	position: absolute;
+	bottom: 10%;
+	right: 0;
+	display: inline-block;
+	font-size: 25px;
+	color: white;
+	background-color: #3B3B3B;
+	/*::after{
+		content: "";
+	  background-color: #196966;
+	  opacity: 0.8;
+	  top: 0;
+	  left: 0;
+	  bottom: 0;
+	  right: 0;
+	  position: absolute;
+	  z-index: -1;   
+	}*/
+}
+
+

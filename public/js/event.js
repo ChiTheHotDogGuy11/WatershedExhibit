@@ -9,6 +9,10 @@ function EventManager(events) {
   this.ongoing_events = {};
 };
 
+EventManager.prototype.add_event = function(new_event) {
+  this.events[new_event.name] = new_event;
+}
+
 EventManager.prototype.timer_fired = function() {
   var cur_rand_num = -1;
   this.ongoing_events = {};
@@ -49,7 +53,10 @@ EventManager.prototype.get_ongoing_events = function() {
    *
    *      // Function called when an iteration of the event 
    *      // terminates.
-   *      on_terminate: function(duration) {}
+   *      on_terminate: function(duration) {},
+   *  
+   *      //Input variables that this event modifies (as associative array).
+   *      input_vars: {}
    *   })
    */
 function Event(params_hash) {
@@ -61,6 +68,7 @@ function Event(params_hash) {
   this.on_update = params_hash["on_update"];
   this.on_terminate = params_hash["on_terminate"];
   this.time_remaining = -1;
+  this.input_vars = params_hash["input_vars"];
 };
 
 Event.prototype.is_ongoing = function() {

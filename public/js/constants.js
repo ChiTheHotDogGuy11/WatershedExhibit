@@ -11,6 +11,10 @@ var featureMapping = {
 	2: 'RB',
 }
 
+var instructionText = {
+	
+}
+
 var infoPanelTexts = {
 	// geothermal
 	'0info': "Heat from the earth can be used as an energy source in many ways, from large and complex power stations to small and relatively simple pumping systems. This heat energy is known as geothermal energy. <br/> <br/> Geothermal heat pumps use the steady temperatures just underground to heat and cool buildings, cleanly and inexpensively.",
