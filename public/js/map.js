@@ -232,6 +232,48 @@ var soil = {
   }
 }
 
+var Preferences = {
+  latLng: {lat: -79.98493194580078, lng: 40.44328916582578},
+  zip: 15219,
+  solar_size: 10,
+  //Use like bind("latLng","solar_size" function() { stuff })
+  bind: function() {
+    for(var i = 0; i < arguments.length-1; i++)
+    {
+      this["bind_"+arguments[i]](arguments[arguments.length-1]);
+    }
+  },
+  init: function() {
+    for(var prop in this){
+      if (this.hasOwnProperty(prop) && prop != "init" && prop != "bind"){
+        var update_functions = new Array();
+        var self = this;
+        this["bind_"+prop] = (function(prop){
+          return function(func) {
+            update_functions.push(func);
+          }
+        })(prop);
+        var tmp_val = self[prop];
+        this.__defineSetter__(prop,(function(prop){
+          return function(val) {
+            self[prop+"_val"] = val;
+            for(var k = 0; k < update_functions.length; k++){
+              update_functions[k]();
+            }
+          }
+        })(prop));
+        self[prop+"_val"] = tmp_val;
+        this.__defineGetter__(prop,(function(prop){
+          return function() {
+            return self[prop+"_val"];
+          }
+        })(prop));
+      }
+    }
+  },
+}
+Preferences.init();
+
 var NREL = {
   api_key: 'uqFVoJMelgQIZZfEhM5tSGKlSkWMFu6TN78nKGjX',
   get_rates: function(lat,lon,callback) {
@@ -241,6 +283,12 @@ var NREL = {
       success: callback, 
     });
   },
+  /**
+   * lat: latitude of site
+   * lon: longitude of site
+   * size: kW capacity of the system
+   * @see http://developer.nrel.gov/docs/solar/pvwatts-v4/
+   */
   get_solar: function(lat,lon,size,callback) {
     $.ajax({
       url: 'http://developer.nrel.gov/api/pvwatts/v4.json',
