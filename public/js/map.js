@@ -51,12 +51,13 @@ function initialize() {
       Preferences.latLng = {lat: kmlEvt.latLng.lat(), lng: kmlEvt.latLng.lng()};
 
       //Get Station Info
-      NOAA.stations_for_area(box,function(data) {
-        NOAA.data_for_stations("datacategories", {}, data, function(data) {
-          console.log(data.removeDups("id"));
-        });
-      });
-   
+      //NOAA.stations_for_area(box,function(data) {
+      //  NOAA.data_for_stations(data, {startdate: "2013-03-01", enddate: "2013-03-31", datasetid: "GHCNDMS"}, function(data) {
+      //    console.log(data);
+      //  });
+      //});
+      Weather.get_normals(Preferences.latLng, function(data) { console.log(data) });
+
       //Get Electricity Rates
       NREL.get_rates(kmlEvt.latLng.lat(),kmlEvt.latLng.lng(),function(data) {console.log(data)});
       //Solar potential for area
@@ -158,6 +159,7 @@ if (typeof String.prototype.startsWith != 'function') {
     };
 }
 
+//This NOAA Stuff is Great -- but their data is too unreliable to use
 var NOAA = {
 
   key: "GQEfnmROmOrqmgxclKAELCzpALViYCrw",
@@ -199,7 +201,15 @@ var NOAA = {
       callback(data);
     });
   },
-  data_for_stations: function(item,params,stations,callback) {
+  data_for_stations: function(stations,params, callback) {
+    var station = "stationid=" + stations[0].id;
+    for (var i = 1; i < stations.length; i++)
+    {
+      station += "&stationid=" + stations[i].id;
+    }
+    this.request("data?"+station, params, callback);
+  },
+  data_for_stations_grouped: function(item,params,stations,callback) {
     //For each stations, find what information we want
     var me = this;
     if (stations.length < 1) {
@@ -220,6 +230,7 @@ var NOAA = {
   }
 }
 
+
 var soil = {
   
   get_data: function(lat,lon,callback) {
@@ -233,6 +244,34 @@ var soil = {
       }
     });
   }
+}
+
+//@see http://www.hamweather.com/support/documentation/aeris/
+var Weather = {
+  
+  client_id: "nMCnfGEEaArwNARvEdiZb",
+  client_secret: "i8by9MQMwt1p4MPrRoLmnHhYhu030KkqcX1g5vo8",
+  get_data: function(action,loc,params,callback) {
+    params["client_id"] = this.client_id;
+    params["client_secret"] = this.client_secret;
+    $.ajax({
+        url: "http://api.aerisapi.com/"+action+"/"+loc,
+        data: params,
+        success: callback,
+        error: function(jqXHR, textStatus, ex) {
+          console.log(textStatus);
+        }
+    });
+  },
+  get_normals: function(loc,callback) {
+    params = {};
+    params["p"] = loc.lat.toFixed(3) + "," + loc.lng.toFixed(3);
+    params["limit"] = 5;
+    params["pfilter"] = "monthly";
+    params["from"] = "1/1/2010";
+    params["to"] = "12/31/2010";
+    this.get_data("normals", "closest", params, callback);
+  },
 }
 
 var Preferences = {
