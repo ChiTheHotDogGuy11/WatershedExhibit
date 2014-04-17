@@ -110,10 +110,36 @@ function initElements(){
 		calibrate();
 	});
 }
+// Emily's instruction initializing function
+function initInstruction(){
+	$('#instruction_screen2').hide();
+	$('#instruction_screen3').hide();
+	$('#instruction_screen1_next').click(function(){
+		$('#instruction_screen1').hide();
+		$('#instruction_screen2').show();
+	});
+	$('#instruction_screen2_previous').click(function(){
+		$('#instruction_screen1').show();
+		$('#instruction_screen2').hide();
+	});
+	$('#instruction_screen2_next').click(function(){
+		$('#instruction_screen3').show();
+		$('#instruction_screen2').hide();
+	});
+		$('#instruction_screen3_previous').click(function(){
+		$('#instruction_screen2').show();
+		$('#instruction_screen3').hide();
+	});
+}
 
 // Insert JS here
 $(document).ready(function(){
 	//convertCoord({x: 0, y: 0}, {x: 100, y: 0}, {x: 0, y: 100},{x: 30, y: 30}, {x: 0, y: 0}, {x: 100, y: 0}, {x: 0, y: 100})
-	initBudget();
+	// initBudget();
 	initElements();
+
+	// New instruction page function
+	initInstruction();
+
+
 });
