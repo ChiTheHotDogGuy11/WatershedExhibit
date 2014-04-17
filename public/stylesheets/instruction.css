@@ -3,7 +3,7 @@
   background-color: #D8F5D5;
   background-image: url("../images/instruction-bgx2.png");
   font-family: 'Exo', Arial, sans-serif;
-  margin: 5% 12%;
+  padding: 5% 12%;
 }
 
 /* line 12, ../sass/instruction.scss */
@@ -35,15 +35,27 @@
   font-size: 28px;
   color: white;
   background-color: #428bca;
-  /*::after{
-  	content: "";
-    background-color: #196966;
-    opacity: 0.8;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    position: absolute;
-    z-index: -1;   
-  }*/
+  cursor: pointer;
+  webkit-user-select: none;
+  -moz-user-select: none;
+  /* Firefox all */
+  -ms-user-select: none;
+}
+
+/* line 43, ../sass/instruction.scss */
+.instruction_previous_button {
+  padding: 1% 4%;
+  position: absolute;
+  bottom: 10%;
+  left: 8%;
+  border-radius: 12px;
+  display: inline-block;
+  font-size: 28px;
+  color: white;
+  background-color: #428bca;
+  cursor: pointer;
+  webkit-user-select: none;
+  -moz-user-select: none;
+  /* Firefox all */
+  -ms-user-select: none;
 }
