@@ -18,13 +18,14 @@ function initBudget(){
 }
 
 function initBudgetTemp(){
-	/*var img = new Image();
+	var img = new Image();
 	$('<img></img>').load(function(){
 		$('#househouse').prepend($(this));
 		$(this).show();
 	}).attr({
 		src: 'images/houses/largeHouse.png',
-	})*/
+		style: 'position: absolute; left: 500px; width: 500px;'
+	});
 }
 
 
