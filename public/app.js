@@ -1,60 +1,6 @@
-var totalBudget;
-var availableBudget;
-var yearlySaving;
-
-function initBudget(){
-  totalBudget = 35000;
-  availableBudget = 35000;
-  yearlySaving = 0;
-}
-
-function updateMeter(){
-    var meterPercentage = availableBudget/totalBudget*100 + "%";
-    $(".meter_level").css("width", meterPercentage);
-}
-
-function bin2String(array) {
-  var result = "";
-  for (var i = 0; i < array.length; i++) {
-    result += String.fromCharCode(parseInt(array[i], 2));
-  }
-  return result;
-}
+var piece_container = '.page_container';
 
 'use strict';
-
-//The number of pieces that exist on the board.
-var numPieces = 3;
-//Array to store the pieces.
-var pieces = [];
-
-var boundingList = []; 
-
-function initPieces(){
-    var colors = ["blue", "orange", "red", "black"];
-    //Initialize the pieces.
-    for (var i = 0; i < numPieces; i++) {
-      var curPiece = new Piece(i, colors[i]);
-      pieces.push(curPiece);
-    }
-    var house = new BoundingBox($("#screen"), function(id){
-      var animId = animMapping[featureMapping[id]];
-      visibilities[animId] = FADING_IN;
-      availableBudget -= costs[id];
-      yearlySaving += savings[id];
-      updateMeter();
-    }, function(id){
-      var animId = animMapping[featureMapping[id]];
-      visibilities[animId] = FADING_IN;
-      availableBudget += cost[id];
-      yearlySaving -= savings[id];
-      updateMeter();
-    });
-    boundingList.push(house);
-    pieces[0].move(300, 300);
-    pieces[1].move(-1000, -700);
-    pieces[2].move(1200, 200);
-}
 
 function initCheckout() {
     if (CHECKOUT_METHOD === 0) {
@@ -95,6 +41,7 @@ function initCheckout() {
                 visibilities[id] = FADING_IN;
             },
             function(id){
+                console.log('exiting');
                 visibilities[id] = FADING_OUT;
             }
         );
@@ -162,8 +109,8 @@ var IO = {
 				//Scale the percentages to absolute values on screen
         //var middle = windowW / 2;
         //var perfectY = windowH * .6;
-				xCoord = (xPercent+xShift) * windowW * xScale + 200;
-				yCoord = (yPercent+yShift) * windowH * yScale + 200;
+				xCoord = (xPercent) * windowW * xScale + xShift;
+				yCoord = (yPercent) * windowH * yScale + yShift;
     //     var distFromMidX = Math.abs(middle - xCoord);
     //     var distFromMidY = Math.abs(perfectY - yCoord);
     //     xCoord *= (.8 * distFromMidX);
@@ -182,6 +129,12 @@ var IO = {
     },
 };
 
+
+var yShift = 0;//100;//.6452;
+var xShift = 0;//136;//.8245;
+var yScale = 1;// 0.881;//80;
+var xScale = 1;//0.716;//80;
+
 function calibrate()
 {
   $('#calibration').show();
@@ -189,6 +142,11 @@ function calibrate()
 
   var x1,y1,x2,y2,x3,y3;
   var top,bottom,left,right;
+
+  yShift = 0;
+  xShift = 0;
+  yScale = 1;
+  xScale = 1;
 
   var counter = 0
 
@@ -249,46 +207,17 @@ function BoundingBox(ref, inAction, outAction)
 
   //Position reference helpers for our object
   this.x = function() {
-    return $(ref).position().left;
+    return ref.offset().left;
   }
   this.y = function() {
-    return $(ref).position().top
+    return ref.offset().top
   }
   this.height = function() {
-    return $(ref).height();
+    return ref.height();
   }
   this.width = function() {
-    return $(ref).width();
+    return ref.width();
   }
-}
-
-/* ----- class Piece ------ */
-
-/* ----- initialization helpers ------- */
-
-function setTranslation(piece, angle, diam){
-  var x = Math.cos(angle * Math.PI / 180) * diam;
-  var y = Math.sin(angle * Math.PI / 180) * diam;
-  piece.translation.set(x, y);
-}
-
-function setTranslationCSS(elem, angle, diam){
-  elem.css('-webkit-transform', 'rotate(' + angle + 'deg) translate(' + diam + 'px, 0px)');
-}
-
-function makeIcon(domName, scale, angle){
-  var icon = two.interpret(document.getElementById(domName)).center();
-  icon.scale = scale;
-  icon.angle = angle;
-  return icon;
-}
-
-function makeTag(tagname, angle, text, parent){
-  var tag = $('<div id='+ tagname + '/>')
-    .html('<span class="info-circle-tag">'+text+'</span>');
-  tag.angle = angle;
-  parent.append(tag);
-  return tag;
 }
 
 /*  ----- touch events object setup ----- */
@@ -384,118 +313,114 @@ var TouchEvent = {
 }
 
 
-/* ------ constructor -------- */
+/* ------ Piece constructor -------- */
 
-function Piece(id, color)
+function Piece(system)
 {
-  //unique ID for our piece
-  this.id = id;
-  
-  //Set arbitrary cost for now
-  this.cost = 10000;
+  this.system = system;
+  var name = system.name;
   
   //Coordinates and size of our piece
   this.x = 0;
   this.y = 0;
-  this.r = 30;
+  this.r = 40;
   this.diam = 110;
-  
-  //Our tag location
-  this.tagX = 0;
-  this.tagY = 0;
 
   //The current bounding box
   this.curBox = null;
 
-  var backgroundColor = 'transparent';
-  if (IS_TESTING) backgroundColor = color;
   //Create our div object for a new piece
+  var bw = 15;
   this.ref = {};
-  this.ref['anchor'] = $('<div/>', {
-    id: id+"circle",
-    class: 'piece',
-    css: {
-      top: this.y - this.r,
-      left: this.x - this.r,
-      width: this.r*2,
-      height: this.r*2,
-	  backgroundColor: backgroundColor
-    }
-  }).appendTo('.page_container'); 
+  this.ref['anchor'] = makeCircle(name+'-circle', 'piece', this.x, this.y, this.r, '15px solid', PINK, '.page_container')
+  this.ref['nametag'] = makeTag(name+'-nametag', featureNames[name], -15, 50, this.ref['anchor']);
+  this.ref['outerCicle'] = makeCircle(name+'-outercircle', 'piece', this.r-bw, this.r-bw, this.r*2, '2px solid', PINK, this.ref['anchor']);
+  this.ref['info-icon'] = makeIcon(name+'-infoicon', 'images/info-button.png', 96, 24, -130, this.ref['anchor']);
+  this.ref['plus-icon'] = makeIcon(name+'-plusicon', 'images/plus-button.png', 96, 120, 45, this.ref['anchor']);
+  this.ref['minus-icon'] = makeIcon(name+'-minusicon', 'images/minus-button.png', 96, -65, 45, this.ref['anchor']);
+  this.ref['info-panel'] = makeTag(name+'-infoPanel', 'information information information', 0, 0, this.ref['anchor']);
+  makeArc(this.r*2, -bw+this.r, -bw+this.r, bw, 15, this.ref['anchor']);
 
-  // create tags that rotate around the info circles
-
-  // name tag
-  this.ref['nametag'] = makeTag(this.id+'nametag', 0, featureNames[this.id], this.ref['anchor']);
-  this.ref['pricetag'] = makeTag(this.id+'pricetag', 30, 'Installation Cost: $'+costs[this.id], this.ref['anchor']);
-  this.ref['savingtag'] = makeTag(this.id+'pricetag', 60, 'Saving: $' + savings[this.id]+'/yr', this.ref['anchor']);
-
-  // create info panel
-  this.ref['infopanel'] = $('<div/>').attr('id', id+'infopanel')
-    .attr('class', 'info-panel')
-    .css({
-      top: this.x,
-      left: this.y,
-    })
-    .hide();
-  this.ref['anchor'].append(this.ref['infopanel']);
-
-  //It seems like this always crashes if we don't have actual pieces.
-  this.initAnimation();
+  // // create info panel
+  // this.ref['infopanel'] = $('<div/>').attr('id', name+'-infopanel')
+  //   .attr('class', 'info-panel')
+  //   .css({
+  //     top: this.x,
+  //     left: this.y,
+  //   })
+  //   .hide();
+  // this.ref['anchor'].append(this.ref['infopanel']);
   
 }
 
-Piece.prototype.setTag = function(x,y) {
-  this.tagX = x;
-  this.tagY = y;
+function makeArc(r, x, y, borderWidth, angle, parent){
+  var div = $('<div/>').css({
+      backgroundColor: 'transparent',
+      position: 'absolute',
+      left: x,
+      top: y,
+      width: r,
+      height: r,
+      overflow: 'hidden',
+      WebkitTransformOrigin: 'rotate(0deg)',
+    });
+  var innerDiv = $('<div/>').css({
+      border: borderWidth + 'px solid',
+      position: 'absolute',
+      borderColor: PINK,
+      width: 2*r,
+      height: 2*r,
+      top: -r,
+      left: -r,
+      borderRadius: '50%',
+      borderLeftColor: 'transparent',
+      borderRightColor: 'transparent',
+      display: 'inline-block',
+  });
+  innerDiv.append($('<div/>'));
+  div.append(innerDiv);
+  parent.append(div);
 }
 
-Piece.prototype.initAnimation = function(){
-  // init info panel animation in two.js
-
-  // info circle
-  var circle = two.interpret(document.getElementById('info-circle')).center();
-  circle.scale = 0.5;
-  // info icon
-  this.ref['infoicon'] = makeIcon('info-icon', 0.15, 0);
-  this.ref['priceicon'] = makeIcon('price-icon', 0.12, 30);
-  this.ref['savingicon'] = makeIcon('saving-icon', 0.15, 60);
-
-  var angle = Math.random() * 360;
-  var paused = false;
-  var me = this;
-
-  // Update the renderer in order to generate corresponding DOM Elements.
-  two.update();
-  $(this.ref['infoicon']._renderer.elem).click(function(){
-    paused = !paused;
-    paused ? me.ref['infopanel'].html(infoPanelTexts[me.id+'info']).show() : me.ref['infopanel'].hide();
+function makeIcon(id, src, size, x, y, parent){
+  var icon = $('<img src="' + src + '" id=' + id + '/>').css({
+    position: 'absolute',
+    width: size,
+    height: size,
+    left: x-size/2,
+    top: y,
   });
-  $(this.ref['priceicon']._renderer.elem).click(function(){
-    paused = !paused;
-    paused ? me.ref['infopanel'].html(infoPanelTexts[me.id+'price']).show() : me.ref['infopanel'].hide();
-  });
-  $(this.ref['savingicon']._renderer.elem).click(function(){
-    paused = !paused;
-    paused ? me.ref['infopanel'].html(infoPanelTexts[me.id+'saving']).show() : me.ref['infopanel'].hide();
-  });
+  parent.append(icon);
+  return icon;
+}
 
-  // bind update callback
-  two.bind('update', function(){
-    if(!paused){
-      angle += 0.1;
-      setTranslation(me.ref['infoicon'], me.ref['infoicon'].angle+angle, me.diam);
-      setTranslation(me.ref['priceicon'], me.ref['priceicon'].angle+angle, me.diam);
-      setTranslation(me.ref['savingicon'], me.ref['savingicon'].angle+angle, me.diam);
-      setTranslationCSS(me.ref['nametag'], me.ref['nametag'].angle+angle, me.diam * 1.5);
-      setTranslationCSS(me.ref['pricetag'], me.ref['pricetag'].angle+angle, me.diam * 1.5);
-      setTranslationCSS(me.ref['savingtag'], me.ref['savingtag'].angle+angle, me.diam * 1.5);
+function makeTag(id, text, offx, offy, parent){
+  var tag = $('<div id='+ id + '/>')
+    .html('<span class="info-circle-tag">'+text+'</span>')
+    .css({
+      position: 'absolute',
+      left: offx,
+      top: offy,
+    });
+  parent.append(tag);
+  return tag;
+}
+
+function makeCircle(id, classname, x, y, r, border, borderColor, parent){
+  var circle = $('<div/>', {
+    id: id, 
+    class: classname,
+    css: {
+      top: x-r,
+      left: y-r,
+      width: r*2,
+      height: r*2,
+      backgroundColor: 'transparent',
+      border: border,
+      borderColor: PINK,
     }
-  });
-
-  // save animation handle
-  var group = two.makeGroup(circle, this.ref['infoicon'], this.ref['priceicon'], this.ref['savingicon']);
-  this.animGroup = group;
+  }).appendTo(parent); 
+  return circle;
 }
 
 Piece.prototype.move = function(x,y) {
@@ -507,7 +432,7 @@ Piece.prototype.move = function(x,y) {
   //   .css('left', y);
 
   //move info circle
-  this.animGroup.translation.set(x, y);
+  //this.animGroup.translation.set(x, y);
 
   //Move its circle along with the piece
   this.ref['anchor'].css({
@@ -526,10 +451,10 @@ Piece.prototype.move = function(x,y) {
         //If we left another box, then we need to perform it's out action
         if (this.curBox != null)
         {
-          this.curBox.outAction(this.id);
+          this.curBox.outAction(this);
         }
         //Perfom the inaction for our new box
-        boundingList[i].inAction(this.id);
+        boundingList[i].inAction(this);
         this.curBox = boundingList[i];
       }
       return;
@@ -566,11 +491,11 @@ var initialInvestment = 40000;
 var yearSavings = 2700; 
 
 $(function() {
-  $('#preferences').show(function() {
-    google.maps.event.trigger(map, 'resize');
-  })
+  // $('#preferences').show(function() {
+  //   google.maps.event.trigger(map, 'resize');
+  // })
 
-  $('#preferences form').submit(function (event) {
-    event.preventDefault();
-  });
+  // $('#preferences form').submit(function (event) {
+  //   event.preventDefault();
+  // });
 });
