@@ -83,16 +83,7 @@ var Engine = (function () {
       //and have them update the output variables they
       //care about.
       var updated_out_values = {};
-     /* for(var key in systems) {
-        if (systems.hasOwnProperty(key)) {
-          var output = systems[key].calculate_function(in_vars)
-          for(var key in output) {
-            if(output.hasOwnProperty(key) && out_variables.hasOwnProperty(key)) {
-              updated_values[key] += output[key]
-            }
-          }
-        }
-      }*/
+
       for (var sys_name in systems) {
         var cur_system = systems[sys_name];
         //Get the in-values for the variables this system cares about,
@@ -133,6 +124,10 @@ var Engine = (function () {
   Variable.prototype.push_value = function(val) {
     this.values.push(val);
   };
+
+  Variable.prototype.get_values = function(){
+    return this.values;
+  }
 
   /**
    *  Define new out variables by:
@@ -215,6 +210,7 @@ var Engine = (function () {
 
     //Define set objects
     params_hash["name"] = params_hash["name"] || "TMP";
+    this.cost = params_hash['cost'];
     this.name = params_hash["name"];
     this.piece = params_hash["piece"];
     this.calc = params_hash['calculation_function']; 

@@ -1,20 +1,3 @@
-var animMapping = {
-	'SP': 3,
-	'RB': 0,
-	'GW': 1,
-	'H': 2,
-}
-
-var featureMapping = {
-	0: 'GW',
-	1: 'RB',
-	3: 'SP',
-}
-
-var instructionText = {
-	
-}
-
 var infoPanelTexts = {
 	// geothermal
 	'0info': "Heat from the earth can be used as an energy source in many ways, from large and complex power stations to small and relatively simple pumping systems. This heat energy is known as geothermal energy. <br/> <br/> Geothermal heat pumps use the steady temperatures just underground to heat and cool buildings, cleanly and inexpensively.",
@@ -32,9 +15,9 @@ var infoPanelTexts = {
 };
 
 var featureNames = {
-	0: "Geothermal Well",
-	1: "Rain Barrel",
-	3: "Solar Panel",
+	'geo_thermal': "Geothermal Well",
+	'rain_barrel': "Rain Barrel",
+	'solar_panel': "Solar Panel",
 };
 
 var costs = {
@@ -48,3 +31,6 @@ var savings = {
 	3: 800,
 	1: 100,
 }
+
+var MAX_BUDGET = 60;
+var PINK = 'rgb(255, 102, 102)';

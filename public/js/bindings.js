@@ -14,5 +14,4 @@ Binding.prototype.handleEvent = function(event){
 Binding.prototype.change = function(value){
 	this.data = value;
 	this.element.change(value);
-	console.log('here');
 }
