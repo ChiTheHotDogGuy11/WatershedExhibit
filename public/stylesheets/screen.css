@@ -114,6 +114,16 @@ p {
 }
 
 /* line 60, ../sass/screen.scss */
+.asset_container {
+  z-index: -400;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* line 69, ../sass/screen.scss */
 .overlay {
   z-index: 400;
   height: 100%;
@@ -125,7 +135,7 @@ p {
   display: none;
 }
 
-/* line 71, ../sass/screen.scss */
+/* line 80, ../sass/screen.scss */
 #budget_meter_label {
   position: absolute;
   top: 8%;
@@ -134,7 +144,7 @@ p {
   color: white;
 }
 
-/* line 80, ../sass/screen.scss */
+/* line 89, ../sass/screen.scss */
 #submitButton {
   position: absolute;
   color: white;
@@ -147,7 +157,7 @@ p {
   font-size: 50pt;
 }
 
-/* line 92, ../sass/screen.scss */
+/* line 101, ../sass/screen.scss */
 .meter {
   border-radius: 20px;
   border: black solid 1px;
@@ -159,7 +169,7 @@ p {
   right: 5%;
   overflow: hidden;
 }
-/* line 103, ../sass/screen.scss */
+/* line 112, ../sass/screen.scss */
 .meter .meter_level {
   width: 50%;
   height: 100%;
@@ -167,7 +177,7 @@ p {
   transition-duration: 2s;
 }
 
-/* line 112, ../sass/screen.scss */
+/* line 121, ../sass/screen.scss */
 .piece {
   background-color: #cc0000;
   position: absolute;
@@ -177,7 +187,7 @@ p {
   -webkit-border-radius: 50%;
 }
 
-/* line 121, ../sass/screen.scss */
+/* line 130, ../sass/screen.scss */
 #question_mark {
   position: absolute;
   margin: 0 auto;
@@ -189,7 +199,7 @@ p {
   color: white;
 }
 
-/* line 132, ../sass/screen.scss */
+/* line 141, ../sass/screen.scss */
 .house {
   position: absolute;
   /*	bottom: 20%;
@@ -197,7 +207,7 @@ p {
   	left: 43%;*/
 }
 
-/* line 140, ../sass/screen.scss */
+/* line 149, ../sass/screen.scss */
 .info_panel {
   position: absolute;
   bottom: 20%;
@@ -208,20 +218,20 @@ p {
   background-color: white;
   width: 26%;
 }
-/* line 150, ../sass/screen.scss */
+/* line 159, ../sass/screen.scss */
 .info_panel img {
   float: right;
   padding-left: 5px;
   padding-bottom: 5px;
 }
-/* line 156, ../sass/screen.scss */
+/* line 165, ../sass/screen.scss */
 .info_panel .panel_cost {
   font-style: italic;
   font-size: 18px;
   color: green;
 }
 
-/* line 163, ../sass/screen.scss */
+/* line 172, ../sass/screen.scss */
 .pieces_start_container {
   background-color: #196966;
   height: 20%;
@@ -231,7 +241,7 @@ p {
   bottom: 0;
 }
 
-/* line 173, ../sass/screen.scss */
+/* line 182, ../sass/screen.scss */
 .pieces_start_prompt {
   width: 70%;
   height: 10px;
@@ -244,7 +254,7 @@ p {
   color: white;
 }
 
-/* line 185, ../sass/screen.scss */
+/* line 194, ../sass/screen.scss */
 .budget_meter_container {
   background-color: transparent;
   height: 20%;
@@ -254,7 +264,7 @@ p {
   top: 0;
 }
 
-/* line 194, ../sass/screen.scss */
+/* line 203, ../sass/screen.scss */
 .shopping_cart_prompt {
   width: 60%;
   height: 10px;
@@ -267,17 +277,17 @@ p {
   color: white;
 }
 
-/* line 206, ../sass/screen.scss */
+/* line 215, ../sass/screen.scss */
 .task {
   padding: 20px;
   font-size: 20px;
 }
-/* line 210, ../sass/screen.scss */
+/* line 219, ../sass/screen.scss */
 .task:hover {
   font-size: 30px;
 }
 
-/* line 215, ../sass/screen.scss */
+/* line 224, ../sass/screen.scss */
 .worker_flip {
   -moz-transform: scaleX(-1);
   -o-transform: scaleX(-1);
@@ -288,21 +298,21 @@ p {
 }
 
 /*Animation Styles*/
-/* line 226, ../sass/screen.scss */
+/* line 235, ../sass/screen.scss */
 #rainbarrel {
   position: absolute;
   bottom: 20%;
   left: 10%;
 }
 
-/* line 232, ../sass/screen.scss */
+/* line 241, ../sass/screen.scss */
 #geothermal {
   position: absolute;
   bottom: 10%;
   left: 33%;
 }
 
-/* line 238, ../sass/screen.scss */
+/* line 247, ../sass/screen.scss */
 .modal {
   margin-left: auto;
   margin-right: auto;
@@ -313,7 +323,7 @@ p {
 }
 
 /* ------ shan's stuff ------- */
-/* line 249, ../sass/screen.scss */
+/* line 258, ../sass/screen.scss */
 #backgroundOverlay {
   width: 100%;
   height: 100%;
@@ -322,14 +332,14 @@ p {
   z-index: -1;
 }
 
-/* line 257, ../sass/screen.scss */
+/* line 266, ../sass/screen.scss */
 .bigButtonText {
   margin-top: 30px;
   text-align: center;
   font-size: 24pt;
 }
 
-/* line 263, ../sass/screen.scss */
+/* line 272, ../sass/screen.scss */
 #startButton {
   width: 350px;
   height: 100px;
@@ -341,7 +351,7 @@ p {
   z-index: 300;
 }
 
-/* line 274, ../sass/screen.scss */
+/* line 283, ../sass/screen.scss */
 .nextButton {
   position: relative;
   width: 350px;
@@ -352,7 +362,7 @@ p {
   z-index: 300;
 }
 
-/* line 284, ../sass/screen.scss */
+/* line 293, ../sass/screen.scss */
 .instrText {
   margin-top: 300px;
   color: white;
@@ -360,19 +370,18 @@ p {
   text-align: center;
 }
 
-/* line 291, ../sass/screen.scss */
+/* line 300, ../sass/screen.scss */
 .info-panel {
   position: absolute;
   background-color: rgba(0, 0, 0, 0.5);
-  margin-top: -50px;
-  margin-left: 180px;
-  width: 400px;
-  height: 160px;
+  width: 300px;
   color: white;
   padding: 5px;
+  font-size: 10pt;
+  border-radius: 10px;
 }
 
-/* line 302, ../sass/screen.scss */
+/* line 310, ../sass/screen.scss */
 .info-circle-tag {
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
@@ -381,7 +390,7 @@ p {
   font-size: 12pt;
 }
 
-/* line 310, ../sass/screen.scss */
+/* line 318, ../sass/screen.scss */
 .game-panel {
   background-color: rgba(0, 0, 0, 0.5);
   border-radius: 10px;
@@ -390,14 +399,14 @@ p {
   display: inline-block;
 }
 
-/* line 318, ../sass/screen.scss */
+/* line 326, ../sass/screen.scss */
 .game-panel-transparent {
   background-color: transparent;
   border-radius: 10px;
   margin: 10px;
 }
 
-/* line 324, ../sass/screen.scss */
+/* line 332, ../sass/screen.scss */
 #play-btn {
   width: 90px;
   height: 90px;
@@ -405,7 +414,7 @@ p {
   margin-bottom: 10px;
 }
 
-/* line 331, ../sass/screen.scss */
+/* line 339, ../sass/screen.scss */
 #next-btn {
   width: 45px;
   height: 45px;
@@ -414,7 +423,7 @@ p {
   vertical-align: bottom;
 }
 
-/* line 339, ../sass/screen.scss */
+/* line 347, ../sass/screen.scss */
 #end-btn {
   width: 45px;
   height: 45px;
@@ -423,21 +432,21 @@ p {
   vertical-align: bottom;
 }
 
-/* line 347, ../sass/screen.scss */
+/* line 355, ../sass/screen.scss */
 #close-btn {
   margin-left: -15px;
   width: 45px;
   height: 45px;
 }
 
-/* line 353, ../sass/screen.scss */
+/* line 361, ../sass/screen.scss */
 #help-btn {
   margin-left: 5px;
   width: 45px;
   height: 45px;
 }
 
-/* line 359, ../sass/screen.scss */
+/* line 367, ../sass/screen.scss */
 #time-tag {
   position: absolute;
   top: 10px;
@@ -445,12 +454,12 @@ p {
   font-size: 10pt;
 }
 
-/* line 366, ../sass/screen.scss */
+/* line 374, ../sass/screen.scss */
 #gameChart {
   padding-top: 15px;
 }
 
-/* line 371, ../sass/screen.scss */
+/* line 379, ../sass/screen.scss */
 .stacked-chart-axis path,
 .stacked-chart-axis line {
   fill: none;
@@ -458,14 +467,14 @@ p {
   shape-rendering: crispEdges;
 }
 
-/* line 377, ../sass/screen.scss */
+/* line 385, ../sass/screen.scss */
 .stacked-chart-data-rect {
   background-color: white;
   width: 10px;
   height: 10px;
 }
 
-/* line 383, ../sass/screen.scss */
+/* line 391, ../sass/screen.scss */
 #panelContainer-bottom {
   width: 100%;
   position: fixed;
@@ -473,13 +482,13 @@ p {
   display: inline-block;
 }
 
-/* line 390, ../sass/screen.scss */
+/* line 398, ../sass/screen.scss */
 #panelContainer-top {
   width: 100%;
   display: inline-block;
 }
 
-/* line 395, ../sass/screen.scss */
+/* line 403, ../sass/screen.scss */
 #budgetValue {
   color: white;
   font-size: 22pt;
@@ -487,14 +496,14 @@ p {
   font-family: ExoLight;
 }
 
-/* line 402, ../sass/screen.scss */
+/* line 410, ../sass/screen.scss */
 #budgetLable {
   color: white;
   font-size: 15pt;
   margin-top: 10px;
 }
 
-/* line 408, ../sass/screen.scss */
+/* line 416, ../sass/screen.scss */
 #budgetMeterBg {
   position: absolute;
   border-radius: 5px;
@@ -505,15 +514,32 @@ p {
   left: 180px;
 }
 
-/* line 418, ../sass/screen.scss */
+/* line 426, ../sass/screen.scss */
 #budgetMeterBar {
   position: absolute;
   border-radius: 5px;
-  top: 50px;
+  top: 15px;
   left: 180px;
   width: 40px;
-  height: 45px;
+  height: 80px;
   background-color: #ff6666;
+}
+
+/* line 437, ../sass/screen.scss */
+.rain_barrel_frame {
+  position: absolute;
+  left: 950px;
+  top: 250px;
+  width: 150px;
+  display: none;
+}
+
+/* line 445, ../sass/screen.scss */
+#mainHouse {
+  position: absolute;
+  left: 500px;
+  width: 500px;
+  top: -20px;
 }
 
 /* Calibraton Styles */
@@ -547,7 +573,7 @@ p {
 #piecesContainer {
   position: absolute;
   top: 450px;
-  left: 600px;
+  left: 650px;
 }
 
 /* line 34, ../sass/pieces.scss */

@@ -332,54 +332,50 @@ function Piece(system)
   //Create our div object for a new piece
   var bw = 15;
   this.ref = {};
-  this.ref['anchor'] = makeCircle(name+'-circle', 'piece', this.x, this.y, this.r, '15px solid', PINK, '.page_container')
-  this.ref['nametag'] = makeTag(name+'-nametag', featureNames[name], -15, 50, this.ref['anchor']);
-  this.ref['outerCicle'] = makeCircle(name+'-outercircle', 'piece', this.r-bw, this.r-bw, this.r*2, '2px solid', PINK, this.ref['anchor']);
-  this.ref['info-icon'] = makeIcon(name+'-infoicon', 'images/info-button.png', 96, 24, -130, this.ref['anchor']);
-  this.ref['plus-icon'] = makeIcon(name+'-plusicon', 'images/plus-button.png', 96, 120, 45, this.ref['anchor']);
-  this.ref['minus-icon'] = makeIcon(name+'-minusicon', 'images/minus-button.png', 96, -65, 45, this.ref['anchor']);
-  this.ref['info-panel'] = makeTag(name+'-infoPanel', 'information information information', 0, 0, this.ref['anchor']);
-  makeArc(this.r*2, -bw+this.r, -bw+this.r, bw, 15, this.ref['anchor']);
-
-  // // create info panel
-  // this.ref['infopanel'] = $('<div/>').attr('id', name+'-infopanel')
-  //   .attr('class', 'info-panel')
-  //   .css({
-  //     top: this.x,
-  //     left: this.y,
-  //   })
-  //   .hide();
-  // this.ref['anchor'].append(this.ref['infopanel']);
-  
+  var ref = this.ref;
+  ref['anchor'] = makeCircle(name+'-circle', 'piece', this.x, this.y, this.r, '15px solid', PINK, '.page_container')
+  ref['nametag'] = makeTag(name+'-nametag', featureNames[name], -15, 50, this.ref['anchor']);
+  ref['outer-circle'] = makeCircle(name+'-outercircle', 'piece', this.r-bw, this.r-bw, this.r*2, '2px solid', PINK, this.ref['anchor']);
+  ref['info-icon'] = makeIcon(name+'-infoicon', 'images/info-button.png', 60, this.r-bw, this.r-bw-this.r*3, this.ref['anchor']);
+  ref['plus-icon'] = makeIcon(name+'-plusicon', 'images/plus-button.png', 60, this.r-bw+this.r*0.866*3, this.r-bw+this.r*1.5, this.ref['anchor']);
+  ref['minus-icon'] = makeIcon(name+'-minusicon', 'images/minus-button.png', 60, this.r-bw-this.r*0.866*3, this.r-bw+this.r*1.5, this.ref['anchor']);
+  ref['info-panel'] = makePanel(name+'-infoPanel', infoPanelTexts[name], -150+this.r-bw, this.r*3, this.ref['anchor']);
+  ref['info-panel'].hide();
+  ref['info-icon'].click(function(){ref['info-panel'].toggle()});
+  this.loadAnimation(name, 1, 14);
+  //makeArc(this.r*2, -bw+this.r, -bw+this.r, bw, 15, this.ref['anchor']);
 }
 
-function makeArc(r, x, y, borderWidth, angle, parent){
-  var div = $('<div/>').css({
-      backgroundColor: 'transparent',
-      position: 'absolute',
-      left: x,
-      top: y,
-      width: r,
-      height: r,
-      overflow: 'hidden',
-      WebkitTransformOrigin: 'rotate(0deg)',
-    });
-  var innerDiv = $('<div/>').css({
-      border: borderWidth + 'px solid',
-      position: 'absolute',
-      borderColor: PINK,
-      width: 2*r,
-      height: 2*r,
-      top: -r,
-      left: -r,
-      borderRadius: '50%',
-      borderLeftColor: 'transparent',
-      borderRightColor: 'transparent',
-      display: 'inline-block',
-  });
-  innerDiv.append($('<div/>'));
-  div.append(innerDiv);
-  parent.append(div);
+Piece.prototype.expand = function(){
+  this.ref['minus-icon'].show();
+  this.ref['plus-icon'].show();
+  this.ref['info-icon'].show();
+  this.ref['outer-circle'].show();
+  for(var i = this.startF; i < this.endF; i++){
+    $('#'+this.system.name+'_frame'+1).hide();
+  }
+}
+
+Piece.prototype.contract = function(){
+  this.ref['info-panel'].hide();
+  this.ref['minus-icon'].hide();
+  this.ref['plus-icon'].hide();
+  this.ref['info-icon'].hide();
+  this.ref['outer-circle'].hide();
+  $('#'+this.system.name+'_frame'+1).show();
+}
+
+Piece.prototype.loadAnimation = function(name, startF, endF){
+  this.startF = startF;
+  this.endF = endF;
+  for(var i = startF; i <= endF; i++){
+    var frame = $('<img/>', {
+      src: 'images/animations/'+name+'/'+startF+'.png',
+      class: name+'_frame',
+      id: name+'_frame'+i,
+      });
+    $('#animAssets').append(frame);
+  }
 }
 
 function makeIcon(id, src, size, x, y, parent){
@@ -388,7 +384,7 @@ function makeIcon(id, src, size, x, y, parent){
     width: size,
     height: size,
     left: x-size/2,
-    top: y,
+    top: y-size/2,
   });
   parent.append(icon);
   return icon;
@@ -404,6 +400,18 @@ function makeTag(id, text, offx, offy, parent){
     });
   parent.append(tag);
   return tag;
+}
+
+function makePanel(id, text, offx, offy, parent){
+  var panel = $('<div class="info-panel" id='+ id + '/>')
+    .html(text)
+    .css({
+      position: 'absolute',
+      left: offx,
+      top: offy,
+    });
+  parent.append(panel);
+  return panel;
 }
 
 function makeCircle(id, classname, x, y, r, border, borderColor, parent){
@@ -422,6 +430,37 @@ function makeCircle(id, classname, x, y, r, border, borderColor, parent){
   }).appendTo(parent); 
   return circle;
 }
+
+
+/* --- the mysterious makeArc function. don't attempt to fix unless you have three free hours. --- */
+// function makeArc(r, x, y, borderWidth, angle, parent){
+//   var div = $('<div/>').css({
+//       backgroundColor: 'transparent',
+//       position: 'absolute',
+//       left: x,
+//       top: y,
+//       width: r,
+//       height: r,
+//       overflow: 'hidden',
+//       WebkitTransformOrigin: 'rotate(0deg)',
+//     });
+//   var innerDiv = $('<div/>').css({
+//       border: borderWidth + 'px solid',
+//       position: 'absolute',
+//       borderColor: PINK,
+//       width: 2*r,
+//       height: 2*r,
+//       top: -r,
+//       left: -r,
+//       borderRadius: '50%',
+//       borderLeftColor: 'transparent',
+//       borderRightColor: 'transparent',
+//       display: 'inline-block',
+//   });
+//   innerDiv.append($('<div/>'));
+//   div.append(innerDiv);
+//   parent.append(div);
+// }
 
 Piece.prototype.move = function(x,y) {
   //Update our coordinates
@@ -462,7 +501,7 @@ Piece.prototype.move = function(x,y) {
   }
   //We aren't in a box -- perform the outAction
   if (this.curBox != null){
-    this.curBox.outAction(this.id);
+    this.curBox.outAction(this);
     this.curBox = null;
   }
 } 
