@@ -17,10 +17,19 @@ $corner-container-height: 20%;
 $corner-container-width: 30%;
 $piece-color: #CC0000;
 
+@font-face{
+	font-family: Exo;
+	src: url(../fonts/Exo-Regular.otf);
+}
+
+@font-face{
+	font-family: ExoLight;
+	src: url(../fonts/Exo-Light.otf);
+}
+
 body{
-	background-image: url('../images/background.png');
-	background-color: $background;
-	font-family: Arial, sans-serif;
+  background-image: url('../images/background.png');
+  font-family: Exo;
   height: 100%;
   width: 100%;
   margin: 0;
@@ -94,7 +103,7 @@ color: white;
 	.meter_level{
 		width: 50%;
 		height: 100%;
-		background-color: #ff6633;
+		background-color: #00ff00;
 		transition-duration: 2s;
 
 	}
@@ -295,8 +304,126 @@ color: white;
   color: white;
   padding: 2px;
   white-space: nowrap; 
-  font-size: 18pt;
+  font-size: 12pt;
 }
 
+.game-panel{
+	background-color: rgba(0, 0, 0, 0.5);
+	border-radius: 10px;
+	margin: 10px;
+	color: white;
+	display: inline-block;
+}
+
+.game-panel-transparent{
+	background-color: transparent;
+	border-radius: 10px;
+	margin: 10px;
+}
+
+#play-btn{
+	width: 90px;
+	height: 90px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+#next-btn{
+	width: 45px;
+	height: 45px;
+	margin-bottom: 10px;
+	margin-left: 5px;
+	vertical-align: bottom;
+}
+
+#end-btn{
+	width: 45px;
+	height: 45px;
+	margin-bottom: 10px;
+	margin-left: 5px;
+	vertical-align: bottom;
+}
+
+#close-btn{
+	margin-left: -15px;
+	width: 45px;
+	height: 45px;
+}
+
+#help-btn{
+	margin-left: 5px;
+	width: 45px;
+	height: 45px;
+}
+
+#time-tag{
+	position: absolute;
+	top: 10px;
+	left: 115px;
+	font-size: 10pt;
+}
+
+#gameChart{
+	padding-top: 15px;
+}
+
+.stacked-chart-axis path,
+.stacked-chart-axis line{
+	fill: none;
+	stroke: black;
+	shape-rendering: crispEdges;
+}
+
+.stacked-chart-data-rect{
+	background-color: white;
+	width: 10px;
+	height: 10px;
+}
+
+#panelContainer-bottom{
+	width: 100%;
+	position: fixed;
+	bottom: 0px;
+	display: inline-block;
+}
+
+#panelContainer-top{
+	width: 100%;
+	display: inline-block;
+}
+
+#budgetValue{
+	color: white;
+	font-size: 22pt;
+	margin-top: 20px;
+	font-family: ExoLight;
+}
+
+#budgetLable{
+	color: white;
+	font-size: 15pt;
+	margin-top: 10px;
+}
+
+#budgetMeterBg{
+	position: absolute;
+	border-radius: 5px;
+	background-color: rgba(255, 255, 255, 0.5);
+	width: 40px;
+	height: 80px;
+	top: 15px;
+	left: 180px;
+}
+
+#budgetMeterBar{
+	position: absolute;
+	border-radius: 5px;
+	top: 50px;
+	left: 180px;
+	width: 40px;
+	height: 45px;
+	background-color: rgb(255, 102, 102);
+
+}
 @import 'pieces';
 @import 'customization';

@@ -26,31 +26,22 @@
 
 /* Piece Ending Container Styles */
 /* line 28, ../sass/pieces.scss */
+#piecesContainer {
+  position: absolute;
+  top: 450px;
+  left: 600px;
+}
+
+/* line 34, ../sass/pieces.scss */
 .piecePlacement {
   border-radius: 50%;
   -moz-border-radius: 50%;
   -webkit-border-radius: 50%;
   width: 80px;
   height: 80px;
-  background-color: rgba(150, 150, 150, 0.6);
+  background-color: rgba(0, 0, 0, 0.3);
   border: 2px dashed #969696;
   position: relative;
-}
-
-/* line 41, ../sass/pieces.scss */
-#solarContainer {
-  top: 80px;
-  left: 70px;
-}
-
-/* line 46, ../sass/pieces.scss */
-#rainBarrelContainer {
-  top: 100px;
-  left: 50px;
-}
-
-/* line 51, ../sass/pieces.scss */
-#geothermalContainer {
-  top: 300px;
-  left: 70px;
+  display: inline-block;
+  margin: 5px;
 }
