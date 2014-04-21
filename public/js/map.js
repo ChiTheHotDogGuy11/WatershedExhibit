@@ -56,7 +56,7 @@ function initialize() {
       //    console.log(data);
       //  });
       //});
-      Weather.get_normals(Preferences.latLng, function(data) { console.log(data) });
+      Weather.set_location(Preferences.latLng, function(data) { console.log(data) });
 
       //Get Electricity Rates
       NREL.get_rates(kmlEvt.latLng.lat(),kmlEvt.latLng.lng(),function(data) {console.log(data)});
@@ -251,6 +251,7 @@ var Weather = {
   
   client_id: "nMCnfGEEaArwNARvEdiZb",
   client_secret: "i8by9MQMwt1p4MPrRoLmnHhYhu030KkqcX1g5vo8",
+  normals: null,
   get_data: function(action,loc,params,callback) {
     params["client_id"] = this.client_id;
     params["client_secret"] = this.client_secret;
@@ -272,14 +273,55 @@ var Weather = {
     params["to"] = "12/31/2010";
     this.get_data("normals", "closest", params, callback);
   },
+  set_location: function(loc,callback){
+    this.get_normals(loc, function(data) {
+      var compressed_data = new Array();
+      //month loop
+      for(var j = 0; j < data.response[0].periods.length; j++) {
+        //object loop
+        var month_obj = {};
+        for(var i = 0; i < data.response.length; i++)
+        {
+          var period = data.response[i].periods[j];
+          for (var prop in period) {
+            if (period.hasOwnProperty(prop)) {
+              if (month_obj[prop] == null) {
+                month_obj[prop] = period[prop];
+              }
+            }
+          }
+          if (month_obj.cdd < 0 || month_obj.hdd < 0) {
+            month_obj.cdd = null;
+            month_obj.hdd = null;
+          }
+        }
+        compressed_data.push(month_obj);
+      }
+      normals = compressed_data;
+      callback(compressed_data); 
+    });
+  }
 }
 
+/*Lists our preferences that we will set at the beginning / throughout the simulation
+ *
+ * We specify a new preferences we want -- do so in standard object notation ex: 
+ *  zip: default_value,
+ *
+ * To get a value or set one, just do so as a we would normally for an object ex:
+ *  Preferences.zip / Preferences.zip = 
+ *
+ * Finally, we can bind methods that will run when a certain preference(s) is updated, ex:
+ *  Preferences.bind("zip","latLng", function() { })
+ */
 var Preferences = {
   latLng: {lat: -79.98493194580078, lng: 40.44328916582578},
   zip: 15219,
   solar_size: 10,
   sqft: 2000,
   fuel: "natural_gas",
+  efficient_fixtures: false,
+  num_people: 4,
   //Use like bind("latLng","solar_size" function() { stuff })
   bind: function() {
     for(var i = 0; i < arguments.length-1; i++)
@@ -354,8 +396,10 @@ var Water = {
     var DWAyear = DWAday*365;
   },
   
-  outdoor_usage: function() {
+  outdoor_usage: function(month) {
     //Calculate this based on rainfall for the month
+    if (Weather.normals == null) { return 0 }
+
   },
 
 }
