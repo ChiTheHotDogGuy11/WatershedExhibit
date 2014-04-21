@@ -338,6 +338,7 @@ function Piece(system)
   this.ref['info-icon'] = makeIcon(name+'-infoicon', 'images/info-button.png', 96, 24, -130, this.ref['anchor']);
   this.ref['plus-icon'] = makeIcon(name+'-plusicon', 'images/plus-button.png', 96, 120, 45, this.ref['anchor']);
   this.ref['minus-icon'] = makeIcon(name+'-minusicon', 'images/minus-button.png', 96, -65, 45, this.ref['anchor']);
+  this.ref['info-panel'] = makeTag(name+'-infoPanel', 'information information information', 0, 0, this.ref['anchor']);
   makeArc(this.r*2, -bw+this.r, -bw+this.r, bw, 15, this.ref['anchor']);
 
   // // create info panel
