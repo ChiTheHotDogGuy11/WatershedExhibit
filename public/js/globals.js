@@ -40,3 +40,17 @@ var children = {};
 var animGroupId;
 
 var two; //two.js object
+
+var gameState = {
+	playing: false,
+	playSpeed: 1,
+};
+
+
+//The number of pieces that exist on the board.
+var numPieces = 4;
+//Array to store the pieces.
+var pieces = {};
+
+var budget;
+var boundingList = []; 
