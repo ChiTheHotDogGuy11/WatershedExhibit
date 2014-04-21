@@ -221,6 +221,7 @@ function initElements(){
 function initInstruction(){
 	$('#instruction_screen2').hide();
 	$('#instruction_screen3').hide();
+	$('#instruction_screen4').hide();
 	$('#instruction_screen1_next').click(function(){
 		$('#instruction_screen1').hide();
 		$('#instruction_screen2').show();
@@ -233,10 +234,19 @@ function initInstruction(){
 		$('#instruction_screen3').show();
 		$('#instruction_screen2').hide();
 	});
-		$('#instruction_screen3_previous').click(function(){
+	$('#instruction_screen3_previous').click(function(){
 		$('#instruction_screen2').show();
 		$('#instruction_screen3').hide();
 	});
+	$('#instruction_screen3_next').click(function(){
+		$('#instruction_screen4').show();
+		$('#instruction_screen3').hide();
+	});
+	$('#instruction_screen4_previous').click(function(){
+		$('#instruction_screen3').show();
+		$('#instruction_screen4').hide();
+	});
+
 }
 
 

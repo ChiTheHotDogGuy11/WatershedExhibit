@@ -23,8 +23,14 @@
 .instruction_paragraph img {
   float: right;
 }
+/* line 25, ../sass/instruction.scss */
+.instruction_paragraph .instruction_options {
+  float: left;
+  height: 50%;
+  position: relative;
+}
 
-/* line 27, ../sass/instruction.scss */
+/* line 32, ../sass/instruction.scss */
 .instruction_next_button {
   padding: 1% 4%;
   position: absolute;
@@ -42,7 +48,7 @@
   -ms-user-select: none;
 }
 
-/* line 43, ../sass/instruction.scss */
+/* line 48, ../sass/instruction.scss */
 .instruction_previous_button {
   padding: 1% 4%;
   position: absolute;
