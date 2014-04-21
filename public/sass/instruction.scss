@@ -22,10 +22,19 @@ $font-color: #3d3d3d;
 	img{
 		float: right;
 	}
-	.instruction_options{
-		float: left;
-		height: 50%;
+	.instruction_option_container{
 		position: relative;
+		height: 100%
+	}
+	.instruction_option{
+		float: left;
+/*		position: absolute;*/
+		bottom: 0;
+		display: inline-block;
+
+	}
+	.instruction_option_label{
+		display: inline-block;
 	}
 }
 
