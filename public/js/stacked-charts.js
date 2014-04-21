@@ -15,6 +15,8 @@ function StackedChart(_divId){
 		divId = _divId;	// collection of data getters singletons / sets.
 	containerWidth = $('#'+divId).width();
 	var self = this;
+	this.lineRange = {min: 0, max: 1};
+	this.barRange = {min: 0, max: 1};
 
 	var update = function(){
 		if(data.length > 0){
@@ -80,6 +82,16 @@ function StackedChart(_divId){
 	return this;
 }
 
+StackedChart.prototype.setRange = function(type, min, max){
+	if(type == 'line'){
+		this.lineRange = {min: min, max: max};
+	}
+	if(type == 'bar'){
+		this.barRange = {min: min, max: max};
+	}
+	return this;
+}
+
 StackedChart.prototype.drawAxis = function(svg, h, tickValues){
 	//draw axis
     var xScale = d3.scale.linear()
@@ -96,7 +108,8 @@ StackedChart.prototype.drawAxis = function(svg, h, tickValues){
 }
 
 StackedChart.prototype.drawBarChart = function(data, group, tag){
-	var _data = [];
+	var _data = [], 
+		self = this;
 	// make a copy of the data source array. not sure why splice does not work properly.
 	for(var k = Math.max(0, data.length-MAX_NUM_BARS); k < data.length; k++){
 		_data.push(data[k]);
@@ -108,7 +121,7 @@ StackedChart.prototype.drawBarChart = function(data, group, tag){
 		.attr('x', function(d, _i){return _i * (BAR_WIDTH+1);})
 		.attr('y', 0)
 		.attr('fill', function(d) {
-			var perc = d / 10;
+			var perc = (d-self.barRange.min) / (self.barRange.max - self.barRange.min);
 			var r = Math.round(255 * perc + 102 * (1-perc));
 			var g = Math.round(102 * perc + 204 * (1-perc));
 			var b = Math.round(102 * perc + (1-perc) * 204);
@@ -135,7 +148,8 @@ StackedChart.prototype.drawBarChart = function(data, group, tag){
 }
 
 StackedChart.prototype.drawLineChart = function(data, group, color, tag, height){
-	var _data = [];
+	var _data = [], 
+		self = this;
 	// make a copy of the data source array. not sure why splice does not work properly.
 	for(var k = Math.max(0, data.length-MAX_NUM_BARS); k < data.length; k++){
 		_data.push(data[k]);
@@ -143,20 +157,24 @@ StackedChart.prototype.drawLineChart = function(data, group, color, tag, height)
 	var _g = group.selectAll('circle')
 		.data(_data).enter().append('g');
 
+	var mapHeight = function(d){
+		return ((1-(d-self.lineRange.min)/ (self.lineRange.max - self.lineRange.min)) * 0.8 + 0.1) * LINEGRAPH_HEIGHT;
+	}
+
 	// the data point
 	_g.append('circle')
 		.attr('r', 3)
 		.attr('cx', function(d, _i){return _i * (BAR_WIDTH+1);})
-		.attr('cy', function(d, _i){return ((1-d/ 10) * 0.8 + 0.1) * LINEGRAPH_HEIGHT;})
+		.attr('cy', mapHeight)
 		.attr('fill', color)
 		.attr('width', LINEGRAPH_POINTSIZE)
 		.attr('height', LINEGRAPH_POINTSIZE);
 	// line between points
 	_g.append('line')
 		.attr('x1', function(d, _i){return _i * (BAR_WIDTH+1);})
-		.attr('y1', function(d, _i){return ((1-d/ 10) * 0.8 + 0.1) * LINEGRAPH_HEIGHT;})
+		.attr('y1', mapHeight)
 		.attr('x2', function(d, _i){return _i > 0 ? (_i-1) * (BAR_WIDTH+1) : _i * (BAR_WIDTH+1);})
-		.attr('y2', function(d, _i){return _i > 0 ? ((1-(_data[_i-1])/10) * 0.8 + 0.1) * LINEGRAPH_HEIGHT : ((1-d/ 10) * 0.8 + 0.1) * LINEGRAPH_HEIGHT;})
+		.attr('y2', function(d, _i){return _i > 0 ? mapHeight(_data[_i-1]) : mapHeight(d);})
 		.attr('stroke', color)
 		.attr('stroke-width', 1);
 	// draw lable of the chart & cur data

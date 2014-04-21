@@ -10,95 +10,29 @@
 	<script type="text/javascript">
 	google.load("visualization", "1", {packages:["corechart"]});
 	</script>
-	<script src="js/jquery-1.11.0.js"></script>
+	<script src="js/lib/jquery-1.11.0.js"></script>
 	<script  src="js/globals.js"></script>
 		<!-- d3 libraries for visualizing time series -->
-		<script type="text/javascript" src="js/d3.js"></script>
+		<script type="text/javascript" src="js/lib/d3.js"></script>
 		<script type="text/javascript" src="js/stacked-charts.js"></script>
 		<!-- data binding scripts -->
 		<script type="text/javascript" src="js/bindings.js"></script>
 		<!-- If Socket.IO is used with Express, then the /socket.io/ path will
 		serve the proper Socket.IO javascript files used by the browser -->
 		<script src="/socket.io/socket.io.js"></script>
-		<script src="js/two.js"></script>
+		<script src="js/lib/two.js"></script>
 		<script src="js/constants.js"></script>
 		<script src="js/animation.js"></script>
     <!-- Nice UI tools for interface elements -->
-    <script src="js/simple-slider.min.js"></script>
+    <script src="js/lib/simple-slider.min.js"></script>
     <link href="stylesheets/simple-slider.css" rel="stylesheet" type="text/css"/>
-		<!-- Simulate having pieces present when we can't make connection to server. -->
-		<script src="js/test.js"></script>
 		<!-- app.js is where all the client-side game logic lives-->
 		<script src="app.js"></script>
 		<script src="js/map.js"></script>
     <script src="js/engine.js"></script>
-    <script src="js/Budget.js"></script>
     <script src="js/main.js"></script>
   </head>
 	<body>
-		<div id="backgroundOverlay"></div>
-		<div id="startScreen">
-			<div id="startButton">
-				<p class="bigButtonText">Start Game</p>
-			</div>
-			<div id="calibrate">
-				<p>Calibrate</p>
-			</div>
-		</div>
-		<div id="instrScreen">
-			<p class="instrText">
-				Hello,<br/><br/>
-				In this game you will learn about sustainable environmental features by adding them to a virtual building. <br/>
-				You are given a budget to purchase sustainable features for your building. <br/>
-			</p>
-			<div id="instrNextButton" class="nextButton">
-				<p class="bigButtonText">Next</p>
-			</div>
-		</div>
-		<div id="instrScreen2">
-			<p class="instrText">
-				Place models of the features onto the table to install them to your building. <br/>
-				You can hit the orange 'i' icon next to the pieces to explore their features, benefits, and installation costs.<br/>
-				If you don't like a feature, remove it from the screen to uninstall it. <br/>
-			</p>
-			<div id="instrNextButton2" class="nextButton">
-				<p class="bigButtonText">Next</p>
-			</div>
-		</div>
-		<div id="instrScreen3">
-			<p class="instrText">
-				When you are happy with your building, hit 'Submit' to finalize your design. <br/>
-			</p>
-			<div id="instrNextButton3" class="nextButton">
-				<p class="bigButtonText">Next</p>
-			</div>
-		</div>
-		<div id="qtnScreen1">
-			<p class="instrText">
-				Choose the size of your building:
-			</p>
-			<div id="qtnButton11" class="nextButton">
-				<p class="bigButtonText">Small</p>
-			</div>
-			<div id="qtnButton12" class="nextButton">
-				<p class="bigButtonText">Medium</p>
-			</div>
-			<div id="qtnButton13" class="nextButton">
-				<p class="bigButtonText">Big</p>
-			</div>
-		</div>
-		<div id="qtnScreen2">
-			<p class="instrText">
-				Choose the environment of your building:
-			</p>
-			<div id="qtnButton21" class="nextButton">
-				<p class="bigButtonText">Wetland</p>
-			</div>
-			<div id="qtnButton22" class="nextButton">
-				<p class="bigButtonText">Desert</p>
-			</div>
-		</div>
-		</div>
 		<div id="screen" style="left: 0px; top: 0px; width: 1920px; height: 1920px;"></div>
 		<div id="endScreen" class="overlay">
 			<div id="end_chart" class="modal" style="width: 30%; height 40%"></div>
@@ -140,9 +74,9 @@
 				<div id="houseAnimContainer" style="position: absolute;	top: 300px; left: 500px"></div>
 			</div>
 			<div id="piecesContainer">
-				<div id="solarContainer" class="piecePlacement"></div>
-		        <div id="rainBarrelContainer" class="piecePlacement"></div>
-	      		<div id="geothermalContainer" class="piecePlacement"></div>
+				<div id="pieceContainer0" class="piecePlacement"></div>
+		        <div id="pieceContainer1" class="piecePlacement"></div>
+	      		<div id="pieceContainer2" class="piecePlacement"></div>
       		</div>
       <div class="info_panel" style="display: none;">
       </div>

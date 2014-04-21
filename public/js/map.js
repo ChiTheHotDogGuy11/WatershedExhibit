@@ -43,18 +43,21 @@ function initialize() {
     curWindow.setPosition(kmlEvt.latLng);
 
     $('.info_button').click(function (event) {
-      var dist = 30;
+      var dist = 60;
       var box = new google.maps.LatLngBounds(
           destinationFrom(kmlEvt.latLng.lat(),kmlEvt.latLng.lng(),225,dist),
           destinationFrom(kmlEvt.latLng.lat(),kmlEvt.latLng.lng(),45,dist));
       
+      Preferences.latLng = {lat: kmlEvt.latLng.lat(), lng: kmlEvt.latLng.lng()};
+
       //Get Station Info
-      NOAA.stations_for_area(box,function(data) {
-        NOAA.data_for_stations("datacategories", {}, data, function(data) {
-          console.log(data.removeDups("id"));
-        });
-      });
-    
+      //NOAA.stations_for_area(box,function(data) {
+      //  NOAA.data_for_stations(data, {startdate: "2013-03-01", enddate: "2013-03-31", datasetid: "GHCNDMS"}, function(data) {
+      //    console.log(data);
+      //  });
+      //});
+      Weather.get_normals(Preferences.latLng, function(data) { console.log(data) });
+
       //Get Electricity Rates
       NREL.get_rates(kmlEvt.latLng.lat(),kmlEvt.latLng.lng(),function(data) {console.log(data)});
       //Solar potential for area
@@ -64,6 +67,7 @@ function initialize() {
       
       //Get our zip code
       geocode.find_zip(kmlEvt.latLng, function(data) {
+        Preferences.zip = data;
       });
     });
   });
@@ -155,6 +159,7 @@ if (typeof String.prototype.startsWith != 'function') {
     };
 }
 
+//This NOAA Stuff is Great -- but their data is too unreliable to use
 var NOAA = {
 
   key: "GQEfnmROmOrqmgxclKAELCzpALViYCrw",
@@ -196,7 +201,15 @@ var NOAA = {
       callback(data);
     });
   },
-  data_for_stations: function(item,params,stations,callback) {
+  data_for_stations: function(stations,params, callback) {
+    var station = "stationid=" + stations[0].id;
+    for (var i = 1; i < stations.length; i++)
+    {
+      station += "&stationid=" + stations[i].id;
+    }
+    this.request("data?"+station, params, callback);
+  },
+  data_for_stations_grouped: function(item,params,stations,callback) {
     //For each stations, find what information we want
     var me = this;
     if (stations.length < 1) {
@@ -217,6 +230,7 @@ var NOAA = {
   }
 }
 
+
 var soil = {
   
   get_data: function(lat,lon,callback) {
@@ -232,10 +246,40 @@ var soil = {
   }
 }
 
+//@see http://www.hamweather.com/support/documentation/aeris/
+var Weather = {
+  
+  client_id: "nMCnfGEEaArwNARvEdiZb",
+  client_secret: "i8by9MQMwt1p4MPrRoLmnHhYhu030KkqcX1g5vo8",
+  get_data: function(action,loc,params,callback) {
+    params["client_id"] = this.client_id;
+    params["client_secret"] = this.client_secret;
+    $.ajax({
+        url: "http://api.aerisapi.com/"+action+"/"+loc,
+        data: params,
+        success: callback,
+        error: function(jqXHR, textStatus, ex) {
+          console.log(textStatus);
+        }
+    });
+  },
+  get_normals: function(loc,callback) {
+    params = {};
+    params["p"] = loc.lat.toFixed(3) + "," + loc.lng.toFixed(3);
+    params["limit"] = 5;
+    params["pfilter"] = "monthly";
+    params["from"] = "1/1/2010";
+    params["to"] = "12/31/2010";
+    this.get_data("normals", "closest", params, callback);
+  },
+}
+
 var Preferences = {
   latLng: {lat: -79.98493194580078, lng: 40.44328916582578},
   zip: 15219,
   solar_size: 10,
+  sqft: 2000,
+  fuel: "natural_gas",
   //Use like bind("latLng","solar_size" function() { stuff })
   bind: function() {
     for(var i = 0; i < arguments.length-1; i++)
@@ -273,6 +317,48 @@ var Preferences = {
   },
 }
 Preferences.init();
+
+var Water = {
+  default_params: {
+    showers: 1, //Showers per day per person
+    shower_time: 6.3,
+    shower_flow: 3.8, //3.8 is standard -- 1.6 is for efficient faucets
+    baths: 0, //Baths per week
+    toilet_flushes: 4, //# of toilet flushes in a day
+    gpf: 5, //Gallons per flush (5 std, 1.6 efficiency
+    faucet: 5, //# of times a person uses the faucet daily
+    faucet_min: .5, //length of faucet used
+    hand_dishes: 1, //# of times the dishes are washed by hand per day
+    hand_min: 5, //# of minutes for washing dishes by hand
+    dishwasher_loads: 7, //# of dishwasher loads per week
+    dishwasher_flow: 15, //Gallons per diswasher load
+    laundry: 7, //Loads of laundry per week
+    laundry_flow: 55, //Gallons for each load
+  }, 
+  indoor_usage: function(params) {
+    var bathtotal = Math.round(((form.showers.value * form.showermin.value * form.showerflow.value) + (form.baths.value / 7 * 40))/form.people.value);
+    var toiletday = Math.round((form.people.value * form.toiletflow.value * form.toiletflush.value)/form.people.value);
+    var faucetday = Math.round((form.faucet.value * form.people.value * form.faucetmin.value * 3)/form.people.value);
+    var dishwasherday = Math.round(((form.dishwasher.value * form.dishwasherflow.value)/7)/form.people.value);
+    var laundryday = Math.round(((form.laundry.value * form.laundryload.value)/7)/form.people.value);
+    var dishday = Math.round((form.dishhand.value * form.dishmin.value * 3)/form.people.value);
+    var lawnday = Math.round(((form.lawn.value * form.lawnmin.value * 15)/7)/form.people.value);
+    var otherday = Math.round(((form.other.value * 10)/7)/form.people.value);
+    var indoorday = Math.round(bathtotal + toiletday + faucetday + laundryday + dishwasherday + dishday);
+    var outdoorday = Math.round(lawnday + otherday);
+    var totalday = Math.round(indoorday + outdoorday);
+    var totalmonth = Math.round(totalday * 30.4);
+    var totalyear = Math.round(totalday * 365);
+    var DWAday = 207;
+    var DWAmonth = DWAday*30;
+    var DWAyear = DWAday*365;
+  },
+  
+  outdoor_usage: function() {
+    //Calculate this based on rainfall for the month
+  },
+
+}
 
 var NREL = {
   api_key: 'uqFVoJMelgQIZZfEhM5tSGKlSkWMFu6TN78nKGjX',
@@ -358,14 +444,6 @@ var NREL = {
 
 //Allow us to pass cross domain ajax requests through our node proxy
 $(function(){
-  /*
-  $.ajaxPrefilter(function(options) {
-    if (options.crossDomain) {
-      options.url = window.location.protocol + "/api/" + encodeURIComponent(options.url);
-      options.crossDomain = false;
-    }
-  });
-  */
   google.maps.event.addDomListener(window, 'load', initialize);
 
   //Setup our datasliders to output their values when they are changed
