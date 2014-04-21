@@ -57,6 +57,15 @@ p {
   overflow: hidden;
 }
 
+.asset_container{
+  z-index: -400;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
 .overlay {
   z-index: 400;
   height: 100%;
@@ -291,12 +300,11 @@ color: white;
 .info-panel{
 	position: absolute;
 	background-color: rgba(0, 0, 0, 0.5);
-  margin-top: -50px;
-	margin-left: 180px;
-  width: 400px;
-  height: 160px;
+  width: 300px;
   color: white;
   padding: 5px;
+  font-size: 10pt;
+  border-radius: 10px;
 }
 
 .info-circle-tag{
@@ -418,12 +426,27 @@ color: white;
 #budgetMeterBar{
 	position: absolute;
 	border-radius: 5px;
-	top: 50px;
+	top: 15px;
 	left: 180px;
 	width: 40px;
-	height: 45px;
+	height: 80px;
 	background-color: rgb(255, 102, 102);
 
+}
+
+.rain_barrel_frame{
+	position: absolute;
+	left: 950px;
+	top: 250px;
+	width: 150px;
+	display: none;
+}
+
+#mainHouse{
+	position: absolute; 
+	left: 500px; 
+	width: 500px;
+	top: -20px;
 }
 @import 'pieces';
 @import 'customization';

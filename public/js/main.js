@@ -4,24 +4,17 @@ function initGameEngine(){
 	var inAction = function(piece){
 		budget.change(budget.data - piece.system.cost);
     	piece.system.active = true;
+    	piece.contract();
 	}
 	var outAction = function(piece){
 		budget.change(budget.data + piece.system.cost);
     	piece.system.active = false;
+    	piece.expand();
 	}
-	for(var i = 0; i < 3; i++){
+	for(var i = 0; i < 2; i++){
 		var bbox = new BoundingBox($('#pieceContainer'+i), inAction, outAction);
 		boundingList.push(bbox);
 	}
-    var house = new BoundingBox($("#screen"), 
-    function(piece){
-    		
-    }, 
-    function(piece){
-    		budget.change(budget.value + piece.system.cost);
-    		piece.system.active = false;
-    });
-    boundingList.push(house);
     // pieces[1].move(-1000, -700);
     // pieces[2].move(-1200, -200);
     // pieces[3].move(-1000, -1000);
@@ -62,8 +55,17 @@ function initGameEngine(){
         cost: 1,
     };
     barrel_sys.piece = new Piece(barrel_sys);
-    barrel_sys.piece.move(300, 300);
+    barrel_sys.piece.move(400, 400);
     Engine.new_system(barrel_sys);
+
+    // secret functionalities of help / quit button for the sake of testing. should be removed in release!s
+	$('#help-btn').click(function(){
+		barrel_sys.piece.move(barrel_sys.piece.x+10, barrel_sys.piece.y);
+	});
+	$('#close-btn').click(function(){
+		console.log('here');
+		barrel_sys.piece.move(barrel_sys.piece.x, barrel_sys.piece.y+10);
+	});
 
 }
 
@@ -108,13 +110,23 @@ function initBudget(){
 		$('#househouse').prepend($(this));
 		$(this).show();
 	}).attr({
+		id: 'mainHouse',
 		src: 'images/houses/largeHouse.png',
-		style: 'position: absolute; left: 500px; width: 500px;'
 	});
 	budget = new Binding(document.getElementById('budgetValue'), 60, function(value){
-    	this.innerHTML = '$' + value + 'k/$60k';
-  	})
-  	budget.change(MAX_BUDGET);
+    	this.innerHTML = '$' + Math.floor(value) + 'k/$' + MAX_BUDGET + 'k';
+    	var totalHeight = $('#budgetMeterBg').height(), 
+    		perc = value / MAX_BUDGET,
+    		r = Math.round(255 * (1-perc) + 102 * perc),
+    		g = Math.round(102 * (1-perc) + 204 * perc),
+    		b = Math.round(102 * (1-perc) + 204 * perc);
+		$('#budgetMeterBar').css('background-color', 'rgb(' + r + ',' + g + ',' + b + ')');    		
+    	$('#budgetMeterBar').animate({
+    		top: 15+(1-perc)*totalHeight,
+    		height: perc*totalHeight,
+    	});
+    });
+  	budget.change(MAX_BUDGET/1.1);
 }
 
 
