@@ -34,6 +34,10 @@ $font-color: #3d3d3d;
 			float: none;
 		}
 	}
+	.instruction_option_label{
+		font-size: 25px;
+		color: $font-color;
+	}
 }
 
 .instruction_next_button{
