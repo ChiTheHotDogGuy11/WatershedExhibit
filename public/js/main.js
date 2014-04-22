@@ -175,9 +175,17 @@ function initBudget(){
 
 // Emily's instruction initializing function
 function initInstruction(){
+	$('#instruction_screen1').hide();
 	$('#instruction_screen2').hide();
 	$('#instruction_screen3').hide();
 	$('#instruction_screen4').hide();
+	$('#instruction_header').hide();
+	$('#start_screen').show();
+	$('#instruction_screen0_next').click(function(){
+		$('#start_screen').hide();
+		$('#instruction_screen1').show();
+		$('#instruction_header').show();
+	})
 	$('#instruction_screen1_next').click(function(){
 		$('#instruction_screen1').hide();
 		$('#instruction_screen2').show();
