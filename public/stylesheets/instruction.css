@@ -13,33 +13,44 @@
   margin-bottom: 2%;
 }
 
-/* line 18, ../sass/instruction.scss */
+/* line 17, ../sass/instruction.scss */
 .instruction_paragraph {
   color: #3d3d3d;
   font-weight: 300;
   font-size: 22px;
 }
-/* line 22, ../sass/instruction.scss */
+/* line 21, ../sass/instruction.scss */
 .instruction_paragraph img {
   float: right;
 }
-/* line 25, ../sass/instruction.scss */
+/* line 24, ../sass/instruction.scss */
 .instruction_paragraph .instruction_option_container {
   display: inline-block;
   height: 200px;
 }
-/* line 29, ../sass/instruction.scss */
+/* line 28, ../sass/instruction.scss */
 .instruction_paragraph .instruction_option {
   display: inline-block;
   width: 32%;
-  cursor: pointer;
 }
-/* line 33, ../sass/instruction.scss */
+/* line 31, ../sass/instruction.scss */
 .instruction_paragraph .instruction_option img {
   float: none;
 }
-
+/* line 35, ../sass/instruction.scss */
+.instruction_paragraph .instruction_option_label {
+  font-size: 25px;
+  color: #3d3d3d;
+}
 /* line 39, ../sass/instruction.scss */
+.instruction_paragraph button {
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+/* line 47, ../sass/instruction.scss */
 .instruction_next_button {
   padding: 1% 4%;
   position: absolute;
@@ -57,7 +68,7 @@
   -ms-user-select: none;
 }
 
-/* line 55, ../sass/instruction.scss */
+/* line 63, ../sass/instruction.scss */
 .instruction_previous_button {
   padding: 1% 4%;
   position: absolute;
