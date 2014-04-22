@@ -20,23 +20,7 @@ function initGameEngine(){
     // pieces[3].move(-1000, -1000);
 
 
-    Engine.new_out_variable({
-        name: "water_bill",
-        on_update: function(newVal) {}, 
-        init_value: 1000,
-    });
-	
-    Engine.new_out_variable({
-        name: "electricity_bill",
-        on_update: function(newVal) {}, 
-        init_value: 1000,
-    });
-
-    Engine.new_out_variable({
-    	name: 'water_run_off',
-    	on_update: function(newVal) {}, 
-    	init_value: 1000,
-    });
+    
 
     // var barrel_sys = {
     //     vars: ["rain"],
