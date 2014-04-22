@@ -9,11 +9,15 @@ $(function() {
     });
   };
   Preferences.bind("latLng", "solar_size", find_solar);
-  
+  //TODO scale -- repull info for scale
+
   Engine.new_system({
     name: "solar_panels",
-    calculation_function: function (in_vars, out_vars) {
-      out_vars["energy_consumption"] -= monthly_data.ac_monthly[in_vars["month"]] //TODO multiple this by zero if wind broke the pannels?? 
+    calculation_function: function (in_vars, out_vars, scale, active) {
+      var month = in_vars["month"]
+      if (active) {
+        out_vars["energy_consumption"] -= (monthly_data.ac_monthly[month] * in_vars["sun"]) * Preferences.rates.residential; //TODO multiple this by zero if wind broke the pannels?? 
+      }
     },
     piece: undefined,
     vars: ["month"]
@@ -33,12 +37,32 @@ $(function() {
 
   Engine.new_system({
     name: "geothermal",
-    caluation_function: function(in_vars, out_vars) {
-      out_vars["energy_consumption"] 
+    caluation_function: function(in_vars, out_vars, scale, active) {
+      var month = in_vars["month"]
+      if (active) {
+        //TODO divide this by the fuel we chose
+        out_vars["energy_consumption"] += monthly_data.heating_new[month] + monthly_data.cooling_new[month];
+        out_vars["carbon"] += monthly_data.heating_carbon_new[month] + monthly_data.cooling_carbon_new[month];
+      } else {
+        out_vars["energy_consumption"] += monthly_data.heating_old[month] + monthly_data.cooling_old[month];
+        out_vars["energy_consumption"] += monthly_data.heating_carbon_old[month] + monthly_data.cooling_carbon_old[month];
+      }
     },
     piece: undefined,
-    vars: ["month"]
+    vars: ["month"],
+    cost: function(scale) { (2500 * Math.floor((Preferences.sqft / 600)) ) },
   });
 });
 
-//NOTE: for water -- either use the closest city, or calculate the cost for well
+$(function() {
+  
+  Engine.new_system({
+    name: "rain_barrel",
+    calculation_function: function(in_vars, out_vars, scale, active) {
+    },
+    piece: undefined,
+    vars: ["month"],
+    cost: function(scale) { }
+  });
+
+});

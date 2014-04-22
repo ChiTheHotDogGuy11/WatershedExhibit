@@ -56,20 +56,22 @@ function initialize() {
       //    console.log(data);
       //  });
       //});
-      Weather.set_location(Preferences.latLng, function(data) { console.log(data) });
-
-      //Get Electricity Rates
-      NREL.get_rates(kmlEvt.latLng.lat(),kmlEvt.latLng.lng(),function(data) {console.log(data)});
+      
       //Solar potential for area
       NREL.get_solar(kmlEvt.latLng.lat(),kmlEvt.latLng.lng(),100,function(data) {console.log(data)});
       //Get the geothermal info
       NREL.get_geothermal(kmlEvt.latLng.lat(),kmlEvt.latLng.lng(),"natural_gas",2000,function(data){ console.log(data)});  
-      
-      //Get our zip code
-      geocode.find_zip(kmlEvt.latLng, function(data) {
-        Preferences.zip = data;
-      });
     });
+  });
+  
+  //Update our weather and rates when we get a new LatLng
+  Preferences.bind("latLng", function() {
+    //Update the rates
+    NREL.get_rates(Preferences.latLng.lat, Preferences.latLng.lng, function(data) { Preferences.rates = data.outputs });
+    //Update weather
+    Weather.set_location(Preferences.latLng, function(data) { Preferences.weather = data });
+    //Update zip code
+    geocode.find_zip(Preferences.latLng, function(data) { Preferences.zip = data });
   });
 
   var geocode = {
@@ -322,6 +324,8 @@ var Preferences = {
   fuel: "natural_gas",
   efficient_fixtures: false,
   num_people: 4,
+  weather: null,
+  rates: null,
   //Use like bind("latLng","solar_size" function() { stuff })
   bind: function() {
     for(var i = 0; i < arguments.length-1; i++)
@@ -360,13 +364,13 @@ var Preferences = {
 }
 Preferences.init();
 
-var Water = {
+var Building = {
   default_params: {
     showers: 1, //Showers per day per person
     shower_time: 6.3,
     shower_flow: 3.8, //3.8 is standard -- 1.6 is for efficient faucets
-    baths: 0, //Baths per week
-    toilet_flushes: 4, //# of toilet flushes in a day
+    baths: 2, //Baths per week
+    toilet_flushes: 2, //# of toilet flushes in a day per person
     gpf: 5, //Gallons per flush (5 std, 1.6 efficiency
     faucet: 5, //# of times a person uses the faucet daily
     faucet_min: .5, //length of faucet used
@@ -377,29 +381,42 @@ var Water = {
     laundry: 7, //Loads of laundry per week
     laundry_flow: 55, //Gallons for each load
   }, 
-  indoor_usage: function(params) {
-    var bathtotal = Math.round(((form.showers.value * form.showermin.value * form.showerflow.value) + (form.baths.value / 7 * 40))/form.people.value);
-    var toiletday = Math.round((form.people.value * form.toiletflow.value * form.toiletflush.value)/form.people.value);
-    var faucetday = Math.round((form.faucet.value * form.people.value * form.faucetmin.value * 3)/form.people.value);
-    var dishwasherday = Math.round(((form.dishwasher.value * form.dishwasherflow.value)/7)/form.people.value);
-    var laundryday = Math.round(((form.laundry.value * form.laundryload.value)/7)/form.people.value);
-    var dishday = Math.round((form.dishhand.value * form.dishmin.value * 3)/form.people.value);
-    var lawnday = Math.round(((form.lawn.value * form.lawnmin.value * 15)/7)/form.people.value);
-    var otherday = Math.round(((form.other.value * 10)/7)/form.people.value);
+  indoor_water_usage: function(params) {
+    params = params || {}
+    var info = $.extend({},default_params,params)
+    var bathtotal = Math.round((params.showers * params.shower_time * params.shower_flow * Preferences.num_people) + (params.baths / 7 * 40));
+    var toiletday = Math.round(Preferences.num_people * params.toilet_flow * params.toilet_flushes);
+    var faucetday = Math.round(params.faucet * Preferences.num_people * params.faucet_min * 3);
+    var dishwasherday = Math.round((params.dishwasher_loads * params.dishwaser_flow)/7);
+    var laundryday = Math.round((params.laundry * params.laundry_flow)/7);
+    var dishday = Math.round(params.hand_dishes * params.hand_min * 3);
     var indoorday = Math.round(bathtotal + toiletday + faucetday + laundryday + dishwasherday + dishday);
-    var outdoorday = Math.round(lawnday + otherday);
-    var totalday = Math.round(indoorday + outdoorday);
-    var totalmonth = Math.round(totalday * 30.4);
-    var totalyear = Math.round(totalday * 365);
-    var DWAday = 207;
-    var DWAmonth = DWAday*30;
-    var DWAyear = DWAday*365;
+    return Math.round(indoorday * 30.4);
   },
   
-  outdoor_usage: function(month) {
+  outdoor_water_usage: function(month) {
     //Calculate this based on rainfall for the month
     if (Weather.normals == null) { return 0 }
 
+  },
+  electricity_usage: function() {
+    var total = 0;
+    var total += 57 //Refrigerator
+    var total += 58 //Freezer
+    var total += 13 //Dishwasher
+    var total += 24 //Range/Oven
+    var total += 11 //Microwave
+    var total += 10 //Coffee Machine
+    var total += 135 //Well Pump
+    var total += 25 //55" TV
+    var total += 21 * Math.floor(Preferences.num_people / 2) /* Computer */ 
+    var total += 1 * Preferences.num_people //Cell Phones
+    var total += 23 //DVR
+    var total += (Preferences.num_people > 2)? 15:0 //Video game system
+    var total += 6 //Washing Machine
+    var total += 57 //Clothes dryer
+    var total  += 405 //Water heater
+    return total
   },
 
 }
@@ -448,7 +465,7 @@ var NREL = {
         address: '',
         zipcode: '',
         fuelrate: '',
-        electricrate: '',
+        electricrate: Preferences.rates.residential,
         long: lon,
         lat: lat,
         state: '',
@@ -460,6 +477,9 @@ var NREL = {
       },
       success: function(data) {
         var csv = self.parse_csv(data);
+        Preferences.rates.natural_gas = csv[13][0];
+        Preferences.rates.propane = csv[13][3];
+        Preferences.rates.oil = csv[13][2];
         callback({
             heating_old: csv[1],
             cooling_old: csv[2],
