@@ -537,9 +537,10 @@ p {
   left: 750px;
   top: 50px;
   width: 500px;
+  display: none;
 }
 
-/* line 448, ../sass/screen.scss */
+/* line 449, ../sass/screen.scss */
 #mainHouse {
   position: absolute;
   left: 500px;
@@ -547,12 +548,12 @@ p {
   top: -20px;
 }
 
-/* line 455, ../sass/screen.scss */
+/* line 456, ../sass/screen.scss */
 #panelContainer-middle {
   width: 100%;
 }
 
-/* line 459, ../sass/screen.scss */
+/* line 460, ../sass/screen.scss */
 #endScreen {
   position: absolute;
   top: 15%;
@@ -563,7 +564,7 @@ p {
   display: none;
 }
 
-/* line 468, ../sass/screen.scss */
+/* line 469, ../sass/screen.scss */
 .endScore {
   color: white;
   font-size: 40pt;
@@ -573,7 +574,7 @@ p {
   margin-right: 40px;
 }
 
-/* line 477, ../sass/screen.scss */
+/* line 478, ../sass/screen.scss */
 .endText {
   color: white;
   font-size: 12pt;
@@ -581,7 +582,7 @@ p {
   margin-top: 20px;
 }
 
-/* line 484, ../sass/screen.scss */
+/* line 485, ../sass/screen.scss */
 .endInput {
   margin-left: 40px;
   margin-right: 40px;
@@ -589,7 +590,7 @@ p {
   width: 90%;
 }
 
-/* line 491, ../sass/screen.scss */
+/* line 492, ../sass/screen.scss */
 .endButton {
   color: white;
   font-size: 40pt;

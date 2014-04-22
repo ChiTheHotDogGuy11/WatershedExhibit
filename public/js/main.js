@@ -20,23 +20,23 @@ function initGameEngine(){
     // pieces[3].move(-1000, -1000);
 
 
-    Engine.new_out_variable({
-        name: "water_bill",
-        on_update: function(newVal) {}, 
-        init_value: 1000,
-    });
+    // Engine.new_out_variable({
+    //     name: "water_bill",
+    //     on_update: function(newVal) {}, 
+    //     init_value: 1000,
+    // });
 	
-    Engine.new_out_variable({
-        name: "electricity_bill",
-        on_update: function(newVal) {}, 
-        init_value: 1000,
-    });
+    // Engine.new_out_variable({
+    //     name: "electricity_bill",
+    //     on_update: function(newVal) {}, 
+    //     init_value: 1000,
+    // });
 
-    Engine.new_out_variable({
-    	name: 'water_run_off',
-    	on_update: function(newVal) {}, 
-    	init_value: 1000,
-    });
+    // Engine.new_out_variable({
+    // 	name: 'water_run_off',
+    // 	on_update: function(newVal) {}, 
+    // 	init_value: 1000,
+    // });
 
     // var barrel_sys = {
     //     vars: ["rain"],
@@ -88,22 +88,24 @@ function initGameEngine(){
 function bindChart(containerId){
 	// init stacked chart
 	var stackedChart = new StackedChart(containerId)
-		.setRange('line', 0, 5000)
-		.setRange('bar', 0, 5000)
-		.bind(true, function(){return Engine.out_variables['electricity_bill'].get_values()}, 'Electricity bill')
-		.bind(false, function(){return Engine.out_variables['water_bill'].get_values()}, 'Water bill')
-		.bind(true, function(){return Engine.out_variables['water_run_off'].get_values()}, 'Water run-off');
+		.setRange('line', 0, 120000)
+		.setRange('bar', 0, 120000)
+		.bind(true, function(){return Engine.out_variables['outdoor_water'].get_values()}, 'Electricity bill')
+		.bind(false, function(){return Engine.out_variables['indoor_water'].get_values()}, 'Water bill')
+		.bind(false, function(){return Engine.out_variables['energy_consumption'].get_values()}, 'Water run-off');
 	return stackedChart;
 }
 
 function rebindChart(){
-	var ebid = Engine.out_variables['electricity_bill'].save(), 
-		wbid = Engine.out_variables['water_bill'].save(),
-		wrid = Engine.out_variables['water_run_off'].save();
+	var ebid = Engine.out_variables['outdoor_water'].save(), 
+		wbid = Engine.out_variables['indoor_water'].save(),
+		wrid = Engine.out_variables['energy_consumption'].save();
 	var oldChart = stackedCharts[stackedCharts.length-1];
-	oldChart.rebind(function(){return Engine.out_variables['electricity_bill'].get_past_values(ebid);}, 'Electricity bill');
-	oldChart.rebind(function(){return Engine.out_variables['water_bill'].get_past_values(wbid);}, 'Water bill');
-	oldChart.rebind(function(){return Engine.out_variables['water_run_off'].get_past_values(wrid);}, 'Water run_off');
+	oldChart.rebind(function(){return Engine.out_variables['outdoor_water'].get_past_values(ebid);}, 'Electricity bill');
+	oldChart.rebind(function(){return Engine.out_variables['indoor_water'].get_past_values(wbid);}, 'Water bill');
+	oldChart.rebind(function(){
+		return Engine.out_variables['energy_consumption'].get_past_values(wrid);}, 
+	'Water run-off');
 }
 
 function initGameScreen(){
@@ -255,8 +257,8 @@ $(document).ready(function(){
 	 		Engine.simulate(1);
 	 		GameState.step();
 	 	}
-	 	setTimeout(onTimer, 100);
+	 	setTimeout(onTimer, 500);
     }
 
-	setTimeout(onTimer, 100);
+	setTimeout(onTimer, 500);
 });
