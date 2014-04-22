@@ -22,6 +22,18 @@ $font-color: #3d3d3d;
 	img{
 		float: right;
 	}
+	.instruction_option_container{
+		display: inline-block;
+		height: 200px;
+	}
+	.instruction_option{
+		display: inline-block;
+		width: 32%;
+		cursor: pointer;
+		img{
+			float: none;
+		}
+	}
 }
 
 .instruction_next_button{

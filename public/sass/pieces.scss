@@ -25,6 +25,12 @@
 
 /* Piece Ending Container Styles */
 
+#piecesContainer{
+  position: absolute;
+  top: 450px;
+  left: 650px;
+}
+
 .piecePlacement {
 
   border-radius: 50%;
@@ -33,22 +39,9 @@
 
   width: 80px;
   height: 80px;
-  background-color: rgba(150,150,150,0.6);
+  background-color: rgba(0, 0, 0, 0.3);
   border: 2px dashed #969696;
   position: relative;
-}
-
-#solarContainer {
-  top: 80px;
-  left: 70px;
-}
-
-#rainBarrelContainer {
-  top: 100px;
-  left: 50px;
-}
-
-#geothermalContainer {
-  top: 300px;
-  left: 70px;
+  display: inline-block;
+  margin: 5px;
 }
