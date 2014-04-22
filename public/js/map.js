@@ -1,5 +1,12 @@
 var map;
 
+function centerMap() {
+    var defaultBounds = new google.maps.LatLngBounds(
+        new google.maps.LatLng(47.971537, -131.132813),
+        new google.maps.LatLng(24.754314, -76.728516));
+    map.fitBounds(defaultBounds);
+}
+
 function initialize() {
 
   var markers = [];
@@ -48,8 +55,9 @@ function initialize() {
           destinationFrom(kmlEvt.latLng.lat(),kmlEvt.latLng.lng(),225,dist),
           destinationFrom(kmlEvt.latLng.lat(),kmlEvt.latLng.lng(),45,dist));
       
+      $('#preference-loading').html('<h4>Loading Area</h4><img src="/images/loading.gif"/>');
       Preferences.latLng = {lat: kmlEvt.latLng.lat(), lng: kmlEvt.latLng.lng()};
-
+      
       //Get Station Info
       //NOAA.stations_for_area(box,function(data) {
       //  NOAA.data_for_stations(data, {startdate: "2013-03-01", enddate: "2013-03-31", datasetid: "GHCNDMS"}, function(data) {
@@ -66,14 +74,25 @@ function initialize() {
   
   //Update our weather and rates when we get a new LatLng
   Preferences.bind("latLng", function() {
+    $('#preferences-form :submit').prop('disabled', false);
+    var count = 0;
+    
+    function doneLoading(count) {
+      if (count >= 4) {
+        $('#preference-loading').html('<h4>Area Selection</h4><p><strong>Zip</strong>'+Preferences.zip+'</p>');
+        $('#preferences-form :submit').prop('disabled', false);
+        count = 0;
+      }
+    }
+
     //Update the rates
-    NREL.get_rates(Preferences.latLng.lat, Preferences.latLng.lng, function(data) { Preferences.rates = data.outputs });
+    NREL.get_rates(Preferences.latLng.lat, Preferences.latLng.lng, function(data) { Preferences.rates = data.outputs; doneLoading(++count); });
     //Update weather
-    Weather.set_location(Preferences.latLng, function(data) { Preferences.weather = data });
+    Weather.set_location(Preferences.latLng, function(data) { Preferences.weather = data; doneLoading(++count); });
     //Update zip code
-    geocode.find_zip(Preferences.latLng, function(data) { Preferences.zip = data });
+    geocode.find_zip(Preferences.latLng, function(data) { Preferences.zip = data; doneLoading(++count); });
     //get soil information 
-    soil.get_preference_info(Preferences.latLng, function(data) { Preferences.soil = data });
+    soil.get_preference_info(Preferences.latLng, function(data) { Preferences.soil = data; doneLoading(++count); });
   });
 
   var geocode = {

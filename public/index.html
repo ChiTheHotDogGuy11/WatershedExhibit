@@ -93,26 +93,27 @@
     </div>
     <div id="preferences" class="overlay">
       <div id="preferences-container">
+        <h3>Game Preferences</h3>
         <div id="map-container">
           <input id="pac-input" class="controls" type="text" placeholder="Search Box">
           <div id="map-canvas"></div>
         </div>
-        <div class="form-center">
-          <form id="preferences-form">
-            <div>
-              <label>Budget</label>
-              <input type="text" data-slider="true" data-slider-snap="true" data-slider-values="100,500,1000" data-slider-equal-steps="true">
-              <span class="output"></span>
-            </div>
-            <div>
-              <label>House Size</label>
-              <input type="text" data-slider="true" data-slider-snap="true" data-slider-values="100,500,1000" data-slider-equal-steps="true">
-              <span class="output"></span>
-            </div>
-            <div>
-              <input type="submit">
-            </div>
-          </form>
+        <div class="form-center row">
+          <div class="col-md-6">
+            <form id="preferences-form">
+              <div>
+                <label>Household Size</label>
+                <input type="text" name="members" data-slider="true" data-slider-snap="true" data-slider-values="1,2,3,4,5,6" data-slider-equal-steps="true" value="4">
+                <span class="output">4</span>
+              </div>
+              <div>
+                <input type="submit" disabled class="btn btn-primary">
+              </div>
+            </form>
+          </div>
+          <div class="col-md-6" id="preference-loading">
+            <h4>Please Choose a US Location Above</h4>
+          </div>
         </div>
         <div id="loaderdiv" style="display:none;"></div>
       </div>
