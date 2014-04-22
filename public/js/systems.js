@@ -62,13 +62,14 @@ $(function() {
 $(function() {
  
   //One barrel is about 50 gallons
-
+  // @see http://www.okc.gov/water/service/forms/householdwaterusage.aspx
+  // @see http://www.tylertork.com/diyrainbarrels/calculator.html
   Engine.new_system({
     name: "rain_barrel",
     calculation_function: function(in_vars, out_vars, scale, active) {
       //We only get on overage half of the rain per month in our rain barrels
       if (active) {
-        out_vars["outdoor_water"] -= Math.min(scale * 50,(((Preferences.sqft * 144) * (Preferences.weather.prcp.mtdIN/2)) / 231));       
+        out_vars["outdoor_water"] -= Math.min((scale * 50 * 30.4),(((Preferences.sqft * 144) * (Preferences.weather.prcp.mtdIN/2)) / 231));       
       }
     },
     piece: undefined,
