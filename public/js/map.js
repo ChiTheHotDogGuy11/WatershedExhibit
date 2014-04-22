@@ -58,9 +58,9 @@ function initialize() {
       //});
       
       //Solar potential for area
-      NREL.get_solar(kmlEvt.latLng.lat(),kmlEvt.latLng.lng(),100,function(data) {console.log(data)});
+      //NREL.get_solar(kmlEvt.latLng.lat(),kmlEvt.latLng.lng(),100,function(data) {console.log(data)});
       //Get the geothermal info
-      NREL.get_geothermal(kmlEvt.latLng.lat(),kmlEvt.latLng.lng(),"natural_gas",2000,function(data){ console.log(data)});  
+      ////NREL.get_geothermal(kmlEvt.latLng.lat(),kmlEvt.latLng.lng(),"natural_gas",2000,function(data){ console.log(data)});  
     });
   });
   
@@ -72,6 +72,8 @@ function initialize() {
     Weather.set_location(Preferences.latLng, function(data) { Preferences.weather = data });
     //Update zip code
     geocode.find_zip(Preferences.latLng, function(data) { Preferences.zip = data });
+    //get soil information 
+    soil.get_preference_info(Preferences.latLng, function(data) { Preferences.soil = data });
   });
 
   var geocode = {
@@ -245,6 +247,22 @@ var soil = {
         console.log(textStatus);
       }
     });
+  },
+  get_preference_info: function(latLon, callback) {
+    this.get_data(latLon.lat, latLon.lng, function(data) {
+      var ret = {};
+      $('#loaderdiv').empty();
+      $('#loaderdiv').append($(data));
+      ret["flood"] = $('#loaderdiv').find('.mudata span:contains("Flood")').next().html().trim();
+      ret["storage"] = $('#loaderdiv').find('.mudata span:contains("Storage")').next().html().trim();
+      ret["drainage_wet"] = $('#loaderdiv').find('.mudata span:contains("Wettest Component")').next().html().trim();
+      //NOTE lower drainage = higher runoff
+      ret["drainage_dom"] = $('#loaderdiv').find('.mudata span:contains("Dominant")').next().html().trim();
+      ret["wetland"] = $('#loaderdiv').find('.mudata span:contains("Hydric")').next().html().trim();
+      ret["table"] = $('#loaderdiv').find('.mudata span:contains("April-June")').next().html().trim();
+      ret["soil"] = $('#loaderdiv').find('.muname > .mu-name').html().trim();
+      callback(ret);
+    });
   }
 }
 
@@ -338,20 +356,20 @@ var Preferences = {
       if (this.hasOwnProperty(prop) && prop != "init" && prop != "bind"){
         var update_functions = new Array();
         var self = this;
-        this["bind_"+prop] = (function(prop){
+        this["bind_"+prop] = (function(prop,arr){
           return function(func) {
-            update_functions.push(func);
+            arr.push(func);
           }
-        })(prop);
+        })(prop,update_functions);
         var tmp_val = self[prop];
-        this.__defineSetter__(prop,(function(prop){
+        this.__defineSetter__(prop,(function(prop,arr){
           return function(val) {
             self[prop+"_val"] = val;
-            for(var k = 0; k < update_functions.length; k++){
-              update_functions[k]();
+            for(var k = 0; k < arr.length; k++){
+              arr[k]();
             }
           }
-        })(prop));
+        })(prop,update_functions));
         self[prop+"_val"] = tmp_val;
         this.__defineGetter__(prop,(function(prop){
           return function() {
@@ -383,11 +401,11 @@ var Building = {
   }, 
   indoor_water_usage: function(params) {
     params = params || {}
-    var info = $.extend({},default_params,params)
+    var params = $.extend({},this.default_params,params)
     var bathtotal = Math.round((params.showers * params.shower_time * params.shower_flow * Preferences.num_people) + (params.baths / 7 * 40));
-    var toiletday = Math.round(Preferences.num_people * params.toilet_flow * params.toilet_flushes);
+    var toiletday = Math.round(Preferences.num_people * params.gpf * params.toilet_flushes);
     var faucetday = Math.round(params.faucet * Preferences.num_people * params.faucet_min * 3);
-    var dishwasherday = Math.round((params.dishwasher_loads * params.dishwaser_flow)/7);
+    var dishwasherday = Math.round((params.dishwasher_loads * params.dishwasher_flow)/7);
     var laundryday = Math.round((params.laundry * params.laundry_flow)/7);
     var dishday = Math.round(params.hand_dishes * params.hand_min * 3);
     var indoorday = Math.round(bathtotal + toiletday + faucetday + laundryday + dishwasherday + dishday);
@@ -396,26 +414,34 @@ var Building = {
   
   outdoor_water_usage: function(month) {
     //Calculate this based on rainfall for the month
-    if (Weather.normals == null) { return 0 }
-
+    if (Preferences.weather == null) { return 0 }
+    //Not going to use any water if it is cold on average outside
+    if (Preferences.weather.temp.avgF > 50) {
+      //We water our garden for 4 hours every dat
+      return 36000;
+    } else {
+      return 0;
+    }
   },
+  //Usage in kWh -- could be effected with energy efficient appliances
+  //@see http://www.cpi.coop/my-account/online-usage-calculator/
   electricity_usage: function() {
     var total = 0;
-    var total += 57 //Refrigerator
-    var total += 58 //Freezer
-    var total += 13 //Dishwasher
-    var total += 24 //Range/Oven
-    var total += 11 //Microwave
-    var total += 10 //Coffee Machine
-    var total += 135 //Well Pump
-    var total += 25 //55" TV
-    var total += 21 * Math.floor(Preferences.num_people / 2) /* Computer */ 
-    var total += 1 * Preferences.num_people //Cell Phones
-    var total += 23 //DVR
-    var total += (Preferences.num_people > 2)? 15:0 //Video game system
-    var total += 6 //Washing Machine
-    var total += 57 //Clothes dryer
-    var total  += 405 //Water heater
+    total += 57; //Refrigerator
+    total += 58; //Freezer
+    total += 13; //Dishwasher
+    total += 24; //Range/Oven
+    total += 11; //Microwave
+    total += 10; //Coffee Machine
+    total += 135; //Well Pump
+    total += 25; //55" TV
+    total += 21 * Math.floor(Preferences.num_people / 2); /* Computer */ 
+    total += 1 * Preferences.num_people; //Cell Phones
+    total += 23; //DVR
+    total += (Preferences.num_people > 2)? 15:0; //Video game system
+    total += 6; //Washing Machine
+    total += 57; //Clothes dryer
+    total  += 405; //Water heater
     return total
   },
 
