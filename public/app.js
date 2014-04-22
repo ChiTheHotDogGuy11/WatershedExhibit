@@ -530,11 +530,14 @@ var initialInvestment = 40000;
 var yearSavings = 2700; 
 
 $(function() {
-  // $('#preferences').show(function() {
-  //   google.maps.event.trigger(map, 'resize');
-  // })
+  $('#preferences').show(function() {
+    google.maps.event.trigger(map, 'resize');
+    centerMap();
+  })
 
-  // $('#preferences form').submit(function (event) {
-  //   event.preventDefault();
-  // });
+  $('#preferences-form').submit(function (event) {
+     event.preventDefault();
+     Preferences.num_people = parseInt($('#preferences-form input[name=members]').val());
+     $('#preferences').hide();
+  });
 });

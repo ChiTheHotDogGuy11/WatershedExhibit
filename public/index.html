@@ -20,7 +20,7 @@
 		<script type="text/javascript" src="js/bindings.js"></script>
 		<!-- If Socket.IO is used with Express, then the /socket.io/ path will
 		serve the proper Socket.IO javascript files used by the browser -->
-		<script src="../node_modules/socket.io/lib/socket.io.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
 		<script src="js/lib/two.js"></script>
 		<script src="js/animation.js"></script>
     <!-- Nice UI tools for interface elements -->
@@ -34,11 +34,9 @@
   </head>
 	<body>
 		<div id="screen" style="left: 0px; top: 0px; width: 1920px; height: 1920px;"></div>
-		<div id="endScreen" class="overlay">
-			<div id="end_chart" class="modal" style="width: 30%; height 40%"></div>
-		</div>
 		<div id="animAssets" class="asset_container"></div>
 		<div class="page_container" style="position: absolute; top: 0px; bottom: 0px;">
+			<div id="endScreen" class="game-panel" style="background-color:rgba(0, 0, 0, 0.8)"></div>
 			<div class="house" id="househouse">
 				<svg id="houseContainer"></svg>
 				<div id="houseAnimContainer" style="position: absolute;	top: 300px; left: 500px"></div>
@@ -93,26 +91,27 @@
     </div>
     <div id="preferences" class="overlay">
       <div id="preferences-container">
+        <h3>Game Preferences</h3>
         <div id="map-container">
           <input id="pac-input" class="controls" type="text" placeholder="Search Box">
           <div id="map-canvas"></div>
         </div>
-        <div class="form-center">
-          <form id="preferences-form">
-            <div>
-              <label>Budget</label>
-              <input type="text" data-slider="true" data-slider-snap="true" data-slider-values="100,500,1000" data-slider-equal-steps="true">
-              <span class="output"></span>
-            </div>
-            <div>
-              <label>House Size</label>
-              <input type="text" data-slider="true" data-slider-snap="true" data-slider-values="100,500,1000" data-slider-equal-steps="true">
-              <span class="output"></span>
-            </div>
-            <div>
-              <input type="submit">
-            </div>
-          </form>
+        <div class="form-center row">
+          <div class="col-md-6">
+            <form id="preferences-form">
+              <div>
+                <label>Household Size</label>
+                <input type="text" name="members" data-slider="true" data-slider-snap="true" data-slider-values="1,2,3,4,5,6" data-slider-equal-steps="true" value="4">
+                <span class="output">4</span>
+              </div>
+              <div>
+                <input type="submit" disabled class="btn btn-primary">
+              </div>
+            </form>
+          </div>
+          <div class="col-md-6" id="preference-loading">
+            <h4>Please Choose a US Location Above</h4>
+          </div>
         </div>
         <div id="loaderdiv" style="display:none;"></div>
       </div>
