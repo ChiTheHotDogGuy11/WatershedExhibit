@@ -417,8 +417,8 @@ var Building = {
     if (Preferences.weather == null) { return 0 }
     //Not going to use any water if it is cold on average outside
     if (Preferences.weather.temp.avgF > 50) {
-      //We water our garden for 4 hours every dat
-      return 36000;
+      //We water our garden for 2 hours every day
+      return 18000;
     } else {
       return 0;
     }
