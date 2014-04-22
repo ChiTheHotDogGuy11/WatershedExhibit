@@ -34,3 +34,9 @@ var savings = {
 
 var MAX_BUDGET = 60;
 var PINK = 'rgb(255, 102, 102)';
+
+var GAMESTATE_PAUSED = 0;
+var GAMESTATE_PLAYING = 1;
+var GAMESTATE_DONE = 2;
+
+var NUM_LEVELS = 3;
