@@ -233,7 +233,7 @@ function initElements(){
 function initInstruction(){
 	$('#instruction_screen2').hide();
 	$('#instruction_screen3').hide();
-	$('#instruction_screen4').hide();
+	$('#instruction_screen1').hide();
 	$('#instruction_screen1_next').click(function(){
 		$('#instruction_screen1').hide();
 		$('#instruction_screen2').show();
@@ -264,8 +264,8 @@ function initInstruction(){
 
 // Insert JS here
 $(document).ready(function(){
-	initBudget();
 	initInstruction();
+	initBudget();
 	initGameEngine();
 	initGameScreen();
 

@@ -25,22 +25,20 @@
 }
 /* line 25, ../sass/instruction.scss */
 .instruction_paragraph .instruction_option_container {
-  position: relative;
-  height: 100%;
+  display: inline-block;
+  height: 200px;
 }
 /* line 29, ../sass/instruction.scss */
 .instruction_paragraph .instruction_option {
-  float: left;
-  /*		position: absolute;*/
-  bottom: 0;
   display: inline-block;
+  width: 32%;
 }
-/* line 36, ../sass/instruction.scss */
-.instruction_paragraph .instruction_option_label {
-  display: inline-block;
+/* line 32, ../sass/instruction.scss */
+.instruction_paragraph .instruction_option img {
+  float: none;
 }
 
-/* line 41, ../sass/instruction.scss */
+/* line 38, ../sass/instruction.scss */
 .instruction_next_button {
   padding: 1% 4%;
   position: absolute;
@@ -58,7 +56,7 @@
   -ms-user-select: none;
 }
 
-/* line 57, ../sass/instruction.scss */
+/* line 54, ../sass/instruction.scss */
 .instruction_previous_button {
   padding: 1% 4%;
   position: absolute;
