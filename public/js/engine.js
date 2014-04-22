@@ -14,9 +14,12 @@ var Engine = (function () {
   var systems = {};
   var in_variables = {};
   var out_variables = {};
+  var budget;
   var loc = null;
   // A container for the events. See event.js
   var event_manager = new EventManager();
+  //Keep track of the scores
+  var scores = new Array();
   
   function new_event(params_hash) {
     var new_e = new Event(params_hash);
@@ -42,9 +45,27 @@ var Engine = (function () {
     loc = new_loc 
   };
 
+  function get_scores() {
+    return scores;
+  };
+  
+  function set_system_active(system_name, is_active) {
+    if (systems[system_name]) {
+      systems[system_name].set_active(is_active);
+    }
+  };
+  
+  function set_system_scale(system_name, scale) {
+    if (systems[system_name]) {
+      systems[system_name].set_scale(scale);
+    }
+  };
+
   function simulate(steps){
     steps = typeof steps !== 'undefined' ? steps : 1;
     //Run the simulation for the number of steps we have defined
+    var water_cons_score = Number.MAX_VALUE;
+    var electric_cons_score = Number.MAX_VALUE;
     for (var i = 0; i < steps; i++)
     {
 
@@ -83,7 +104,16 @@ var Engine = (function () {
       //and have them update the output variables they
       //care about.
       var updated_out_values = {};
-
+     /* for(var key in systems) {
+        if (systems.hasOwnProperty(key)) {
+          var output = systems[key].calculate_function(in_vars)
+          for(var key in output) {
+            if(output.hasOwnProperty(key) && out_variables.hasOwnProperty(key)) {
+              updated_values[key] += output[key]
+            }
+          }
+        }
+      }*/
       for (var sys_name in systems) {
         var cur_system = systems[sys_name];
         //Get the in-values for the variables this system cares about,
@@ -96,7 +126,8 @@ var Engine = (function () {
         }
         //Capture the output variables that this event might
         // have changed.
-        var changed_vals = cur_system.calc(in_vars, out_vars);
+        var changed_vals = cur_system.calc(in_vars, out_vars,
+            cur_system.scale, cur_system.is_active);
         //Update the now-outdated values we have in cur_in_vals.
         for (var var_name in changed_vals) {
           out_vars[var_name] = changed_vals[var_name];
@@ -107,8 +138,19 @@ var Engine = (function () {
       for (var var_name in out_vars) {
         out_variables[var_name].push_value(out_vars[var_name]);
       }
+      
+      //Finally, get the scores
+      var water_cons = out_variables["water_consumption"];
+      var electric_cons = out_variables["electric_cons"];
+      if (water_cons && electric_cons) {
+        if (water_cons < water_cons_score) water_cons_score = water_cons;
+        if (electric_cons < electric_cons_score) electric_cons_score = electric_cons;
+      }
 
     }
+    //Save the scores
+    scores.push(electric_cons_score + water_cons_score);
+    return scores;
   };
   
   function Variable(params_hash){
@@ -182,6 +224,22 @@ var Engine = (function () {
     }
   };
 
+  
+  function Budget(params_hash) {
+    this.money_left = params_hash["init_val"] || 0;
+    this.on_change = params_hash["on_change"];
+  }
+  
+  Budget.prototype.change_budget = function(delta) {
+    if (delta > 0) {
+      this.money_left = this.money_left + delta;
+      this.on_change(this.money_left, delta);
+    }
+  }
+  
+  Budget.get_val = function() {
+    return this.money_left;
+  }
   /**
    *  Define new systems by:
    *    Engine.new_system({
@@ -210,11 +268,33 @@ var Engine = (function () {
 
     //Define set objects
     params_hash["name"] = params_hash["name"] || "TMP";
-    this.cost = params_hash['cost'];
     this.name = params_hash["name"];
     this.piece = params_hash["piece"];
     this.calc = params_hash['calculation_function']; 
+    this.cost = params_hash["cost"];
+    this.isActive = false;
+    this.scale = 1;
+    this.is_purchased = false;
+    if (params_hash["scale"]) this.scale = params_hash["scale"];
   };
+  
+  System.prototype.set_active = function(isActive) {
+    if (isActive && !this.is_purchased) {
+      var sys_cost = this.cost(this.scale);
+      if (budget.get_val() >= sys_cost) {
+        this.is_purchased = true;
+        budget.change_budget(sys_cost);
+      }
+    }
+    this.isActive = isActive;
+  }
+  
+  System.prototype.set_scale = function(scale) {
+    var cur_scale = this.scale;
+    var additional_cost = this.cost(cur_scale) - this.cost(scale);
+    budget.change_budget(additional_cost);
+    this.scale = scale;
+  }
   
       /**
      *    Relatively simple container for the possible events
@@ -359,6 +439,9 @@ var Engine = (function () {
     systems: systems,
     in_variables: in_variables,
     event_manager: event_manager,
+    get_scores: get_scores,
+    set_system_active: set_system_active,
+    set_system_scale: set_system_scale
   }
 
 })(Engine || {});
