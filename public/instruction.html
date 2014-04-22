@@ -6,6 +6,14 @@
 		<script src="js/lib/jquery-1.11.0.js"></script>
 		<script type="text/javascript" src="js/main.js"></script>
 	</head>
+	<div id="start_screen">
+		<img href="images/start-screen.gif" src="images/start-screen.gif" alt="Animation" width="100%"/>
+		<div class="instruction_next_button" id="instruction_screen0_next">
+				<div>
+					Start Game
+				</div>
+			</div>
+	</div>
 	<body class="instruction_page">
 		<div class="instruction_header" id="instruction_header">
 			How to Play
@@ -68,19 +76,27 @@
 				<b> First, pick your house: </b>
 			</p>
 			<div class="instruction_option_container">
-				<div class="instruction_option">
-					<img href="images/smallHouse.png" src="images/smallHouse.png" alt="Small House" width="80%"/>
-					<div class="instruction_option_label">Small</div>
-				</div>
-				<div class="instruction_option">
-					<img href="images/mediumHouse.png" src="images/mediumHouse.png" alt="Medium House" width="95%"/>
-					<div class="instruction_option_label">Medium</div>
-				</div>
-				<div class="instruction_option">
-					<img href="images/largeHouse.png" src="images/largeHouse.png" alt="Large House" width="110%"/>
-					<div class="instruction_option_label">Large</div>
-				</div>
-  		</div> 
+				<form action="../public/index.html">
+					<div class="instruction_option">
+						<button type="images" onClick="parent.location='index.html'">
+							<img href="images/smallHouse.png" src="images/smallHouse.png" alt="Small House" width="80%"/>
+							<div class="instruction_option_label">Small</div>
+						</button>
+					</div>
+					<div class="instruction_option">
+						<button type="images" onClick="parent.location='index.html'">
+							<img href="images/mediumHouse.png" src="images/mediumHouse.png" alt="Medium House" width="95%"/>
+							<div class="instruction_option_label">Medium</div>
+						</button>
+					</div>
+					<div class="instruction_option">
+						<button type="images" onClick="parent.location='index.html'">
+							<img href="images/largeHouse.png" src="images/largeHouse.png" alt="Large House" width="110%"/>
+							<div class="instruction_option_label">Large</div>
+						</button>
+					</div>
+	  		</form>
+	  	</div> 
 			<div class="instruction_previous_button" id="instruction_screen4_previous">
 				<div>
 					Previous

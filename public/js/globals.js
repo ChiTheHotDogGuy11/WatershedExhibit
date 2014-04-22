@@ -41,11 +41,44 @@ var animGroupId;
 
 var two; //two.js object
 
-var gameState = {
-	playing: false,
-	playSpeed: 1,
-};
-
+var GameState = (function(){
+	var _level = 0;
+	var _state = GAMESTATE_PAUSED;
+	var _playCount = 0;
+	var MAX_PLAYCOUNT = 12;
+	function level(){
+		return _level;
+	}
+	function state(){
+		return _state;
+	}
+	function step(){
+		if(_level == 0){
+			_level++;
+			_state = GAMESTATE_PAUSED;
+		}
+		else if(_level <= NUM_LEVELS){
+			if(_state == GAMESTATE_PAUSED){
+				_state = GAMESTATE_PLAYING;
+				_playCount = 0;
+			}
+			else if(_state == GAMESTATE_PLAYING){
+				_playCount++;
+				if(_playCount >= MAX_PLAYCOUNT)	_state = GAMESTATE_DONE;
+			}
+			else if(_state == GAMESTATE_DONE){
+				_level++;
+				_state = GAMESTATE_PAUSED
+			}
+		}
+		renderScreen();
+	}
+	return {
+		level: level,
+		state: state,
+		step: step,
+	};
+})(GameState|| {});
 
 //The number of pieces that exist on the board.
 var numPieces = 4;
@@ -54,3 +87,5 @@ var pieces = {};
 
 var budget;
 var boundingList = []; 
+
+var stackedCharts = [];

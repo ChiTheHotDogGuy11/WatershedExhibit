@@ -38,25 +38,41 @@ function initGameEngine(){
     	init_value: 1000,
     });
 
-    var barrel_sys = {
-        vars: ["rain"],
-        calculation_function: function(in_vars, out_vars) {
-          if(out_vars["water_bill"] < 5000){
-          	out_vars["water_bill"] += 1000;
+    // var barrel_sys = {
+    //     vars: ["rain"],
+    //     calculation_function: function(in_vars, out_vars) {
+    //       if(out_vars["water_bill"] < 5000){
+    //       	out_vars["water_bill"] += 1000;
           	
-          }
-          else{
-          	out_vars["water_bill"] = 0;
-          }
-          out_vars['water_run_off'] = Math.random() * 5000;
+    //       }
+    //       else{
+    //       	out_vars["water_bill"] = 0;
+    //       }
+    //       out_vars['water_run_off'] = Math.random() * 5000;
+    //       out_vars['electricity_bill'] = 1000;
+    //       return out_vars;
+    //     },
+    //     name: 'rain_barrel',
+    //     cost: 1,
+    // };
+    var geo_sys = {
+        vars: ["geo-thermal"],
+        calculation_function: function(in_vars, out_vars) {
           return out_vars;
         },
-        name: 'rain_barrel',
-        cost: 1,
+        name: 'geo_thermal',
+        cost: 30,
     };
-    barrel_sys.piece = new Piece(barrel_sys);
-    barrel_sys.piece.move(400, 400);
-    Engine.new_system(barrel_sys);
+    var rb_piece = new Piece(Engine.systems['rain_barrel']);
+    Engine.systems['rain_barrel'].piece = rb_piece;
+    var gt_piece = new Piece(Engine.systems['geo_thermal']);
+    Engine.systems['geo_thermal'].piece = gt_piece;
+    var sp_piece = new Piece(Engine.systems['solar_panel']);
+    Engine.systems['solar_panel'].piece = sp_piece;
+    // geo_sys.piece = new Piece(geo_sys);
+    // barrel_sys.piece.move(400, 400);
+    // geo_sys.piece.move(250, 500);
+    // Engine.new_system(barrel_sys);
 
     // secret functionalities of help / quit button for the sake of testing. should be removed in release!s
 	$('#help-btn').click(function(){
@@ -69,39 +85,91 @@ function initGameEngine(){
 
 }
 
-function initGameScreen(){
-	// init play / pause button
-	var play = function(playSpeed){
-		gameState.playSpeed = playSpeed;
-		gameState.playing = true;
-		$('#play-btn')[0].src = 'images/pause-button.png';
-	}
-	var pause = function(){
-		gameState.playing = false;
-		$('#play-btn')[0].src = 'images/play-button.png';
-	}
-
-	$('#budgetMeter').show();
-	$('#houseAnimContainer').show();
-	$('#play-btn').click(function(){
-		if(gameState.playing) pause();
-		else play(1);
-	});
-	$('#next-btn').click(function(){
-		play(2);
-	});
-	
+function bindChart(containerId){
 	// init stacked chart
-	var data = [];
-	var data2 = [];
-	var data3 = [];
-	var data4 = [];
-	var stackedChart = new StackedChart('gameChart')
+	var stackedChart = new StackedChart(containerId)
 		.setRange('line', 0, 5000)
 		.setRange('bar', 0, 5000)
 		.bind(true, function(){return Engine.out_variables['electricity_bill'].get_values()}, 'Electricity bill')
 		.bind(false, function(){return Engine.out_variables['water_bill'].get_values()}, 'Water bill')
 		.bind(true, function(){return Engine.out_variables['water_run_off'].get_values()}, 'Water run-off');
+	return stackedChart;
+}
+
+function rebindChart(){
+	var ebid = Engine.out_variables['electricity_bill'].save(), 
+		wbid = Engine.out_variables['water_bill'].save(),
+		wrid = Engine.out_variables['water_run_off'].save();
+	var oldChart = stackedCharts[stackedCharts.length-1];
+	oldChart.rebind(function(){return Engine.out_variables['electricity_bill'].get_past_values(ebid);}, 'Electricity bill');
+	oldChart.rebind(function(){return Engine.out_variables['water_bill'].get_past_values(wbid);}, 'Water bill');
+	oldChart.rebind(function(){return Engine.out_variables['water_run_off'].get_past_values(wrid);}, 'Water run_off');
+}
+
+function initGameScreen(){
+	// init play / pause button
+	$('#budgetMeter').show();
+	$('#houseAnimContainer').show();
+	stackedCharts.push(bindChart('gameChart'));
+}
+
+function renderScreen(){
+	var contract = function(id){
+		var btnId = '#y'+id+'-btn';
+		$(btnId).removeClass().addClass('small-btn').css('box-shadow', '0 0 0px 0 #ff0000').attr('src', 'images/y'+id+'-button.png');
+		return $(btnId);
+	}
+
+	var expand = function(id){
+		var btnId = '#y'+id+'-btn';
+		$(btnId).removeClass().addClass('big-btn').attr('src', 'images/y'+id+'-play-button.png');
+		return $(btnId);
+	}
+
+	if(GameState.level() == 0){
+		$('#pieceContainer0').css('box-shadow', '0 0 40px 0 #ff0000');
+		$('#y1-btn').css('box-shadow', '0 0 0px 0 #ff0000')
+		$('#y1-btn').unbind('click').
+			click(function(){
+				GameState.step(); 
+			});
+	}
+	else if(GameState.level() <= NUM_LEVELS && GameState.state() == GAMESTATE_PAUSED){
+		$('#pieceContainer0').css('box-shadow', '0 0 0px 0 #ff0000');
+		expand(GameState.level()).css('box-shadow', '0 0 40px 0 #ff0000')
+			.unbind('click')
+			.click(function(){
+				GameState.step();
+			})
+		for(var i = 1; i < NUM_LEVELS; i++){
+			if(i != GameState.level()){
+				contract(i);
+			}
+		}
+	}
+	else if(GameState.level()  <= NUM_LEVELS && GameState.state() == GAMESTATE_PLAYING){
+		$('#y'+GameState.level()+'-btn').css('box-shadow', '0 0 0px 0 #ff0000');
+	}
+	else if(GameState.level()  <= NUM_LEVELS && GameState.state() == GAMESTATE_DONE){	
+		contract('y'+GameState.level()+'-btn');
+		$('#y'+GameState.level()+'-btn').unbind('click');
+		stackedCharts[stackedCharts.length-1].reposition('historyGraphContainer'+GameState.level(), GameState.level());
+		rebindChart();
+		stackedCharts.push(bindChart('gameChart'));
+		GameState.step();
+	}		
+	else{
+		$('#endScreen').show();
+		$('#endScreen').append($('#historyGraphContainer1').detach().css('margin', '60px'));
+		$('#endScreen').append($('#historyGraphContainer2').detach().css('margin', '60px'));
+		$('#endScreen').append($('#historyGraphContainer3').detach().css('margin', '60px'));
+		$('#endScreen').append($('<div class="endScore">SCORE:1</div>'));
+		$('#endScreen').append($('<div class="endScore">SCORE:2</div>'));
+		$('#endScreen').append($('<div class="endScore">SCORE:3</div>'));
+		$('#endScreen').append($('<div class="endText">Here are more words for the player.</div>'));
+		$('#endScreen').append($('<input class="endInput" type="text" class="form-control" placeholder="Enter your email to receive more information about green practices!"></input>'));
+		$('#endScreen').append($('<div class="endButton">SUBMIT!</div>'));
+	}
 }
 
 function initBudget(){
@@ -126,114 +194,23 @@ function initBudget(){
     		height: perc*totalHeight,
     	});
     });
-  	budget.change(MAX_BUDGET/1.1);
+  	budget.change(MAX_BUDGET);
 }
 
 
-// function initGameScreen(){
-// 	loadSvg('images/saving-icon.svg', 'saving-icon', function(){
-// 	loadSvg('images/price-icon.svg', 'price-icon', function(){
-// 	loadSvg('images/info-circle.svg', 'info-circle', function(){
-// 	loadSvg('images/info-icon.svg', 'info-icon', function(){
-// 		initPieces();
-// 	});
-// 	});
-// 	});
-// 	});
-// 	loadSvg('images/house.svg', 'houseContainer', function(node){
-// 		var groupId = 0;
-// 		node.children('g').each(function(){
-// 			visibilities[groupId] = -1;
-// 			this.setAttribute('id', groupId+'g');
-// 			groupId++;
-// 		});
-// 		visibilities[2] = 0;
-// 		initTwo();
-// 	});	
-// 	$('#houseAnimContainer').hide();
-// 	$('#submitButton').click(function(){
-// 		if(availableBudget < 0){
-// 			alert('You have exceeded your budget! Try removing some features!');
-// 		}
-// 		else{
-// 		  $('#endScreen').show(function() {
-
-// 		      var data = new google.visualization.DataTable(); 
-		      
-// 		      data.addColumn('string', 'Year');
-// 		      data.addColumn('number', 'Initial Investment');
-// 		      data.addColumn('number', 'Net Savings');
-
-// 		      for(var tmp = 2014; tmp < 2030; tmp++)
-// 		      {
-// 		        //TODO update this with the actual year graph
-// 		        data.addRow([tmp.toString(),initialInvestment,(tmp-2014)*yearSavings]);
-// 		      }
-
-// 		      var options = {
-// 		        title: 'Savings Over Time'
-// 		      };
-
-// 		      var chart = new google.visualization.LineChart(document.getElementById('end_chart'));
-// 		      chart.draw(data,options);
-// 		  });
-// 		}
-// 	});
-// }
-
-function initElements(){
-	$('#startButton').click(function(){
-		$('#startScreen').hide();	
-		$('#instrScreen').show();
-	});
-
-	$('#instrNextButton').click(function(){
-		$('#instrScreen').hide();
-		$('#instrScreen2').show();
-	});
-
-	$('#instrNextButton2').click(function(){
-		$('#instrScreen2').hide();
-		$('#instrScreen3').show();
-	})
-
-	$('#instrNextButton3').click(function(){
-		$('#instrScreen3').hide();
-		$('#qtnScreen1').show();
-	})
-	var qtnButton1Next = function(){
-		$('#qtnScreen1').hide();
-		$('#qtnScreen2').show();
-	};
-	$('#qtnButton11').click(qtnButton1Next);
-	$('#qtnButton12').click(qtnButton1Next);
-	$('#qtnButton13').click(qtnButton1Next);
-	var qtnButton2Next = function(){
-		$('#qtnScreen2').hide();
-		$('#backgroundOverlay').hide();
-		showGameScreen();
-	};
-	$('#qtnButton21').click(qtnButton2Next);
-	$('#qtnButton22').click(qtnButton2Next);
-
-	$('#backgroundOverlay').show();
-	$('#startScreen').show();
-	$('#budgetMeter').hide();
-	$('#instrScreen').hide();
-	$('#instrScreen2').hide();
-	$('#instrScreen3').hide();
-	$('#_endScreen').hide();
-	$('#qtnScreen1').hide();
-	$('#qtnScreen2').hide();
-	$('#calibrate').click(function(){
-		calibrate();
-	});
-}
 // Emily's instruction initializing function
 function initInstruction(){
+	$('#instruction_screen1').hide();
 	$('#instruction_screen2').hide();
 	$('#instruction_screen3').hide();
 	$('#instruction_screen4').hide();
+	$('#instruction_header').hide();
+	$('#start_screen').show();
+	$('#instruction_screen0_next').click(function(){
+		$('#start_screen').hide();
+		$('#instruction_screen1').show();
+		$('#instruction_header').show();
+	})
 	$('#instruction_screen1_next').click(function(){
 		$('#instruction_screen1').hide();
 		$('#instruction_screen2').show();
@@ -271,13 +248,15 @@ $(document).ready(function(){
 	initBudget();
 	initGameEngine();
 	initGameScreen();
+	renderScreen();
 
     var onTimer = function(){
-    	if(gameState.playing){
+    	if(GameState.state() == GAMESTATE_PLAYING){
 	 		Engine.simulate(1);
+	 		GameState.step();
 	 	}
-	 	setTimeout(onTimer, 1000/gameState.playSpeed);
+	 	setTimeout(onTimer, 100);
     }
 
-	setTimeout(onTimer, 1000/gameState.playSpeed);
+	setTimeout(onTimer, 100);
 });

@@ -1,14 +1,17 @@
-var MAX_NUM_BARS = 6 * 7, // 6 bars per day. 7 days per week.
-	BAR_WIDTH = 15,
+var MAX_NUM_BARS = 12, // 6 bars per day. 7 days per week.
+	BAR_WIDTH = function(contracted) {return contracted ? 12 : 40;},
 	BAR_HEIGHT = 10,
 	LINEGRAPH_HEIGHT = 70,
 	LINEGRAPH_POINTSIZE = 5,
-	labelXoff = 660,
+	labelXoff = 600,
 	valueXoff = 100,
+	yearXoff = 150,
+	yearYoff = 40,
 	colors = ['rgb(255, 255, 153)', 'rgb(104, 202, 202)', 'rgb(255, 102, 102)', 'rgb(153, 204, 102)', 'teal'],
 	containerWidth; 
 
 function StackedChart(_divId){
+	this.contracted = false;
 	var step = 500,
 		data = [],
 		tags = [],
@@ -22,9 +25,6 @@ function StackedChart(_divId){
 		if(data.length > 0){
 			render();
 		}
-		else{
-			//console.log('no data to log');
-		}
 		setTimeout(update, step);
 	}
 
@@ -34,7 +34,7 @@ function StackedChart(_divId){
 		var svg = d3.select('#'+divId)
 	            .append('svg')
 	            .attr("width", containerWidth)
-	            .attr("height", 90);
+	            .attr("height", self.contracted? 70:90);
 
 	    var h = 0;
 	    for(var i = 0; i < data.length; i++){
@@ -57,7 +57,9 @@ function StackedChart(_divId){
 	    	}
 	    	
 	    }
-	    self.drawAxis(svg, h, []);	
+	    if(!self.contracted){
+	    	self.drawAxis(svg, h, []);	
+		}
 	}
 
 	this.bind = function(isNewChart, _data, tag){
@@ -72,8 +74,29 @@ function StackedChart(_divId){
 		return this;
 	}
 
+	this.rebind = function(_data, tag){
+		for(var i = 0; i < tags.length; i++){
+			for(var j = 0; j < tags[i].length; j++){
+				if(tags[i][j] == tag){
+					data[i][j] = _data;
+				}
+			}
+		}
+	}
+
 	this.step = function(_){
 		step = _;
+	}
+
+
+	this.reposition = function(newDivId, year){
+		$('#'+newDivId).show();
+		//$('#'+newDivId).html($('#'+divId).html());
+		$('#'+divId).empty();
+		divId = newDivId;
+		self.contracted = true;
+		self.year = year;
+
 	}
 
 	render();
@@ -96,7 +119,7 @@ StackedChart.prototype.drawAxis = function(svg, h, tickValues){
 	//draw axis
     var xScale = d3.scale.linear()
 		.domain([0, 7])
-		.range([0, (MAX_NUM_BARS+2) * BAR_WIDTH]);
+		.range([0, (MAX_NUM_BARS+2) * BAR_WIDTH(this.contracted)]);
 
 	svg.append('g')
 		.attr('class', 'stacked-chart-axis')
@@ -118,7 +141,7 @@ StackedChart.prototype.drawBarChart = function(data, group, tag){
 		.data(_data)
 		.enter()
 		.append('rect')
-		.attr('x', function(d, _i){return _i * (BAR_WIDTH+1);})
+		.attr('x', function(d, _i){return _i * (BAR_WIDTH(self.contracted)+1);})
 		.attr('y', 0)
 		.attr('fill', function(d) {
 			var perc = (d-self.barRange.min) / (self.barRange.max - self.barRange.min);
@@ -127,24 +150,25 @@ StackedChart.prototype.drawBarChart = function(data, group, tag){
 			var b = Math.round(102 * perc + (1-perc) * 204);
 			return 'rgb('+r +','+g+',' + b + ')';
 		})
-		.attr('width', BAR_WIDTH)
+		.attr('width', BAR_WIDTH(self.contracted))
 		.attr('height', BAR_HEIGHT);
 
 	// label
-	group.append('text')
+	if(!this.contracted){
+		group.append('text')
 		.text(tag)
 		.attr('x', labelXoff)
 		.attr('y', BAR_HEIGHT/2+5)
 		.attr('fill','white')
 		.attr('font-size', '14px');
-
-	// cur data
-	group.append('text')
-		.text(Math.floor(_data[_data.length-1]*100)/100)
+		// cur data
+		group.append('text')
+		.text(_data.length > 0 ? Math.floor(_data[_data.length-1]*100)/100 : '--')
 		.attr('x', valueXoff + labelXoff)
 		.attr('y', BAR_HEIGHT/2+5)
 		.attr('fill','white')
 		.attr('font-size', '14px');
+	}
 }
 
 StackedChart.prototype.drawLineChart = function(data, group, color, tag, height){
@@ -164,30 +188,41 @@ StackedChart.prototype.drawLineChart = function(data, group, color, tag, height)
 	// the data point
 	_g.append('circle')
 		.attr('r', 3)
-		.attr('cx', function(d, _i){return _i * (BAR_WIDTH+1);})
+		.attr('cx', function(d, _i){return _i * (BAR_WIDTH(self.contracted)+1);})
 		.attr('cy', mapHeight)
 		.attr('fill', color)
 		.attr('width', LINEGRAPH_POINTSIZE)
 		.attr('height', LINEGRAPH_POINTSIZE);
 	// line between points
 	_g.append('line')
-		.attr('x1', function(d, _i){return _i * (BAR_WIDTH+1);})
+		.attr('x1', function(d, _i){return _i * (BAR_WIDTH(self.contracted)+1);})
 		.attr('y1', mapHeight)
-		.attr('x2', function(d, _i){return _i > 0 ? (_i-1) * (BAR_WIDTH+1) : _i * (BAR_WIDTH+1);})
+		.attr('x2', function(d, _i){return _i > 0 ? (_i-1) * (BAR_WIDTH(self.contracted)+1) : _i * (BAR_WIDTH(self.contracted)+1);})
 		.attr('y2', function(d, _i){return _i > 0 ? mapHeight(_data[_i-1]) : mapHeight(d);})
 		.attr('stroke', color)
 		.attr('stroke-width', 1);
 	// draw lable of the chart & cur data
-	group.append('text')
-		.text(tag)
-		.attr('x', labelXoff)
-		.attr('y', height)
-		.attr('fill', color)
-		.attr('font-size', '14px');
-	group.append('text')
-		.text(Math.floor(_data[_data.length-1]*100)/100)
-		.attr('x', valueXoff + labelXoff)
-		.attr('y', height)
-		.attr('fill', color)
-		.attr('font-size', '14px');
+	if(!this.contracted){
+		group.append('text')
+			.text(tag)
+			.attr('x', labelXoff)
+			.attr('y', height)
+			.attr('fill', color)
+			.attr('font-size', '14px');
+		// draw text for cur data
+		group.append('text')
+			.text(_data.length > 0 ? Math.floor(_data[_data.length-1]*100)/100 : '--')
+			.attr('x', valueXoff + labelXoff)
+			.attr('y', height)
+			.attr('fill', color)
+			.attr('font-size', '14px');			
+	}
+	else{
+			group.append('text')
+			.text('year' + self.year)
+			.attr('x', yearXoff)
+			.attr('y', yearYoff)
+			.attr('fill','white')
+			.attr('font-size', '22px');
+		}
 }

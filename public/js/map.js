@@ -1,5 +1,12 @@
 var map;
 
+function centerMap() {
+    var defaultBounds = new google.maps.LatLngBounds(
+        new google.maps.LatLng(47.971537, -131.132813),
+        new google.maps.LatLng(24.754314, -76.728516));
+    map.fitBounds(defaultBounds);
+}
+
 function initialize() {
 
   var markers = [];
@@ -48,8 +55,9 @@ function initialize() {
           destinationFrom(kmlEvt.latLng.lat(),kmlEvt.latLng.lng(),225,dist),
           destinationFrom(kmlEvt.latLng.lat(),kmlEvt.latLng.lng(),45,dist));
       
+      $('#preference-loading').html('<h4>Loading Area</h4><img src="/images/loading.gif"/>');
       Preferences.latLng = {lat: kmlEvt.latLng.lat(), lng: kmlEvt.latLng.lng()};
-
+      Preferences.climate = {name: kmlEvt.featureData.name, description: kmlEvt.featureData.description} 
       //Get Station Info
       //NOAA.stations_for_area(box,function(data) {
       //  NOAA.data_for_stations(data, {startdate: "2013-03-01", enddate: "2013-03-31", datasetid: "GHCNDMS"}, function(data) {
@@ -66,29 +74,44 @@ function initialize() {
   
   //Update our weather and rates when we get a new LatLng
   Preferences.bind("latLng", function() {
+    $('#preferences-form :submit').prop('disabled', false);
+    var count = 0;
+    
+    function doneLoading(count) {
+      if (count >= 4) {
+        var html = '<h4>Area Selection</h4><p><strong>Zip</strong>&nbsp;&nbsp;'+Preferences.location.zip+'</p>';
+        html += '<p><strong>City</strong>&nbsp;'+Preferences.location.city+'</p>';
+        $('#preference-loading').html(html);
+        $('#preferences-form :submit').prop('disabled', false);
+        count = 0;
+      }
+    }
+
     //Update the rates
-    NREL.get_rates(Preferences.latLng.lat, Preferences.latLng.lng, function(data) { Preferences.rates = data.outputs });
+    NREL.get_rates(Preferences.latLng.lat, Preferences.latLng.lng, function(data) { Preferences.rates = data.outputs; doneLoading(++count); });
     //Update weather
-    Weather.set_location(Preferences.latLng, function(data) { Preferences.weather = data });
+    Weather.set_location(Preferences.latLng, function(data) { Preferences.weather = data; doneLoading(++count); });
     //Update zip code
-    geocode.find_zip(Preferences.latLng, function(data) { Preferences.zip = data });
+    geocode.find_location(Preferences.latLng, function(data) { Preferences.location = data; doneLoading(++count); });
     //get soil information 
-    soil.get_preference_info(Preferences.latLng, function(data) { Preferences.soil = data });
+    soil.get_preference_info(Preferences.latLng, function(data) { Preferences.soil = data; doneLoading(++count); });
   });
 
   var geocode = {
     geocoder: new google.maps.Geocoder(),
-    find_zip: function(latlng,callback) {
+    find_location: function(latlng,callback) {
       this.geocoder.geocode({'latLng': latlng}, function(results,status) {
         if (status == google.maps.GeocoderStatus.OK) {
           if (results[0]) {
             var result = results[0];
-            var zip = "";
+            var loc = {};
             for(var i=0, len=result.address_components.length; i<len; i++) {
               var ac = result.address_components[i];
-              if(ac.types.indexOf("postal_code") >= 0) zip = ac.long_name;
+              if(ac.types.indexOf("postal_code") >= 0) loc["zip"] = ac.long_name;
+              if(ac.types.indexOf("locality") >= 0) loc["city"] = ac.long_name;
+              if(ac.types.indexOf("administrative_area_level_1") >= 0) loc["state"] = ac.long_name;
             }
-            callback(zip);
+            callback(loc);
           }
         }
       });
@@ -336,7 +359,8 @@ var Weather = {
  */
 var Preferences = {
   latLng: {lat: -79.98493194580078, lng: 40.44328916582578},
-  zip: 15219,
+  location: {},
+  climate: {},
   solar_size: 10,
   sqft: 2000,
   fuel: "natural_gas",
@@ -351,17 +375,22 @@ var Preferences = {
       this["bind_"+arguments[i]](arguments[arguments.length-1]);
     }
   },
+  //This method is pure evil meta programming -- shield your eyes
   init: function() {
     for(var prop in this){
       if (this.hasOwnProperty(prop) && prop != "init" && prop != "bind"){
         var update_functions = new Array();
         var self = this;
+        //Fancy stuff to maintain our closure in the for loop
         this["bind_"+prop] = (function(prop,arr){
           return function(func) {
             arr.push(func);
           }
         })(prop,update_functions);
         var tmp_val = self[prop];
+        //More fancy for loop closure stuff
+        //Also, overwriting our default variables, hiding them, and then 
+        //virtually creating a binding array
         this.__defineSetter__(prop,(function(prop,arr){
           return function(val) {
             self[prop+"_val"] = val;
@@ -416,7 +445,7 @@ var Building = {
     //Calculate this based on rainfall for the month
     if (Preferences.weather == null) { return 0 }
     //Not going to use any water if it is cold on average outside
-    if (Preferences.weather.temp.avgF > 50) {
+    if (Preferences.weather[month].temp.avgF > 50) {
       //We water our garden for 2 hours every day
       return 18000;
     } else {

@@ -342,7 +342,7 @@ function Piece(system)
   ref['info-panel'] = makePanel(name+'-infoPanel', infoPanelTexts[name], -150+this.r-bw, this.r*3, this.ref['anchor']);
   ref['info-panel'].hide();
   ref['info-icon'].click(function(){ref['info-panel'].toggle()});
-  this.loadAnimation(name, 1, 14);
+  this.loadAnimation(name, 1, 1);
   //makeArc(this.r*2, -bw+this.r, -bw+this.r, bw, 15, this.ref['anchor']);
 }
 
@@ -530,11 +530,14 @@ var initialInvestment = 40000;
 var yearSavings = 2700; 
 
 $(function() {
-  // $('#preferences').show(function() {
-  //   google.maps.event.trigger(map, 'resize');
-  // })
+  $('#preferences').show(function() {
+    google.maps.event.trigger(map, 'resize');
+    centerMap();
+  })
 
-  // $('#preferences form').submit(function (event) {
-  //   event.preventDefault();
-  // });
+  $('#preferences-form').submit(function (event) {
+     event.preventDefault();
+     Preferences.num_people = parseInt($('#preferences-form input[name=members]').val());
+     $('#preferences').hide();
+  });
 });
