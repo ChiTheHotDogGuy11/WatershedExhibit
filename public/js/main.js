@@ -38,26 +38,41 @@ function initGameEngine(){
     	init_value: 1000,
     });
 
-    var barrel_sys = {
-        vars: ["rain"],
-        calculation_function: function(in_vars, out_vars) {
-          if(out_vars["water_bill"] < 5000){
-          	out_vars["water_bill"] += 1000;
+    // var barrel_sys = {
+    //     vars: ["rain"],
+    //     calculation_function: function(in_vars, out_vars) {
+    //       if(out_vars["water_bill"] < 5000){
+    //       	out_vars["water_bill"] += 1000;
           	
-          }
-          else{
-          	out_vars["water_bill"] = 0;
-          }
-          out_vars['water_run_off'] = Math.random() * 5000;
-          out_vars['electricity_bill'] = 1000;
+    //       }
+    //       else{
+    //       	out_vars["water_bill"] = 0;
+    //       }
+    //       out_vars['water_run_off'] = Math.random() * 5000;
+    //       out_vars['electricity_bill'] = 1000;
+    //       return out_vars;
+    //     },
+    //     name: 'rain_barrel',
+    //     cost: 1,
+    // };
+    var geo_sys = {
+        vars: ["geo-thermal"],
+        calculation_function: function(in_vars, out_vars) {
           return out_vars;
         },
-        name: 'rain_barrel',
-        cost: 1,
+        name: 'geo_thermal',
+        cost: 30,
     };
-    barrel_sys.piece = new Piece(barrel_sys);
-    barrel_sys.piece.move(400, 400);
-    Engine.new_system(barrel_sys);
+    var rb_piece = new Piece(Engine.systems['rain_barrel']);
+    Engine.systems['rain_barrel'].piece = rb_piece;
+    var gt_piece = new Piece(Engine.systems['geo_thermal']);
+    Engine.systems['geo_thermal'].piece = gt_piece;
+    var sp_piece = new Piece(Engine.systems['solar_panel']);
+    Engine.systems['solar_panel'].piece = sp_piece;
+    // geo_sys.piece = new Piece(geo_sys);
+    // barrel_sys.piece.move(400, 400);
+    // geo_sys.piece.move(250, 500);
+    // Engine.new_system(barrel_sys);
 
     // secret functionalities of help / quit button for the sake of testing. should be removed in release!s
 	$('#help-btn').click(function(){

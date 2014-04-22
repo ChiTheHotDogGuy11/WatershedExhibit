@@ -25,9 +25,6 @@ function StackedChart(_divId){
 		if(data.length > 0){
 			render();
 		}
-		else{
-			//console.log('no data to log');
-		}
 		setTimeout(update, step);
 	}
 
