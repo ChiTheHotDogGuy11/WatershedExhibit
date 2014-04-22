@@ -32,13 +32,14 @@
 .instruction_paragraph .instruction_option {
   display: inline-block;
   width: 32%;
+  cursor: pointer;
 }
-/* line 32, ../sass/instruction.scss */
+/* line 33, ../sass/instruction.scss */
 .instruction_paragraph .instruction_option img {
   float: none;
 }
 
-/* line 38, ../sass/instruction.scss */
+/* line 39, ../sass/instruction.scss */
 .instruction_next_button {
   padding: 1% 4%;
   position: absolute;
@@ -56,7 +57,7 @@
   -ms-user-select: none;
 }
 
-/* line 54, ../sass/instruction.scss */
+/* line 55, ../sass/instruction.scss */
 .instruction_previous_button {
   padding: 1% 4%;
   position: absolute;
