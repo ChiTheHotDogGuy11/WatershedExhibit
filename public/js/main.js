@@ -197,10 +197,13 @@ function initInstruction(){
 	$('#instruction_screen3_next').click(function(){
 		$('#instruction_screen4').show();
 		$('#instruction_screen3').hide();
+		$('#instruction_header').hide();
 	});
 	$('#instruction_screen4_previous').click(function(){
 		$('#instruction_screen3').show();
 		$('#instruction_screen4').hide();
+		$('#instruction_header').show();
+
 	});
 
 }
@@ -208,8 +211,8 @@ function initInstruction(){
 
 // Insert JS here
 $(document).ready(function(){
-	initBudget();
 	initInstruction();
+	initBudget();
 	initGameEngine();
 	initGameScreen();
 	renderScreen();

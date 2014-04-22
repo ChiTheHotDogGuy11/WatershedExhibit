@@ -56,20 +56,24 @@ function initialize() {
       //    console.log(data);
       //  });
       //});
-      Weather.get_normals(Preferences.latLng, function(data) { console.log(data) });
-
-      //Get Electricity Rates
-      NREL.get_rates(kmlEvt.latLng.lat(),kmlEvt.latLng.lng(),function(data) {console.log(data)});
-      //Solar potential for area
-      NREL.get_solar(kmlEvt.latLng.lat(),kmlEvt.latLng.lng(),100,function(data) {console.log(data)});
-      //Get the geothermal info
-      NREL.get_geothermal(kmlEvt.latLng.lat(),kmlEvt.latLng.lng(),"natural_gas",2000,function(data){ console.log(data)});  
       
-      //Get our zip code
-      geocode.find_zip(kmlEvt.latLng, function(data) {
-        Preferences.zip = data;
-      });
+      //Solar potential for area
+      //NREL.get_solar(kmlEvt.latLng.lat(),kmlEvt.latLng.lng(),100,function(data) {console.log(data)});
+      //Get the geothermal info
+      ////NREL.get_geothermal(kmlEvt.latLng.lat(),kmlEvt.latLng.lng(),"natural_gas",2000,function(data){ console.log(data)});  
     });
+  });
+  
+  //Update our weather and rates when we get a new LatLng
+  Preferences.bind("latLng", function() {
+    //Update the rates
+    NREL.get_rates(Preferences.latLng.lat, Preferences.latLng.lng, function(data) { Preferences.rates = data.outputs });
+    //Update weather
+    Weather.set_location(Preferences.latLng, function(data) { Preferences.weather = data });
+    //Update zip code
+    geocode.find_zip(Preferences.latLng, function(data) { Preferences.zip = data });
+    //get soil information 
+    soil.get_preference_info(Preferences.latLng, function(data) { Preferences.soil = data });
   });
 
   var geocode = {
@@ -243,6 +247,22 @@ var soil = {
         console.log(textStatus);
       }
     });
+  },
+  get_preference_info: function(latLon, callback) {
+    this.get_data(latLon.lat, latLon.lng, function(data) {
+      var ret = {};
+      $('#loaderdiv').empty();
+      $('#loaderdiv').append($(data));
+      ret["flood"] = $('#loaderdiv').find('.mudata span:contains("Flood")').next().html().trim();
+      ret["storage"] = $('#loaderdiv').find('.mudata span:contains("Storage")').next().html().trim();
+      ret["drainage_wet"] = $('#loaderdiv').find('.mudata span:contains("Wettest Component")').next().html().trim();
+      //NOTE lower drainage = higher runoff
+      ret["drainage_dom"] = $('#loaderdiv').find('.mudata span:contains("Dominant")').next().html().trim();
+      ret["wetland"] = $('#loaderdiv').find('.mudata span:contains("Hydric")').next().html().trim();
+      ret["table"] = $('#loaderdiv').find('.mudata span:contains("April-June")').next().html().trim();
+      ret["soil"] = $('#loaderdiv').find('.muname > .mu-name').html().trim();
+      callback(ret);
+    });
   }
 }
 
@@ -251,6 +271,7 @@ var Weather = {
   
   client_id: "nMCnfGEEaArwNARvEdiZb",
   client_secret: "i8by9MQMwt1p4MPrRoLmnHhYhu030KkqcX1g5vo8",
+  normals: null,
   get_data: function(action,loc,params,callback) {
     params["client_id"] = this.client_id;
     params["client_secret"] = this.client_secret;
@@ -272,14 +293,57 @@ var Weather = {
     params["to"] = "12/31/2010";
     this.get_data("normals", "closest", params, callback);
   },
+  set_location: function(loc,callback){
+    this.get_normals(loc, function(data) {
+      var compressed_data = new Array();
+      //month loop
+      for(var j = 0; j < data.response[0].periods.length; j++) {
+        //object loop
+        var month_obj = {};
+        for(var i = 0; i < data.response.length; i++)
+        {
+          var period = data.response[i].periods[j];
+          for (var prop in period) {
+            if (period.hasOwnProperty(prop)) {
+              if (month_obj[prop] == null) {
+                month_obj[prop] = period[prop];
+              }
+            }
+          }
+          if (month_obj.cdd < 0 || month_obj.hdd < 0) {
+            month_obj.cdd = null;
+            month_obj.hdd = null;
+          }
+        }
+        compressed_data.push(month_obj);
+      }
+      normals = compressed_data;
+      callback(compressed_data); 
+    });
+  }
 }
 
+/*Lists our preferences that we will set at the beginning / throughout the simulation
+ *
+ * We specify a new preferences we want -- do so in standard object notation ex: 
+ *  zip: default_value,
+ *
+ * To get a value or set one, just do so as a we would normally for an object ex:
+ *  Preferences.zip / Preferences.zip = 
+ *
+ * Finally, we can bind methods that will run when a certain preference(s) is updated, ex:
+ *  Preferences.bind("zip","latLng", function() { })
+ */
 var Preferences = {
   latLng: {lat: -79.98493194580078, lng: 40.44328916582578},
   zip: 15219,
   solar_size: 10,
   sqft: 2000,
   fuel: "natural_gas",
+  efficient_fixtures: false,
+  num_people: 4,
+  weather: null,
+  rates: null,
   //Use like bind("latLng","solar_size" function() { stuff })
   bind: function() {
     for(var i = 0; i < arguments.length-1; i++)
@@ -292,20 +356,20 @@ var Preferences = {
       if (this.hasOwnProperty(prop) && prop != "init" && prop != "bind"){
         var update_functions = new Array();
         var self = this;
-        this["bind_"+prop] = (function(prop){
+        this["bind_"+prop] = (function(prop,arr){
           return function(func) {
-            update_functions.push(func);
+            arr.push(func);
           }
-        })(prop);
+        })(prop,update_functions);
         var tmp_val = self[prop];
-        this.__defineSetter__(prop,(function(prop){
+        this.__defineSetter__(prop,(function(prop,arr){
           return function(val) {
             self[prop+"_val"] = val;
-            for(var k = 0; k < update_functions.length; k++){
-              update_functions[k]();
+            for(var k = 0; k < arr.length; k++){
+              arr[k]();
             }
           }
-        })(prop));
+        })(prop,update_functions));
         self[prop+"_val"] = tmp_val;
         this.__defineGetter__(prop,(function(prop){
           return function() {
@@ -318,13 +382,13 @@ var Preferences = {
 }
 Preferences.init();
 
-var Water = {
+var Building = {
   default_params: {
     showers: 1, //Showers per day per person
     shower_time: 6.3,
     shower_flow: 3.8, //3.8 is standard -- 1.6 is for efficient faucets
-    baths: 0, //Baths per week
-    toilet_flushes: 4, //# of toilet flushes in a day
+    baths: 2, //Baths per week
+    toilet_flushes: 2, //# of toilet flushes in a day per person
     gpf: 5, //Gallons per flush (5 std, 1.6 efficiency
     faucet: 5, //# of times a person uses the faucet daily
     faucet_min: .5, //length of faucet used
@@ -335,27 +399,50 @@ var Water = {
     laundry: 7, //Loads of laundry per week
     laundry_flow: 55, //Gallons for each load
   }, 
-  indoor_usage: function(params) {
-    var bathtotal = Math.round(((form.showers.value * form.showermin.value * form.showerflow.value) + (form.baths.value / 7 * 40))/form.people.value);
-    var toiletday = Math.round((form.people.value * form.toiletflow.value * form.toiletflush.value)/form.people.value);
-    var faucetday = Math.round((form.faucet.value * form.people.value * form.faucetmin.value * 3)/form.people.value);
-    var dishwasherday = Math.round(((form.dishwasher.value * form.dishwasherflow.value)/7)/form.people.value);
-    var laundryday = Math.round(((form.laundry.value * form.laundryload.value)/7)/form.people.value);
-    var dishday = Math.round((form.dishhand.value * form.dishmin.value * 3)/form.people.value);
-    var lawnday = Math.round(((form.lawn.value * form.lawnmin.value * 15)/7)/form.people.value);
-    var otherday = Math.round(((form.other.value * 10)/7)/form.people.value);
+  indoor_water_usage: function(params) {
+    params = params || {}
+    var params = $.extend({},this.default_params,params)
+    var bathtotal = Math.round((params.showers * params.shower_time * params.shower_flow * Preferences.num_people) + (params.baths / 7 * 40));
+    var toiletday = Math.round(Preferences.num_people * params.gpf * params.toilet_flushes);
+    var faucetday = Math.round(params.faucet * Preferences.num_people * params.faucet_min * 3);
+    var dishwasherday = Math.round((params.dishwasher_loads * params.dishwasher_flow)/7);
+    var laundryday = Math.round((params.laundry * params.laundry_flow)/7);
+    var dishday = Math.round(params.hand_dishes * params.hand_min * 3);
     var indoorday = Math.round(bathtotal + toiletday + faucetday + laundryday + dishwasherday + dishday);
-    var outdoorday = Math.round(lawnday + otherday);
-    var totalday = Math.round(indoorday + outdoorday);
-    var totalmonth = Math.round(totalday * 30.4);
-    var totalyear = Math.round(totalday * 365);
-    var DWAday = 207;
-    var DWAmonth = DWAday*30;
-    var DWAyear = DWAday*365;
+    return Math.round(indoorday * 30.4);
   },
   
-  outdoor_usage: function() {
+  outdoor_water_usage: function(month) {
     //Calculate this based on rainfall for the month
+    if (Preferences.weather == null) { return 0 }
+    //Not going to use any water if it is cold on average outside
+    if (Preferences.weather.temp.avgF > 50) {
+      //We water our garden for 2 hours every day
+      return 18000;
+    } else {
+      return 0;
+    }
+  },
+  //Usage in kWh -- could be effected with energy efficient appliances
+  //@see http://www.cpi.coop/my-account/online-usage-calculator/
+  electricity_usage: function() {
+    var total = 0;
+    total += 57; //Refrigerator
+    total += 58; //Freezer
+    total += 13; //Dishwasher
+    total += 24; //Range/Oven
+    total += 11; //Microwave
+    total += 10; //Coffee Machine
+    total += 135; //Well Pump
+    total += 25; //55" TV
+    total += 21 * Math.floor(Preferences.num_people / 2); /* Computer */ 
+    total += 1 * Preferences.num_people; //Cell Phones
+    total += 23; //DVR
+    total += (Preferences.num_people > 2)? 15:0; //Video game system
+    total += 6; //Washing Machine
+    total += 57; //Clothes dryer
+    total  += 405; //Water heater
+    return total
   },
 
 }
@@ -404,7 +491,7 @@ var NREL = {
         address: '',
         zipcode: '',
         fuelrate: '',
-        electricrate: '',
+        electricrate: Preferences.rates.residential,
         long: lon,
         lat: lat,
         state: '',
@@ -416,6 +503,9 @@ var NREL = {
       },
       success: function(data) {
         var csv = self.parse_csv(data);
+        Preferences.rates.natural_gas = csv[13][0];
+        Preferences.rates.propane = csv[13][3];
+        Preferences.rates.oil = csv[13][2];
         callback({
             heating_old: csv[1],
             cooling_old: csv[2],
