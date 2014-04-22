@@ -12,7 +12,7 @@ $(function() {
   Preferences.bind("latLng", "solar_size", find_solar);
 
   Engine.new_system({
-    name: "solar_panels",
+    name: "solar_panel",
     calculation_function: function (in_vars, out_vars, scale, active) {
       var month = in_vars["month"]
       if (Preferences.solar_size != scale) { Preferences.solar_size = scale; } //TODO we need to block on this... else the results are not accurate
@@ -36,13 +36,13 @@ $(function() {
   var find_geothermal = function() {
     NREL.get_geothermal(Preferences.latLng.lat, Preferences.latLng.lng, Preferences.fuel, Preferences.sqft, function(data) {
       monthly_data = data;
-    }
+    });
   }
-  Preferences.bind("latLng","fuel","sqft", find_geothermal);
+  Preferences.bind("rates","fuel","sqft", find_geothermal);
 
   Engine.new_system({
-    name: "geothermal",
-    caluation_function: function(in_vars, out_vars, scale, active) {
+    name: "geo_thermal",
+    calculation_function: function(in_vars, out_vars, scale, active) {
       var month = in_vars["month"]
       if (active) {
         //TODO divide this by the fuel we chose
