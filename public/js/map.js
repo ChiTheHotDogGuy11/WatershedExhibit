@@ -351,17 +351,22 @@ var Preferences = {
       this["bind_"+arguments[i]](arguments[arguments.length-1]);
     }
   },
+  //This method is pure evil meta programming -- shield your eyes
   init: function() {
     for(var prop in this){
       if (this.hasOwnProperty(prop) && prop != "init" && prop != "bind"){
         var update_functions = new Array();
         var self = this;
+        //Fancy stuff to maintain our closure in the for loop
         this["bind_"+prop] = (function(prop,arr){
           return function(func) {
             arr.push(func);
           }
         })(prop,update_functions);
         var tmp_val = self[prop];
+        //More fancy for loop closure stuff
+        //Also, overwriting our default variables, hiding them, and then 
+        //virtually creating a binding array
         this.__defineSetter__(prop,(function(prop,arr){
           return function(val) {
             self[prop+"_val"] = val;
