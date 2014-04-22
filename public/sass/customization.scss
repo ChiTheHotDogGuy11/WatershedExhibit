@@ -29,7 +29,7 @@
 }
 
 #map-container {
-  height: 80%;
+  height: 75%;
 }
 
 .gm-style-iw {
@@ -80,7 +80,11 @@
     clear: left;
     display: block;
     margin-top:3px; 
-    width:90px;
+  }
+
+  .output {
+    float: right;
+    margin-top: 5px
   }
 }
 

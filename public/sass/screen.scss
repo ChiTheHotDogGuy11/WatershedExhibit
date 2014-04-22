@@ -318,7 +318,6 @@ color: white;
 	border-radius: 10px;
 	margin: 10px;
 	color: white;
-	display: inline-block;
 }
 
 .game-panel-transparent{
@@ -440,6 +439,47 @@ color: white;
 
 #panelContainer-middle{
 	width: 100%;
+}
+
+#endScreen{
+	position: absolute; 
+	top: 15%; 
+	left: 20%; 
+	width: 60%; height: 70%; 
+	z-index: 400;
+	display: none;
+}
+
+.endScore{
+	color: white;
+	font-size: 40pt;
+	display: inline-block;
+	margin-top: -20px;
+	margin-left: 40px;
+	margin-right: 40px;
+}
+
+.endText{
+	color: white;
+	font-size: 12pt;
+	margin-left: 40px;
+	margin-top: 20px;
+}
+
+.endInput{
+	margin-left: 40px;
+	margin-right: 40px;
+	margin-top: 20px;
+	width: 90%;
+}
+
+.endButton{
+	color: white;
+	font-size: 40pt;
+	margin-top: 30px;
+	margin-left: 40px;
+	margin-right: 40px;
+
 }
 @import 'pieces';
 @import 'customization';

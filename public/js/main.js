@@ -137,13 +137,23 @@ function renderScreen(){
 	}
 	else if(GameState.level()  <= NUM_LEVELS && GameState.state() == GAMESTATE_DONE){	
 		contract('y'+GameState.level()+'-btn');
+		$('#y'+GameState.level()+'-btn').unbind('click');
 		stackedCharts[stackedCharts.length-1].reposition('historyGraphContainer'+GameState.level(), GameState.level());
 		rebindChart();
 		stackedCharts.push(bindChart('gameChart'));
 		GameState.step();
 	}		
 	else{
-		alert('congratulations, you win!');
+		$('#endScreen').show();
+		$('#endScreen').append($('#historyGraphContainer1').detach().css('margin', '60px'));
+		$('#endScreen').append($('#historyGraphContainer2').detach().css('margin', '60px'));
+		$('#endScreen').append($('#historyGraphContainer3').detach().css('margin', '60px'));
+		$('#endScreen').append($('<div class="endScore">SCORE:1</div>'));
+		$('#endScreen').append($('<div class="endScore">SCORE:2</div>'));
+		$('#endScreen').append($('<div class="endScore">SCORE:3</div>'));
+		$('#endScreen').append($('<div class="endText">Here are more words for the player.</div>'));
+		$('#endScreen').append($('<input class="endInput" type="text" class="form-control" placeholder="Enter your email to receive more information about green practices!"></input>'));
+		$('#endScreen').append($('<div class="endButton">SUBMIT!</div>'));
 	}
 }
 
@@ -169,7 +179,7 @@ function initBudget(){
     		height: perc*totalHeight,
     	});
     });
-  	budget.change(MAX_BUDGET/1.1);
+  	budget.change(MAX_BUDGET);
 }
 
 
@@ -230,8 +240,8 @@ $(document).ready(function(){
 	 		Engine.simulate(1);
 	 		GameState.step();
 	 	}
-	 	setTimeout(onTimer, 500);
+	 	setTimeout(onTimer, 100);
     }
 
-	setTimeout(onTimer, 500);
+	setTimeout(onTimer, 100);
 });
