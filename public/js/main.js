@@ -49,6 +49,7 @@ function initGameEngine(){
           	out_vars["water_bill"] = 0;
           }
           out_vars['water_run_off'] = Math.random() * 5000;
+          out_vars['electricity_bill'] = 1000;
           return out_vars;
         },
         name: 'rain_barrel',
@@ -69,39 +70,81 @@ function initGameEngine(){
 
 }
 
-function initGameScreen(){
-	// init play / pause button
-	var play = function(playSpeed){
-		gameState.playSpeed = playSpeed;
-		gameState.playing = true;
-		$('#play-btn')[0].src = 'images/pause-button.png';
-	}
-	var pause = function(){
-		gameState.playing = false;
-		$('#play-btn')[0].src = 'images/play-button.png';
-	}
-
-	$('#budgetMeter').show();
-	$('#houseAnimContainer').show();
-	$('#play-btn').click(function(){
-		if(gameState.playing) pause();
-		else play(1);
-	});
-	$('#next-btn').click(function(){
-		play(2);
-	});
-	
+function bindChart(containerId){
 	// init stacked chart
-	var data = [];
-	var data2 = [];
-	var data3 = [];
-	var data4 = [];
-	var stackedChart = new StackedChart('gameChart')
+	var stackedChart = new StackedChart(containerId)
 		.setRange('line', 0, 5000)
 		.setRange('bar', 0, 5000)
 		.bind(true, function(){return Engine.out_variables['electricity_bill'].get_values()}, 'Electricity bill')
 		.bind(false, function(){return Engine.out_variables['water_bill'].get_values()}, 'Water bill')
 		.bind(true, function(){return Engine.out_variables['water_run_off'].get_values()}, 'Water run-off');
+	return stackedChart;
+}
+
+function rebindChart(){
+	var ebid = Engine.out_variables['electricity_bill'].save(), 
+		wbid = Engine.out_variables['water_bill'].save(),
+		wrid = Engine.out_variables['water_run_off'].save();
+	var oldChart = stackedCharts[stackedCharts.length-1];
+	oldChart.rebind(function(){return Engine.out_variables['electricity_bill'].get_past_values(ebid);}, 'Electricity bill');
+	oldChart.rebind(function(){return Engine.out_variables['water_bill'].get_past_values(wbid);}, 'Water bill');
+	oldChart.rebind(function(){return Engine.out_variables['water_run_off'].get_past_values(wrid);}, 'Water run_off');
+}
+
+function initGameScreen(){
+	// init play / pause button
+	$('#budgetMeter').show();
+	$('#houseAnimContainer').show();
+	stackedCharts.push(bindChart('gameChart'));
+}
+
+function renderScreen(){
+	var contract = function(id){
+		var btnId = '#y'+id+'-btn';
+		$(btnId).removeClass().addClass('small-btn').css('box-shadow', '0 0 0px 0 #ff0000').attr('src', 'images/y'+id+'-button.png');
+		return $(btnId);
+	}
+
+	var expand = function(id){
+		var btnId = '#y'+id+'-btn';
+		$(btnId).removeClass().addClass('big-btn').attr('src', 'images/y'+id+'-play-button.png');
+		return $(btnId);
+	}
+
+	if(GameState.level() == 0){
+		$('#pieceContainer0').css('box-shadow', '0 0 40px 0 #ff0000');
+		$('#y1-btn').css('box-shadow', '0 0 0px 0 #ff0000')
+		$('#y1-btn').unbind('click').
+			click(function(){
+				GameState.step(); 
+			});
+	}
+	else if(GameState.level() <= NUM_LEVELS && GameState.state() == GAMESTATE_PAUSED){
+		$('#pieceContainer0').css('box-shadow', '0 0 0px 0 #ff0000');
+		expand(GameState.level()).css('box-shadow', '0 0 40px 0 #ff0000')
+			.unbind('click')
+			.click(function(){
+				GameState.step();
+			})
+		for(var i = 1; i < NUM_LEVELS; i++){
+			if(i != GameState.level()){
+				contract(i);
+			}
+		}
+	}
+	else if(GameState.level()  <= NUM_LEVELS && GameState.state() == GAMESTATE_PLAYING){
+		$('#y'+GameState.level()+'-btn').css('box-shadow', '0 0 0px 0 #ff0000');
+	}
+	else if(GameState.level()  <= NUM_LEVELS && GameState.state() == GAMESTATE_DONE){	
+		contract('y'+GameState.level()+'-btn');
+		stackedCharts[stackedCharts.length-1].reposition('historyGraphContainer'+GameState.level(), GameState.level());
+		rebindChart();
+		stackedCharts.push(bindChart('gameChart'));
+		GameState.step();
+	}		
+	else{
+		alert('congratulations, you win!');
+	}
 }
 
 function initBudget(){
@@ -130,105 +173,6 @@ function initBudget(){
 }
 
 
-// function initGameScreen(){
-// 	loadSvg('images/saving-icon.svg', 'saving-icon', function(){
-// 	loadSvg('images/price-icon.svg', 'price-icon', function(){
-// 	loadSvg('images/info-circle.svg', 'info-circle', function(){
-// 	loadSvg('images/info-icon.svg', 'info-icon', function(){
-// 		initPieces();
-// 	});
-// 	});
-// 	});
-// 	});
-// 	loadSvg('images/house.svg', 'houseContainer', function(node){
-// 		var groupId = 0;
-// 		node.children('g').each(function(){
-// 			visibilities[groupId] = -1;
-// 			this.setAttribute('id', groupId+'g');
-// 			groupId++;
-// 		});
-// 		visibilities[2] = 0;
-// 		initTwo();
-// 	});	
-// 	$('#houseAnimContainer').hide();
-// 	$('#submitButton').click(function(){
-// 		if(availableBudget < 0){
-// 			alert('You have exceeded your budget! Try removing some features!');
-// 		}
-// 		else{
-// 		  $('#endScreen').show(function() {
-
-// 		      var data = new google.visualization.DataTable(); 
-		      
-// 		      data.addColumn('string', 'Year');
-// 		      data.addColumn('number', 'Initial Investment');
-// 		      data.addColumn('number', 'Net Savings');
-
-// 		      for(var tmp = 2014; tmp < 2030; tmp++)
-// 		      {
-// 		        //TODO update this with the actual year graph
-// 		        data.addRow([tmp.toString(),initialInvestment,(tmp-2014)*yearSavings]);
-// 		      }
-
-// 		      var options = {
-// 		        title: 'Savings Over Time'
-// 		      };
-
-// 		      var chart = new google.visualization.LineChart(document.getElementById('end_chart'));
-// 		      chart.draw(data,options);
-// 		  });
-// 		}
-// 	});
-// }
-
-function initElements(){
-	$('#startButton').click(function(){
-		$('#startScreen').hide();	
-		$('#instrScreen').show();
-	});
-
-	$('#instrNextButton').click(function(){
-		$('#instrScreen').hide();
-		$('#instrScreen2').show();
-	});
-
-	$('#instrNextButton2').click(function(){
-		$('#instrScreen2').hide();
-		$('#instrScreen3').show();
-	})
-
-	$('#instrNextButton3').click(function(){
-		$('#instrScreen3').hide();
-		$('#qtnScreen1').show();
-	})
-	var qtnButton1Next = function(){
-		$('#qtnScreen1').hide();
-		$('#qtnScreen2').show();
-	};
-	$('#qtnButton11').click(qtnButton1Next);
-	$('#qtnButton12').click(qtnButton1Next);
-	$('#qtnButton13').click(qtnButton1Next);
-	var qtnButton2Next = function(){
-		$('#qtnScreen2').hide();
-		$('#backgroundOverlay').hide();
-		showGameScreen();
-	};
-	$('#qtnButton21').click(qtnButton2Next);
-	$('#qtnButton22').click(qtnButton2Next);
-
-	$('#backgroundOverlay').show();
-	$('#startScreen').show();
-	$('#budgetMeter').hide();
-	$('#instrScreen').hide();
-	$('#instrScreen2').hide();
-	$('#instrScreen3').hide();
-	$('#_endScreen').hide();
-	$('#qtnScreen1').hide();
-	$('#qtnScreen2').hide();
-	$('#calibrate').click(function(){
-		calibrate();
-	});
-}
 // Emily's instruction initializing function
 function initInstruction(){
 	$('#instruction_screen2').hide();
@@ -268,13 +212,15 @@ $(document).ready(function(){
 	initInstruction();
 	initGameEngine();
 	initGameScreen();
+	renderScreen();
 
     var onTimer = function(){
-    	if(gameState.playing){
+    	if(GameState.state() == GAMESTATE_PLAYING){
 	 		Engine.simulate(1);
+	 		GameState.step();
 	 	}
-	 	setTimeout(onTimer, 1000/gameState.playSpeed);
+	 	setTimeout(onTimer, 500);
     }
 
-	setTimeout(onTimer, 1000/gameState.playSpeed);
+	setTimeout(onTimer, 500);
 });

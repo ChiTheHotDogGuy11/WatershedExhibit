@@ -114,7 +114,7 @@ var Engine = (function () {
   function Variable(params_hash){
     this.name = params_hash["name"] || "TMP"; 
     this.values = new Array();
-    
+    this.pastValues = [];
   };
 
   Variable.prototype.current_value = function() {
@@ -127,6 +127,16 @@ var Engine = (function () {
 
   Variable.prototype.get_values = function(){
     return this.values;
+  }
+
+  Variable.prototype.save = function(){
+    this.pastValues.push(this.values.slice());
+    this.values = new Array();
+    return this.pastValues.length-1;
+  }
+
+  Variable.prototype.get_past_values = function(id){
+    return this.pastValues[id];
   }
 
   /**
