@@ -11,6 +11,7 @@
 	google.load("visualization", "1", {packages:["corechart"]});
 	</script>
 	<script src="js/lib/jquery-1.11.0.js"></script>
+	<script src="js/constants.js"></script>	
 	<script  src="js/globals.js"></script>
 		<!-- d3 libraries for visualizing time series -->
 		<script type="text/javascript" src="js/lib/d3.js"></script>
@@ -21,7 +22,6 @@
 		serve the proper Socket.IO javascript files used by the browser -->
 		<script src="/socket.io/socket.io.js"></script>
 		<script src="js/lib/two.js"></script>
-		<script src="js/constants.js"></script>
 		<script src="js/animation.js"></script>
     <!-- Nice UI tools for interface elements -->
     <script src="js/lib/simple-slider.min.js"></script>
@@ -39,6 +39,10 @@
 		</div>
 		<div id="animAssets" class="asset_container"></div>
 		<div class="page_container" style="position: absolute; top: 0px; bottom: 0px;">
+			<div class="house" id="househouse">
+				<svg id="houseContainer"></svg>
+				<div id="houseAnimContainer" style="position: absolute;	top: 300px; left: 500px"></div>
+			</div>
 			<div id="panelContainer-top" class="container-fluid">
 				<div class="col-md-2 game-panel" id="titlePanel">
 					<h4>Hackensack Meadowlands<h4>
@@ -50,13 +54,21 @@
 					<img src="images/help-button.png" id="help-btn"></img>
 				</div>
 			</div>
+			<div class="panelContainer-middle container-fluid">
+				<div id="historyGraphContainer1" class="col-md-2 game-panel" style="display:none;"></div>
+			</div>
+			<div class="panelContainer-middle container-fluid">
+				<div id="historyGraphContainer2" class="col-md-2 game-panel" style="display:none;"></div>
+			</div>
+			<div class="panelContainer-middle container-fluid">
+				<div id="historyGraphContainer3" class="col-md-2 game-panel" style="display:none;"></div>
+			</div>
 			<div id="panelContainer-bottom" class="container-fluid">
 			<!--game control panel-->	
 				<div class="col-md-2 game-panel" id="ctrlPanel">
-					<img src="images/play-button.png" id="play-btn" />
-					<img src="images/next-button.png" id="next-btn" />
-					<img src="images/end-button.png" id="end-btn" />
-					<p id="time-tag">7:09 PM </br> Apr 14, 14 </p>
+					<img src="images/y1-play-button.png" id="y1-btn" class="big-btn"/>
+					<img src="images/y2-button.png" id="y2-btn" class="small-btn"/>
+					<img src="images/y3-button.png" id="y3-btn" class="small-btn"/>
 				</div>	
 				<!--stacked chart-->
 				<div class="col-md-7 game-panel" id="gameChart"></div>
@@ -66,10 +78,6 @@
 					<div id='budgetMeterBg'></div>
 					<div id="budgetMeterBar"></div>
 				</div>
-			</div>
-			<div class="house" id="househouse">
-				<svg id="houseContainer"></svg>
-				<div id="houseAnimContainer" style="position: absolute;	top: 300px; left: 500px"></div>
 			</div>
 			<div id="piecesContainer">
 				<div id="pieceContainer0" class="piecePlacement"></div>
