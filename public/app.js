@@ -342,7 +342,7 @@ function Piece(system)
   ref['info-panel'] = makePanel(name+'-infoPanel', infoPanelTexts[name], -150+this.r-bw, this.r*3, this.ref['anchor']);
   ref['info-panel'].hide();
   ref['info-icon'].click(function(){ref['info-panel'].toggle()});
-  this.loadAnimation(name, 1, 14);
+  this.loadAnimation(name, 1, 1);
   //makeArc(this.r*2, -bw+this.r, -bw+this.r, bw, 15, this.ref['anchor']);
 }
 

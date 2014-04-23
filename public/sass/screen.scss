@@ -430,6 +430,22 @@ color: white;
 	display: none;
 }
 
+.geo_thermal_frame{
+	position: absolute;
+	top: 400px;
+	left: 100px;
+	width: 600px;
+	display:none;
+}
+
+.solar_panel_frame{
+	position: absolute;
+	left: 750px;
+	top: 50px;
+	width: 500px;
+	display: none;
+}
+
 #mainHouse{
 	position: absolute; 
 	left: 500px; 

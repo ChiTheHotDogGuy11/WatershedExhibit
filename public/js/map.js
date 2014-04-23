@@ -445,7 +445,7 @@ var Building = {
     //Calculate this based on rainfall for the month
     if (Preferences.weather == null) { return 0 }
     //Not going to use any water if it is cold on average outside
-    if (Preferences.weather.temp.avgF > 50) {
+    if (Preferences.weather[month].temp.avgF > 50) {
       //We water our garden for 2 hours every day
       return 18000;
     } else {
