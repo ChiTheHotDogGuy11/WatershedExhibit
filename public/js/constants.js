@@ -1,6 +1,6 @@
 var infoPanelTexts = {
 	// geothermal
-	'0info': "Heat from the earth can be used as an energy source in many ways, from large and complex power stations to small and relatively simple pumping systems. This heat energy is known as geothermal energy. <br/> <br/> Geothermal heat pumps use the steady temperatures just underground to heat and cool buildings, cleanly and inexpensively.",
+	'geo_thermal': "Heat from the earth can be used as an energy source in many ways, from large and complex power stations to small and relatively simple pumping systems. This heat energy is known as geothermal energy. <br/> <br/> Geothermal heat pumps use the steady temperatures just underground to heat and cool buildings, cleanly and inexpensively.",
 	'0price': "The initial costs of geothermal energy are high -- wells can cost $1 to $4 million each to drill, and installation of a home geothermal pump system can run as much as $30,000. ",
 	'0saving': "Geothermal energy is considered renewable because the heat is continually replaced. The water that is removed is put right back into the ground after its heat is used. A home geothermal energy pump can cut energy bills by 30 to 40 percent and, and is expected to pay for itself within 5 to 10 years.",
 	'3info': "Solar energy is produced through the use of solar cells, also known as photovoltaic cells. Solar panels are only about 15 percent efficient. Today, solar energy provides two-tenths of 1 percent of the total energy consumed in the United States.",

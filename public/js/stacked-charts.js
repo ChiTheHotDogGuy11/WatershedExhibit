@@ -25,9 +25,6 @@ function StackedChart(_divId){
 		if(data.length > 0){
 			render();
 		}
-		else{
-			//console.log('no data to log');
-		}
 		setTimeout(update, step);
 	}
 
@@ -61,7 +58,7 @@ function StackedChart(_divId){
 	    	
 	    }
 	    if(!self.contracted){
-	    	self.drawAxis(svg, h, []);	
+	    	self.drawAxis(svg, h, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);	
 		}
 	}
 
@@ -121,7 +118,7 @@ StackedChart.prototype.setRange = function(type, min, max){
 StackedChart.prototype.drawAxis = function(svg, h, tickValues){
 	//draw axis
     var xScale = d3.scale.linear()
-		.domain([0, 7])
+		.domain([0, 13])
 		.range([0, (MAX_NUM_BARS+2) * BAR_WIDTH(this.contracted)]);
 
 	svg.append('g')
@@ -130,7 +127,7 @@ StackedChart.prototype.drawAxis = function(svg, h, tickValues){
     	.call(d3.svg.axis()
     	.scale(xScale)
     	.orient('bottom')
-    	.tickValues([]));
+    	.tickValues(tickValues));
 }
 
 StackedChart.prototype.drawBarChart = function(data, group, tag){

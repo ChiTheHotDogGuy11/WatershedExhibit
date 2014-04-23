@@ -12,13 +12,14 @@ $(function() {
   Preferences.bind("latLng", "solar_size", find_solar);
 
   Engine.new_system({
-    name: "solar_panels",
+    name: "solar_panel",
     calculation_function: function (in_vars, out_vars, scale, active) {
       var month = in_vars["month"]
       if (Preferences.solar_size != scale) { Preferences.solar_size = scale; } //TODO we need to block on this... else the results are not accurate
       if (active) {
         out_vars["energy_consumption"] -= (monthly_data.ac_monthly[month] * in_vars["sun"]) * Preferences.rates.residential; //TODO multiple this by zero if wind broke the pannels?? 
       }
+      return out_vars;
     },
     piece: undefined,
     vars: ["month"],
@@ -36,22 +37,23 @@ $(function() {
   var find_geothermal = function() {
     NREL.get_geothermal(Preferences.latLng.lat, Preferences.latLng.lng, Preferences.fuel, Preferences.sqft, function(data) {
       monthly_data = data;
-    }
+    });
   }
-  Preferences.bind("latLng","fuel","sqft", find_geothermal);
+  Preferences.bind("rates","fuel","sqft", find_geothermal);
 
   Engine.new_system({
-    name: "geothermal",
-    caluation_function: function(in_vars, out_vars, scale, active) {
+    name: "geo_thermal",
+    calculation_function: function(in_vars, out_vars, scale, active) {
       var month = in_vars["month"]
       if (active) {
         //TODO divide this by the fuel we chose
-        out_vars["energy_consumption"] += monthly_data.heating_new[month] + monthly_data.cooling_new[month];
-        out_vars["carbon"] += monthly_data.heating_carbon_new[month] + monthly_data.cooling_carbon_new[month];
+        out_vars["energy_consumption"] += parseFloat(monthly_data.heating_new[month]) + parseFloat(monthly_data.cooling_new[month]);
+        out_vars["carbon"] += parseFloat(monthly_data.heating_carbon_new[month]) + parseFloat(monthly_data.cooling_carbon_new[month]);
       } else {
-        out_vars["energy_consumption"] += monthly_data.heating_old[month] + monthly_data.cooling_old[month];
-        out_vars["carbon"] += monthly_data.heating_carbon_old[month] + monthly_data.cooling_carbon_old[month];
+        out_vars["energy_consumption"] += parseFloat(monthly_data.heating_old[month]) + parseFloat(monthly_data.cooling_old[month]);
+        out_vars["carbon"] += parseFloat(monthly_data.heating_carbon_old[month]) + parseFloat(monthly_data.cooling_carbon_old[month]);
       }
+      return out_vars;
     },
     piece: undefined,
     vars: ["month"],
@@ -71,6 +73,7 @@ $(function() {
       if (active) {
         out_vars["outdoor_water"] -= Math.min((scale * 50 * 30.4),(((Preferences.sqft * 144) * (Preferences.weather.prcp.mtdIN/2)) / 231));       
       }
+      return out_vars;
     },
     piece: undefined,
     vars: ["month"],
@@ -88,7 +91,8 @@ $(function() {
     calculation_function: function(in_vars, out_vars, scale, active) {
       out_vars["outdoor_water"] += Building.outdoor_water_usage(in_vars["month"]);
       out_vars["indoor_water"] += Building.indoor_water_usage({});
-      out_vars["energy_consumption"] += Building.electricity_usage * Preferences.rates.residential;
+      out_vars["energy_consumption"] += Building.electricity_usage() * Preferences.rates.residential;
+      return out_vars;
     },
     piece: undefined,
     vars: ["month"],

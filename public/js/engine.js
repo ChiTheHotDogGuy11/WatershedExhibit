@@ -130,8 +130,9 @@ var Engine = (function () {
   }
 
   Variable.prototype.save = function(){
-    this.pastValues.push(this.values.slice());
-    this.values = new Array();
+    var newValue = this.values[this.values.length-1];
+    this.pastValues.push(this.values.slice(0, this.values.length-1));
+    this.values = [0];
     return this.pastValues.length-1;
   }
 
@@ -149,7 +150,7 @@ var Engine = (function () {
   function OutVariable(params_hash) {
     Variable.call(this, params_hash);
     this.on_update = params_hash["on_update"];
-    this.init_value = params_hash["init_value"] || -1;
+    this.init_value = params_hash["init_value"] || 1;
     this.push_value(this.init_value);
   };
   
