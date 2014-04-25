@@ -2,7 +2,6 @@
 $(function() {
   //We need to get our solar power info
   var monthly_data;
-  var scale = 0;
 
   var find_solar = function() {
     NREL.get_solar(Preferences.latLng.lat, Preferences.latLng.lng, Preferences.solar_size, function(data) {
@@ -23,9 +22,10 @@ $(function() {
     },
     piece: undefined,
     vars: ["month"],
+    scale: 1,
     cost: function(scale) {
       //They cost about 5 dollars per watt
-      return scale * 5;
+      return 10+scale * 2;
     },
   });
 });
@@ -57,7 +57,8 @@ $(function() {
     },
     piece: undefined,
     vars: ["month"],
-    cost: function(scale) { return (2500 * Math.floor((Preferences.sqft / 600)) ) },
+    scale: 1,
+    cost: function(scale) { return 42 + (scale-1) * (2) },
   });
 });
 
@@ -71,14 +72,15 @@ $(function() {
     calculation_function: function(in_vars, out_vars, scale, active) {
       //We only get on overage half of the rain per month in our rain barrels
       if (active) {
-        out_vars["outdoor_water"] -= Math.min((scale * 50 * 30.4),(((Preferences.sqft * 144) * (Preferences.weather.prcp.mtdIN/2)) / 231));       
+        out_vars["outdoor_water"] -= Math.min((scale * 50 * 30.4),(((Preferences.sqft * 144) * (1/2)) / 231));       
       }
       return out_vars;
     },
     piece: undefined,
+    scale: 1,
     vars: ["month"],
     cost: function(scale) { 
-        return scale * 250;
+        return scale * 0.25;
     }
   });
 
