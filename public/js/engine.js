@@ -226,7 +226,12 @@ var Engine = (function () {
     this.piece = params_hash["piece"];
     this.calc = params_hash['calculation_function']; 
   };
-  
+ 
+  System.prototype.score = function() {
+    //Conservation Points -- b/c this is what they really are
+    
+  }
+
       /**
      *    Relatively simple container for the possible events
      *    that can occur. It manages both starting/ending new
