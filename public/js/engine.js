@@ -30,6 +30,7 @@ var Engine = (function () {
 
   function new_out_variable(params_hash){
     var tmp = new OutVariable(params_hash);
+    out_variables[tmp.name] = tmp;
   };
 
   function new_in_variable(params_hash){
