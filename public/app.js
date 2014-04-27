@@ -121,7 +121,10 @@ var IO = {
         //$("#" + curID + "circle").css("left", xCoord+"px");
         //$("#" + curID + "circle").css("top", yCoord+"px");
         //console.log(xCoord + " " + yCoord);
-				pieces[i].setTag(xCoord, yCoord);
+
+        if(i in pieces){
+          pieces[i].move(xCoord, yCoord);
+        }
                 //buffer.push(parseFloat(coords[0]));
                 //buffer.push(parseFloat(coords[1]));
             }
@@ -332,16 +335,33 @@ function Piece(system)
   //Create our div object for a new piece
   var bw = 15;
   this.ref = {};
-  var ref = this.ref;
+  var ref = this.ref, self = this;
+
+  var getOuterR = function(sysScale){ return self.r * (1.5+sysScale/5);}
   ref['anchor'] = makeCircle(name+'-circle', 'piece', this.x, this.y, this.r, '15px solid', PINK, '.page_container')
-  ref['nametag'] = makeTag(name+'-nametag', featureNames[name], -15, 50, this.ref['anchor']);
-  ref['outer-circle'] = makeCircle(name+'-outercircle', 'piece', this.r-bw, this.r-bw, this.r*2, '2px solid', PINK, this.ref['anchor']);
+  ref['outer-circle'] = makeCircle(name+'-outercircle', 'piece', this.r-bw, this.r-bw, getOuterR(this.system.scale), '2px solid', PINK, this.ref['anchor']);
   ref['info-icon'] = makeIcon(name+'-infoicon', 'images/info-button.png', 60, this.r-bw, this.r-bw-this.r*3, this.ref['anchor']);
-  ref['plus-icon'] = makeIcon(name+'-plusicon', 'images/plus-button.png', 60, this.r-bw+this.r*0.866*3, this.r-bw+this.r*1.5, this.ref['anchor']);
-  ref['minus-icon'] = makeIcon(name+'-minusicon', 'images/minus-button.png', 60, this.r-bw-this.r*0.866*3, this.r-bw+this.r*1.5, this.ref['anchor']);
+  ref['plus-icon'] = makeIcon(name+'-plusicon', 'images/plus-button.png', 60, this.r-bw+this.r*0.866*3, this.r-bw+this.r*1.5, this.ref['anchor'])
+    .click(function(){
+      self.system.scaleUp(); 
+      ref['outer-circle'].detach();
+      ref['outer-circle'] = makeCircle(name+'-outercircle', 'piece', self.r-bw, self.r-bw, getOuterR(self.system.scale), '2px solid', PINK, ref['anchor']);
+      ref['scaletag'].detach();
+      ref['scaletag'] = makeTag(name+'-scaletag', 'scale:'+self.system.scale, -15, 80, ref['anchor']);
+    });
+  ref['minus-icon'] = makeIcon(name+'-minusicon', 'images/minus-button.png', 60, this.r-bw-this.r*0.866*3, this.r-bw+this.r*1.5, this.ref['anchor'])
+    .click(function(){
+      self.system.scaleDown();  
+      ref['outer-circle'].detach();
+      ref['outer-circle'] = makeCircle(name+'-outercircle', 'piece', self.r-bw, self.r-bw, getOuterR(self.system.scale), '2px solid', PINK, ref['anchor']);
+      ref['scaletag'].detach();
+      ref['scaletag'] = makeTag(name+'-scaletag', 'scale:'+self.system.scale, -15, 80, ref['anchor']);
+    });
   ref['info-panel'] = makePanel(name+'-infoPanel', infoPanelTexts[name], -150+this.r-bw, this.r*3, this.ref['anchor']);
   ref['info-panel'].hide();
   ref['info-icon'].click(function(){ref['info-panel'].toggle()});
+  ref['nametag'] = makeTag(name+'-nametag', featureNames[name], -15, 50, this.ref['anchor']);
+  ref['scaletag'] = makeTag(name+'-scaletag', 'scale:'+this.system.scale, -15, 80, this.ref['anchor']);
   this.loadAnimation(name, 1, 1);
   //makeArc(this.r*2, -bw+this.r, -bw+this.r, bw, 15, this.ref['anchor']);
 }
