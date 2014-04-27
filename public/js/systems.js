@@ -115,8 +115,9 @@ $(function() {
     name: "rain_garden",
     calculation_function: function(in_vars, out_vars, scale, active) {
       if (active) {
-        in_vars["runoff"] -= 200 * scale;
+        out_vars["runoff"] -= 200 * scale;
       }
+      return out_vars;
     },
     piece: undefined,
     vars: ["month"],
@@ -134,9 +135,10 @@ $(function() {
     calculation_function: function(in_vars, out_vars, scale, active) {
       if (active) {
         var params = Building.default_params;
-        in_vars["indoor_water"] -= Math.round(Preferences.num_people * 1.6 * params.toilet_flushes) * 30.4;
+        out_vars["indoor_water"] -= Math.round(Preferences.num_people * 1.6 * params.toilet_flushes) * 30.4;
         //They only supply as much water as a 1.6 flush toilet can use
       }
+      return out_vars;
     },
     piece: undefined,
     vars: ["month"],
@@ -172,7 +174,8 @@ $(function() {
       var laundryday = Math.round((params.laundry * Preferences.num_people * params.laundry_flow)/7);
       var dishday = Math.round(params.hand_dishes * params.hand_min * 3);
       var indoorday = Math.round(bathtotal + toiletday + faucetday + laundryday + dishwasherday + dishday);
-      out_vars["indoor_water"] += indorday * 30.4;
+      out_vars["indoor_water"] += indoorday * 30.4;
+      return out_vars;
     },
     piece: undefined,
     vars: ["month"],
@@ -185,6 +188,7 @@ $(function() {
       } if (scale > 2) {
         cost += 800
       }
+      return cost;
     },
 
   });

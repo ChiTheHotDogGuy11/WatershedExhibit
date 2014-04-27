@@ -226,7 +226,7 @@ function initInstruction(){
 
 
 // Insert JS here
-$(document).ready(function(){
+$(window).load(function(){
 	initInstruction();
 	initBudget();
 	initGameEngine();

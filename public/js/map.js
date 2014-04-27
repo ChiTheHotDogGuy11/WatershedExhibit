@@ -521,11 +521,12 @@ var Building = {
         CN += this.runoff_curve[Preferences.sqft][comps[i].hydrologic] * (comps[i].percent / total); 
       }
     }
+    if (CN < 1){ return 0; } //Issue calculating -- just set it to 0
     var events = Preferences.rainfall_events; //TODO assuming 4 events for now ?
 
     var P = Preferences.weather[month].prcp.mtdIN / events;
     var s = 1000/CN - 10;
-    return ((Math.pow((P - 0.2 * s),2) / (P + 0.8 * s)) * events) * runoff_curve[Preferences.sqft]["sqft"] * 0.623;
+    return ((Math.pow((P - 0.2 * s),2) / (P + 0.8 * s)) * events) * this.runoff_curve[Preferences.sqft]["sqft"] * 0.623;
   },
   
   runoff_curve: {
