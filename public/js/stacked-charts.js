@@ -1,10 +1,10 @@
 var MAX_NUM_BARS = 12, // 6 bars per day. 7 days per week.
-	BAR_WIDTH = function(contracted) {return contracted ? 12 : 40;},
+	BAR_WIDTH = function(contracted) {return contracted ? 12 : 45;},
 	BAR_HEIGHT = 10,
 	LINEGRAPH_HEIGHT = 70,
 	LINEGRAPH_POINTSIZE = 5,
-	labelXoff = 600,
-	valueXoff = 100,
+	labelXoff = 500,
+	valueXoff = 250,
 	yearXoff = 150,
 	yearYoff = 40,
 	colors = ['rgb(255, 255, 153)', 'rgb(104, 202, 202)', 'rgb(255, 102, 102)', 'rgb(153, 204, 102)', 'teal'],
@@ -118,8 +118,8 @@ StackedChart.prototype.setRange = function(type, min, max){
 StackedChart.prototype.drawAxis = function(svg, h, tickValues){
 	//draw axis
     var xScale = d3.scale.linear()
-		.domain([0, 13])
-		.range([0, (MAX_NUM_BARS+2) * BAR_WIDTH(this.contracted)]);
+		.domain([1, 12])
+		.range([0, (MAX_NUM_BARS) * BAR_WIDTH(this.contracted) * 0.95]);
 
 	svg.append('g')
 		.attr('class', 'stacked-chart-axis')

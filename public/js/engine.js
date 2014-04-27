@@ -96,7 +96,7 @@ var Engine = (function () {
         }
         //Capture the output variables that this event might
         // have changed.
-        var changed_vals = cur_system.calc(in_vars, out_vars);
+        var changed_vals = cur_system.calc(in_vars, out_vars, cur_system.scale, cur_system.active);
         //Update the now-outdated values we have in cur_in_vals.
         for (var var_name in changed_vals) {
           out_vars[var_name] = changed_vals[var_name];
@@ -225,13 +225,26 @@ var Engine = (function () {
     this.name = params_hash["name"];
     this.piece = params_hash["piece"];
     this.calc = params_hash['calculation_function']; 
+    this.active = false;
+    this.scale = params_hash['scale'];
   };
- 
   System.prototype.score = function() {
     //Conservation Points -- b/c this is what they really are
     
   }
 
+  System.prototype.toggle = function(){
+    this.active = !this.active;
+  }
+
+  System.prototype.scaleUp = function(){
+    this.scale = Math.min(5, this.scale+1);
+  }
+
+  System.prototype.scaleDown = function(){
+    this.scale = Math.max(1, this.scale-1);
+  }
+  
       /**
      *    Relatively simple container for the possible events
      *    that can occur. It manages both starting/ending new
