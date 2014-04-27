@@ -30,7 +30,6 @@ var Engine = (function () {
 
   function new_out_variable(params_hash){
     var tmp = new OutVariable(params_hash);
-    out_variables[tmp.name] = tmp;
   };
 
   function new_in_variable(params_hash){
@@ -224,15 +223,35 @@ var Engine = (function () {
     this.cost = params_hash['cost'];
     this.name = params_hash["name"];
     this.piece = params_hash["piece"];
-    this.calc = params_hash['calculation_function']; 
+    this.calc = function(in_vars, out_vars, scale, active) { 
+      var ret = params_hash['calculation_function'](in_vars, out_vars, scale, active) 
+      if (this.active) {
+        var inactive = params_hash['calculation_function'](in_vars, out_vars, scale, false)
+        //The number multiplied at the end is the "weight" -- we can change this to emphasize different features
+        var month_score = 0;
+        month_score += (inactive["outdoor_water"] - ret["outdoor_water"]) * 2;
+        month_score += (inactive["energy_consumption"] - ret["energy_consumption"]) * 0.5;
+        month_score += (inactive["runoff"] - ret["runoff"]) * 4;
+        month_score += (inactive["indoor_water"] - ret["indoor_water"]) * 2;
+        this.score += (month_score / 5); // To make sure our variable doesnt get to big
+      }
+      return ret;
+    };
     this.active = false;
     this.scale = params_hash['scale'];
+    this.score = 0;
+    this.past_scores = new Array();
   };
-  System.prototype.score = function() {
-    //Conservation Points -- b/c this is what they really are
-    
+
+  System.prototype.save_score = function() {
+    this.past_scores.push(this.score);
+    this.score = 0;
   }
 
+  System.prototype.get_past_score = function(id) {
+    return this.past_scores[id];
+  }
+  
   System.prototype.toggle = function(){
     this.active = !this.active;
   }

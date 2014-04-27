@@ -98,7 +98,7 @@ $(function() {
     calculation_function: function(in_vars, out_vars, scale, active) {
       out_vars["outdoor_water"] += Building.outdoor_water_usage(in_vars["month"]);
       out_vars["energy_consumption"] += Building.electricity_usage() * Preferences.rates.residential;
-      out_vars["runnoff"] = Building.runoff(in_vars["month"])
+      out_vars["runoff"] = Building.runoff(in_vars["month"])
       return out_vars;
     },
     piece: undefined,
