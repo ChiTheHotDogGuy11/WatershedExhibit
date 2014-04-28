@@ -49,7 +49,8 @@
 					<h4>Hackensack Meadowlands<h4>
 					<h5>Wetland in New Jersey<h5>
 				</div>
-				<div class="col-md-8 game-panel" style="background: transparent" ></div>
+				<div class="col-md-4 col-md-offset-2 game-panel" id="prompt"></div>
+				<div class="col-md-2 game-panel" style="background: transparent" ></div>
 				<div class="col-md-1 game-panel-transparent" >
 					<img src="images/close-button.png" id="close-btn"></img>
 					<img src="images/help-button.png" id="help-btn"></img>
@@ -67,9 +68,7 @@
 			<div id="panelContainer-bottom" class="container-fluid">
 			<!--game control panel-->	
 				<div class="col-md-2 game-panel" id="ctrlPanel">
-					<img src="images/y1-play-button.png" id="y1-btn" class="big-btn"/>
-					<img src="images/y2-button.png" id="y2-btn" class="small-btn"/>
-					<img src="images/y3-button.png" id="y3-btn" class="small-btn"/>
+					<img src="images/play-button.png" id="play-btn" class="big-btn"/>
 				</div>	
 				<!--stacked chart-->
 				<div class="col-md-7 game-panel" id="gameChart"></div>
@@ -83,19 +82,111 @@
 			<div id="piecesContainer">
 				<div id="pieceContainer0" class="piecePlacement"></div>
 		        <div id="pieceContainer1" class="piecePlacement" style="margin-left: 100px;"></div>
-      		</div>
+		        <div class="info_panel_star_rating" style="display: none;"> 
+							<div class="rain_barrel_rating">
+								<h3>Rain Barrel</h3>
+					      <div> <p>Cost</p>
+					      <div class="star_group">
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      </div>
+					   	 </div>
+					   	 <div>
+					     <p>Conservation</p>
+					      <div class="star_group">
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      </div>
+					     </div>
+					     <div>
+					     <p>Maintenance</p>
+								<div class="star_group">
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      </div>
+					     </div>
+					   </div>
+					   <div class="geothermal_rating">
+								<h3>Geothermal Well</h3>
+					      <div> <p>Cost</p>
+					      <div class="star_group">
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      </div>
+					   	 </div>
+					   	 <div>
+					     <p>Conservation</p>
+					      <div class="star_group">
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      </div>
+					     </div>
+					     <div>
+					     <p>Maintenance</p>
+								<div class="star_group">
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      </div>
+					     </div>
+					   </div>
+
+					    <div class="solar_panel_rating">
+								<h3>Solar Panel</h3>
+					      <div> <p>Cost</p>
+					      <div class="star_group">
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      </div>
+					   	 </div>
+					   	 <div>
+					     <p>Conservation</p>
+					      <div class="star_group">
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      </div>
+					     </div>
+					     <div>
+					     <p>Maintenance</p>
+								<div class="star_group">
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      </div>
+					     </div>
+					   </div>
+					  </div>
+
+      </div>
       <div class="info_panel" style="display: none;">
       </div>
       <div class="overlay">
-        <div class="white-container" id="roundScreen"> 
+        <div class="game-panel overlay-container" id="roundScreen"> 
           <div id="roundChart"></div>
           <dl id="scoreList">
           </dl>
           <button type="button" class="btn btn-primary btn-lg">Continue</button>
         </div>
-        <div class="white-container" id="nextRound">
+        <div class="game-panel overlay-container" id="nextRound" style="display: none">
           <h2> </h2>
         </div>
+
       </div>
     </div>
     <div id="calibration" class="overlay">
@@ -104,7 +195,7 @@
     	<div id="point3" class="calibrate-point piece"></div>
     </div>
     <div id="preferences" class="overlay">
-      <div id="preferences-container" class="white-container">
+      <div id="preferences-container" class="overlay-container">
         <h3>Game Preferences</h3>
         <div id="map-container">
           <input id="pac-input" class="controls" type="text" placeholder="Search Box">

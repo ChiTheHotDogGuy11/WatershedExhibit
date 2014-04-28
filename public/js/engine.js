@@ -259,6 +259,7 @@ var Engine = (function () {
     //Define set objects
     params_hash["name"] = params_hash["name"] || "TMP";
     this.name = params_hash["name"];
+    this.maxScale = params_hash['maxScale'];
     this.piece = params_hash["piece"];
     //this.calc = params_hash['calculation_function']; 
     this.cost = params_hash["cost"];
@@ -297,10 +298,17 @@ var Engine = (function () {
   
   System.prototype.toggle = function(){
     this.active = !this.active;
+    if(this.active && GameState.state() == GAMESTATE_PROMPT_SLOT){
+        GameState.step();
+    }
+    else if(this.active && GameState.state() == GAMESTATE_PROMPT_ICON){
+        GameState.step();
+        GameState.step();
+    }
   }
 
   System.prototype.scaleUp = function(){
-    this.scale = Math.min(5, this.scale+1);
+    this.scale = Math.min(this.maxScale, this.scale+1);
   }
 
   System.prototype.scaleDown = function(){
