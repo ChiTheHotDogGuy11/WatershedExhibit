@@ -60,12 +60,10 @@ var Engine = (function () {
       systems[system_name].set_scale(scale);
     }
   };
-
+  
   function simulate(steps){
     steps = typeof steps !== 'undefined' ? steps : 1;
     //Run the simulation for the number of steps we have defined
-    var water_cons_score = Number.MAX_VALUE;
-    var electric_cons_score = Number.MAX_VALUE;
     for (var i = 0; i < steps; i++)
     {
 
@@ -130,9 +128,6 @@ var Engine = (function () {
       }
 
     }
-    //Save the scores
-    scores.push(electric_cons_score + water_cons_score);
-    return scores;
   };
   
   function Variable(params_hash){
@@ -217,7 +212,6 @@ var Engine = (function () {
     }
   };
 
-  
   function Budget(params_hash) {
     this.money_left = params_hash["init_val"] || 0;
     this.on_change = params_hash["on_change"];
@@ -263,14 +257,12 @@ var Engine = (function () {
     params_hash["name"] = params_hash["name"] || "TMP";
     this.name = params_hash["name"];
     this.piece = params_hash["piece"];
-    /* HEAD */
     //this.calc = params_hash['calculation_function']; 
     this.cost = params_hash["cost"];
     //this.isActive = false;
     this.scale = 1;
     this.is_purchased = false;
     //if (params_hash["scale"]) this.scale = params_hash["scale"];
-    /* END HEAD */
     this.calc = function(in_vars, out_vars, scale, active) { 
       var ret = params_hash['calculation_function'](in_vars, $.extend({},out_vars), scale, active) 
       if (this.active) {
@@ -329,7 +321,7 @@ var Engine = (function () {
     budget.change_budget(additional_cost);
     this.scale = scale;
   }
-  
+
       /**
      *    Relatively simple container for the possible events
      *    that can occur. It manages both starting/ending new
@@ -424,7 +416,6 @@ var Engine = (function () {
     this.duration = params_hash["duration"] || 1;
     //Probability modelled as integer between 0-99 (inclusive).
     this.probability = params_hash["probability"];
-    //console.log(this.name + " probability: " + this.probability);
     this.on_init = params_hash["on_init"];
     this.on_update = params_hash["on_update"];
     this.on_terminate = params_hash["on_terminate"];
@@ -444,7 +435,6 @@ var Engine = (function () {
   };
 
   Event.prototype.timer_fired = function(timer_probability, pertinent_vars) {
-    //console.log("timer probability: " + timer_probability);
     //Event is ongoing and shouldn't terminate this round.
     if (this.time_remaining > 1) {
       this.time_remaining -= 1;

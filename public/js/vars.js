@@ -1,18 +1,18 @@
 $(function() {
-   var month_params = {
-     name: "month", 
-     timer_fired: function(cur_val, time_since_last_change) {
-       if (time_since_last_change === 1) {
-         if (cur_val === 11) return 0;
-         else return cur_val + 1;
-       }
-     },
-     on_update: function(newVal) {
-       
-     },
-     init_value: 0
-   };
-   Engine.new_in_variable(month_params);
+  var month_params = {
+   name: "month", 
+   timer_fired: function(cur_val, time_since_last_change) {
+     if (time_since_last_change === 1) {
+       if (cur_val === 11) return 0;
+       else return cur_val + 1;
+     }
+   },
+   on_update: function(newVal) {
+     
+   },
+   init_value: 0
+  };
+  Engine.new_in_variable(month_params);
    
   Engine.new_out_variable({
    name: "outdoor_water",

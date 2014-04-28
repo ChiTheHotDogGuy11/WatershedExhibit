@@ -15,7 +15,6 @@ $(function() {
     },
   });
 });
-
 //Solar Power!
 $(function() {
   //We need to get our solar power info
@@ -39,7 +38,6 @@ $(function() {
       } //TODO we need to block on this... else the results are not accurate
       if (active) {
         out_vars["energy_consumption"] -= (monthly_data.ac_monthly[month] * in_vars["sun"]) * Preferences.rates.residential; //TODO multiple this by zero if wind broke the pannels?? 
-        //out_vars["energy_consumption"] -= 10000 * in_vars["sun"];
       }
       return out_vars;
     },
@@ -97,8 +95,7 @@ $(function() {
     calculation_function: function(in_vars, out_vars, scale, active) {
       //We use all of the rainwater that we capture in our rainbarrels each month
       if (active) {
-        //var captured_water = Math.min((scale * 50 * 4),(Preferences.sqft * Preferences.weather.prcp.mtdIN * in_vars["rain"] * 0.623)); 
-        var captured_water = scale*50*4;
+        var captured_water = Math.min((scale * 50 * 4),(Preferences.sqft * Preferences.weather[in_vars["month"]].prcp.mtdIN * in_vars["rain"] * 0.623)); 
         out_vars["outdoor_water"] -= captured_water; 
         out_vars["runoff"] -= captured_water;
       }
