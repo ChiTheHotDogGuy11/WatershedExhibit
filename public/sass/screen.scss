@@ -511,5 +511,21 @@ color: white;
 #prompt{
 	text-align: center;
 }
+
+.rain_barrel_rating, .solar_panel_rating, .geothermal_rating{
+	display: inline-block;
+	width: 250px;
+	p{
+		display: inline-block;
+		margin: 0;
+	}
+	img{
+		float: right;
+	}
+	.star_group{
+		display: inline-block;
+	}
+}
+
 @import 'pieces';
 @import 'customization';

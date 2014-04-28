@@ -57,7 +57,8 @@ function initialize() {
       
       $('#preference-loading').html('<h4>Loading Area</h4><img src="/images/loading.gif"/>');
       Preferences.latLng = {lat: kmlEvt.latLng.lat(), lng: kmlEvt.latLng.lng()};
-      Preferences.climate = {name: kmlEvt.featureData.name, description: kmlEvt.featureData.description} 
+      Preferences.climate = Building.setClimate(kmlEvt.featureData.name); 
+      
       //Get Station Info
       //NOAA.stations_for_area(box,function(data) {
       //  NOAA.data_for_stations(data, {startdate: "2013-03-01", enddate: "2013-03-31", datasetid: "GHCNDMS"}, function(data) {
@@ -78,7 +79,7 @@ function initialize() {
     var count = 0;
     
     function doneLoading(count) {
-      if (count >= 4) {
+      if (count >= 5) {
         var html = '<h4>Area Selection</h4><p><strong>Zip</strong>&nbsp;&nbsp;'+Preferences.location.zip+'</p>';
         html += '<p><strong>City</strong>&nbsp;'+Preferences.location.city+'</p>';
         $('#preference-loading').html(html);
@@ -95,6 +96,8 @@ function initialize() {
     geocode.find_location(Preferences.latLng, function(data) { Preferences.location = data; doneLoading(++count); });
     //get soil information 
     soil.get_preference_info(Preferences.latLng, function(data) { Preferences.soil = data; doneLoading(++count); });
+    //get rainfall events
+    soil.get_rainfall_events(Preferences.latLng, function(data) { Preferences.rainfall_events = data; doneLoading(++count);});
   });
 
   var geocode = {
@@ -332,7 +335,40 @@ var soil = {
       callback(ret);
     });
   },
+  //Found a data source for rainfall events 
+  //@see http://iridl.ldeo.columbia.edu/SOURCES/.UEA/.CRU/.TS2p1/.climatology/.c7100/.wet/
+  get_rainfall_events: function(latLon, callback) {
+    var cords = this.convert_cords(latLon.lat, latLon.lng);
+    var url = "http://iridl.ldeo.columbia.edu/SOURCES/.UEA/.CRU/.TS2p1/.climatology/.c7100/.wet/Y/";
+    url += "("+cords.lat+")("+cords.lat+")RANGEEDGES/X/";
+    url += "("+cords.lng+")("+cords.lng+")RANGEEDGES/T+exch+table-+text+text+skipanyNaN+-table+.html";
 
+    $.ajax({
+      url: url,
+      method: 'get',
+      beforeSend: function(xhr, settings) {
+        settings.url = window.location.protocol + "/api/" + encodeURIComponent(settings.url);
+        settings.crossDomain = false;
+      },
+      success: function(data) {
+        var ret = [];
+        $('#loaderdiv').html(data);
+        var months = ["Jan", "Feb", "Mar", "Apr", "Mar", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+        for(var i = 0; i < months.length; i++) {
+          ret.push(parseInt($('#loaderdiv td:contains("'+months[i]+'")').next().text()));
+        }
+        callback(ret);
+      }
+    });
+  },
+  convert_cords: function(lat,lon) {
+    var ret = {};
+    if(lat > 0) {ret["lat"] = Math.round(lat*100)/100 + "N";}
+    if(lat <= 0) {ret["lat"] = Math.abs(Math.round(lat*100)/100) + "S";}
+    if(lon > 0) {ret["lng"] = Math.round(lon*100)/100 + "E";}
+    if(lon <= 0) {ret["lng"] = Math.abs(Math.round(lon*100)/100) + "W";}
+    return ret;
+  }
 }
 
 //@see http://www.hamweather.com/support/documentation/aeris/
@@ -414,7 +450,7 @@ var Preferences = {
   num_people: 4,
   weather: null,
   rates: null,
-  rainfall_events: 4,
+  rainfall_events: [], //TODO fix me for the biomes
   //Use like bind("latLng","solar_size" function() { stuff })
   bind: function() {
     for(var i = 0; i < arguments.length-1; i++)
@@ -509,6 +545,39 @@ var Building = {
     return total
   },
 
+  setClimate: function(name) {
+    function contains(str,str1) {
+      return str.indexOf(str1) > 0;
+    }
+    
+    switch (true) {
+      case contains(name,"temperate") && contains(name,"maritime"):
+        break;
+      case contains(name,"Subtropic") && contains(name,"macrotherm") && contains(name,"maritime"):
+        break;
+      case contains(name,"Subtropic") && contains(name,"megatherm") && contains(name,"maritime"):
+        break;
+      case contains(name,"temperate") && contains(name,"humid"):
+        break;
+      case contains(name,"temperate") && contains(name,"arid"):
+        break;
+      case contains(name,"Subtropic") && contains(name,"mesotherm"):
+        break;
+      case contains(name,"Subtropic") && contains(name,"macrotherm"):
+        break;
+      case contains(name,"Subtropic") && contains(name,"megatherm") && contains(name,"humid"):
+        break;
+      case contains(name,"Subtropic") && contains(name,"megatherm") && contains(name,"arid"):
+        break;
+      case contains(name,"Dry") && contains(name,"cold"):
+        break;
+      case contains(name,"Dry") && contains(name,"warm"):
+        break;
+      case contains(name,"Tropic"):
+        break;
+    }
+  },
+
   runoff: function(month) {
     var comps = Preferences.soil.composition
     var total = 0;
@@ -522,11 +591,11 @@ var Building = {
       }
     }
     if (CN < 1){ return 0; } //Issue calculating -- just set it to 0
-    var events = Preferences.rainfall_events; //TODO assuming 4 events for now ?
+    var events = Preferences.rainfall_events; 
 
-    var P = Preferences.weather[month].prcp.mtdIN / events;
+    var P = Preferences.weather[month].prcp.mtdIN / events[month];
     var s = 1000/CN - 10;
-    return ((Math.pow((P - 0.2 * s),2) / (P + 0.8 * s)) * events) * this.runoff_curve[Preferences.sqft]["sqft"] * 0.623;
+    return ((Math.pow((P - 0.2 * s),2) / (P + 0.8 * s)) * events[month]) * this.runoff_curve[Preferences.sqft]["sqft"] * 0.623;
   },
   
   runoff_curve: {
