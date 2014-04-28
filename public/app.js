@@ -308,12 +308,13 @@ function Piece(system, numFrames, unit)
       ref['scaletag'] = makeTag(name+'-scaletag', scaleText, -15, 80, self.ref['anchor']);
     });
   ref['info-panel'] = makePanel(name+'-infoPanel', infoPanelTexts[name], -150+this.r-bw, this.r*3, this.ref['anchor']);
-  ref['info-panel'].hide();
+  ref['rating-panel'] = makePanel(name+'-rating-panel', $('.'+this.system.name+'_rating').html(), 160+this.r-bw, this.r*3, this.ref['anchor']);
   ref['info-icon'].click(function(){
     if(GameState.state() == GAMESTATE_PROMPT_ICON){
         GameState.step();
       }
-    ref['info-panel'].toggle()
+    ref['info-panel'].toggle();
+    ref['rating-panel'].toggle();
   });
   ref['nametag'] = makeTag(name+'-nametag', featureNames[name], -15, 50, this.ref['anchor']);
   var scaleText = this.unit == '' ? 'scale: one size' : ('scale:'+this.system.scale+' '+this.unit + (this.system.scale > 1 ? 's' : ''));
@@ -402,6 +403,7 @@ function makePanel(id, text, offx, offy, parent){
       position: 'absolute',
       left: offx,
       top: offy,
+      display: 'none',
     });
   parent.append(panel);
   return panel;
