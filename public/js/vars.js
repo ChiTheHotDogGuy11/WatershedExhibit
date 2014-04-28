@@ -13,18 +13,6 @@ $(function() {
      init_value: 0
    };
    Engine.new_in_variable(month_params);
-
-   var sun_params = {
-     name: "sun", 
-     timer_fired: function(cur_val, time_since_last_change) {
-       return cur_val;
-     },
-     on_update: function(newVal) {
-       
-     },
-     init_value: 0
-   };
-   Engine.new_in_variable(sun_params);
    
   Engine.new_out_variable({
    name: "outdoor_water",
