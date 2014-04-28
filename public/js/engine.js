@@ -263,14 +263,43 @@ var Engine = (function () {
     params_hash["name"] = params_hash["name"] || "TMP";
     this.name = params_hash["name"];
     this.piece = params_hash["piece"];
-    this.calc = params_hash['calculation_function']; 
+    /* HEAD */
+    //this.calc = params_hash['calculation_function']; 
     this.cost = params_hash["cost"];
-    this.isActive = false;
+    //this.isActive = false;
     this.scale = 1;
     this.is_purchased = false;
-    if (params_hash["scale"]) this.scale = params_hash["scale"];
+    //if (params_hash["scale"]) this.scale = params_hash["scale"];
+    /* END HEAD */
+    this.calc = function(in_vars, out_vars, scale, active) { 
+      var ret = params_hash['calculation_function'](in_vars, out_vars, scale, active) 
+      if (this.active) {
+        var inactive = params_hash['calculation_function'](in_vars, out_vars, scale, false)
+        //The number multiplied at the end is the "weight" -- we can change this to emphasize different features
+        var month_score = 0;
+        month_score += (inactive["outdoor_water"] - ret["outdoor_water"]) * 2;
+        month_score += (inactive["energy_consumption"] - ret["energy_consumption"]) * 0.5;
+        month_score += (inactive["runoff"] - ret["runoff"]) * 4;
+        month_score += (inactive["indoor_water"] - ret["indoor_water"]) * 2;
+        this.score += (month_score / 5); // To make sure our variable doesn't get too big
+      }
+      return ret;
+    };
+    this.active = false;
+    this.scale = params_hash['scale'];
+    this.score = 0;
+    this.past_scores = new Array();
   };
 
+  System.prototype.save_score = function() {
+    this.past_scores.push(this.score);
+    this.score = 0;
+  }
+
+  System.prototype.get_past_score = function(id) {
+    return this.past_scores[id];
+  }
+  
   System.prototype.toggle = function(){
     this.active = !this.active;
   }

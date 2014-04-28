@@ -67,7 +67,15 @@ function rebindChart(){
 	var ebid = Engine.out_variables['outdoor_water'].save(), 
 		wbid = Engine.out_variables['indoor_water'].save(),
 		wrid = Engine.out_variables['energy_consumption'].save();
-	var oldChart = stackedCharts[stackedCharts.length-1];
+
+  //Save the scores for our systems	
+  for(var key in Engine.systems) {
+    if(Engine.systems.hasOwnProperty(key)) { 
+      Engine.systems[key].save_score();
+    }   
+  }     
+
+  var oldChart = stackedCharts[stackedCharts.length-1];
 	oldChart.rebind(function(){return Engine.out_variables['outdoor_water'].get_past_values(ebid);}, 'Outdoor Water Consumption');
 	oldChart.rebind(function(){return Engine.out_variables['indoor_water'].get_past_values(wbid);}, 'Indoor Water Consumption');
 	oldChart.rebind(function(){
@@ -218,7 +226,7 @@ function initInstruction(){
 
 
 // Insert JS here
-$(document).ready(function(){
+$(window).load(function(){
 	initInstruction();
 	initBudget();
 	initGameEngine();

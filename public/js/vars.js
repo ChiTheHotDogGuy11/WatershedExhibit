@@ -45,6 +45,12 @@ $(function() {
   });
 
   Engine.new_out_variable({
+   name: "runoff",
+   on_update: function(newVal) {}, 
+   init_value: 0,
+  });
+
+  Engine.new_out_variable({
    name: "carbon",
    on_update: function(newVal) {}, 
    init_value: 0,
@@ -69,5 +75,5 @@ $(function() {
       //console.log("New sun val: " + newVal);
     },
     init_value: 1
-  });;
+  });
 });
