@@ -4,11 +4,15 @@ function initGameEngine(){
 	var inAction = function(piece){
 		budget.change(budget.data - piece.system.cost(piece.system.scale));
     	piece.system.toggle();
+    	activePieces.push(piece);
+    	console.log(activePieces);
     	piece.contract();
 	}
 	var outAction = function(piece){
 		budget.change(budget.data + piece.system.cost(piece.system.scale));
     	piece.system.toggle();
+    	activePieces.splice(activePieces.indexOf(piece), 1);
+    	console.log(activePieces);
     	piece.expand();
 	}
 	for(var i = 0; i < 2; i++){
@@ -24,32 +28,33 @@ function initGameEngine(){
         name: 'geo_thermal',
         cost: 30,
     };
-    var rb_piece = new Piece(Engine.systems['rain_barrel']);
+    var rb_piece = new Piece(Engine.systems['rain_barrel'], 14, 'barrel', 5);
     Engine.systems['rain_barrel'].piece = rb_piece;
     rb_piece.move(300, 300);
-    var gt_piece = new Piece(Engine.systems['geo_thermal']);
+    var gt_piece = new Piece(Engine.systems['geo_thermal'], 21, '', 1);
     Engine.systems['geo_thermal'].piece = gt_piece;
     gt_piece.move(250, 400);
-    var sp_piece = new Piece(Engine.systems['solar_panel']);
+    var sp_piece = new Piece(Engine.systems['solar_panel'], 13, 'kwatt', 5);
     Engine.systems['solar_panel'].piece = sp_piece;
-    sp_piece.move(680, 480);
+    sp_piece.move(480, 480);
     pieces[1] = sp_piece;
     pieces[0] = gt_piece;
     pieces[2] = rb_piece;
-    // geo_sys.piece = new Piece(geo_sys);
-    // barrel_sys.piece.move(400, 400);
-    // geo_sys.piece.move(250, 500);
-    // Engine.new_system(barrel_sys);
-
     // secret functionalities of help / quit button for the sake of testing. should be removed in release!s
 	$('#help-btn').click(function(){
-		barrel_sys.piece.move(barrel_sys.piece.x+10, barrel_sys.piece.y);
+		window.open("instruction.html","_blank","resizable=yes, top=200, left=200, width=1000, height=600");
+		//sp_piece.move(sp_piece.x+10, sp_piece.y);
 	});
 	$('#close-btn').click(function(){
-		console.log('here');
-		barrel_sys.piece.move(barrel_sys.piece.x, barrel_sys.piece.y+10);
+		window.location.href = 'instruction.html';
+		//sp_piece.move(sp_piece.x, sp_piece.y+10);
 	});
-
+	$('#titlePanel').click(function(){
+		GameState.step();
+	});
+	$('#budgetMeterBar').click(function(){
+		sp_piece.move(sp_piece.x+10, sp_piece.y);
+	});
 }
 
 function bindChart(containerId){
@@ -83,54 +88,56 @@ function initGameScreen(){
 }
 
 function renderScreen(){
-	var contract = function(id){
-		var btnId = '#y'+id+'-btn';
-		$(btnId).removeClass().addClass('small-btn').css('box-shadow', '0 0 0px 0 #ff0000').attr('src', 'images/y'+id+'-button.png');
-		return $(btnId);
-	}
-
-	var expand = function(id){
-		var btnId = '#y'+id+'-btn';
-		$(btnId).removeClass().addClass('big-btn').attr('src', 'images/y'+id+'-play-button.png');
-		return $(btnId);
-	}
-
-	if(GameState.level() == 0){
-		$('#pieceContainer0').css('box-shadow', '0 0 40px 0 #ff0000');
-		$('#y1-btn').css('box-shadow', '0 0 0px 0 #ff0000')
-		$('#y1-btn').unbind('click').
-			click(function(){
-				GameState.step(); 
-			});
-	}
-	else if(GameState.level() <= NUM_LEVELS && GameState.state() == GAMESTATE_PAUSED){
-		stackedCharts.push(bindChart('gameChart'));
-		$('#pieceContainer0').css('box-shadow', '0 0 0px 0 #ff0000');
-		expand(GameState.level()).css('box-shadow', '0 0 40px 0 #ff0000')
+	if(GameState.level() == 0 && GameState.state() == GAMESTATE_PROMPT_PIECE){
+		$('#prompt').text('Place pieces on the screen to explore different features.');
+		$('#play-btn').css('box-shadow', '0 0 40px 0 #ff0000')
 			.unbind('click')
 			.click(function(){
-				if(budget.data < 0){ alert('You have exceeded your budget! Try changing some features.'); return;}
+				if(budget.data < 0){ 
+					$('#prompt').text('You have exceeded your budget! Try changing some features.');
+					return;
+				}
 				if(GameState.level() > 1){
 					stackedCharts[stackedCharts.length-1].reposition('historyGraphContainer'+(GameState.level()-1), (GameState.level()-1));
 					rebindChart();
 				}				
-				GameState.step();
-			})
-		for(var i = 1; i < NUM_LEVELS; i++){
-			if(i != GameState.level()){
-				contract(i);
-			}
+				// activate system animations
+				for(var i = 0; i < activePieces.length; i++){
+					activePieces[i].play();
+				}
+				$('#prompt').text('simulating...');
+				GameState.stepTo(1, GAMESTATE_PLAYING);
+		});
+	}
+	else if(GameState.level() == 0 && GameState.state() == GAMESTATE_PROMPT_ICON){
+		$('#prompt').text('Tap on the icons to learn more about this system.');
+	}
+	else if(GameState.level() == 0 && GameState.state() == GAMESTATE_PROMPT_SLOT){
+		$('#pieceContainer0').css('box-shadow', '0 0 40px 0 #ff0000');
+		$('#prompt').text('Drag a piece into a slot to install the feature.');
+	}
+	else if(GameState.level() <= NUM_LEVELS && GameState.state() == GAMESTATE_PAUSED){
+		//$('#y1-btn').css('box-shadow', '0 0 0px 0 #ff0000')
+		stackedCharts.push(bindChart('gameChart'));
+		if(GameState.level() == 1){
+			$('#prompt').text('Money spent! When you have chosen the systems for installation, hit the Play button.');
 		}
+		$('#pieceContainer0').css('box-shadow', '0 0 0px 0 #ff0000');
 	}
 	else if(GameState.level()  <= NUM_LEVELS && GameState.state() == GAMESTATE_PLAYING){
-		$('#y'+GameState.level()+'-btn').css('box-shadow', '0 0 0px 0 #ff0000');
+		$('#play-btn').css('box-shadow', '0 0 0px 0 #ff0000');
 	}
 	else if(GameState.level()  <= NUM_LEVELS && GameState.state() == GAMESTATE_DONE){	
-		contract('y'+GameState.level()+'-btn');
+		$('#prompt').text('One year has passed. You may now make adjustments to your installation for the next year.');
 		$('#y'+GameState.level()+'-btn').unbind('click');
+		// deactivate system animations
+		for(var i = 0; i < activePieces.length; i++){
+			activePieces[i].pause();
+		}
 		GameState.step();
 	}		
 	else{
+		$('#prompt').text('Game over.');
 		stackedCharts.push(bindChart('gameChart'));
 		stackedCharts[stackedCharts.length-1].reposition('historyGraphContainer'+(GameState.level()-1), (GameState.level()-1));
 		rebindChart();

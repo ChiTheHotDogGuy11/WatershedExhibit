@@ -22,6 +22,7 @@ $(function() {
     },
     piece: undefined,
     vars: ["month"],
+    maxScale: 5,
     scale: 1,
     cost: function(scale) {
       //They cost about 5 dollars per watt
@@ -57,6 +58,7 @@ $(function() {
     },
     piece: undefined,
     vars: ["month"],
+    maxScale: 1,
     scale: 1,
     cost: function(scale) { return 42 + (scale-1) * (2) },
   });
@@ -78,6 +80,7 @@ $(function() {
     },
     piece: undefined,
     scale: 1,
+    maxScale: 5,
     vars: ["month"],
     cost: function(scale) { 
         return scale * 0.25;
