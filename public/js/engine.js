@@ -423,7 +423,8 @@ var Engine = (function () {
     this.name = params_hash["name"] || "TMP"; 
     this.duration = params_hash["duration"] || 1;
     //Probability modelled as integer between 0-99 (inclusive).
-    this.probability = params_hash["probability"] | 10;
+    this.probability = params_hash["probability"];
+    //console.log(this.name + " probability: " + this.probability);
     this.on_init = params_hash["on_init"];
     this.on_update = params_hash["on_update"];
     this.on_terminate = params_hash["on_terminate"];
@@ -443,6 +444,7 @@ var Engine = (function () {
   };
 
   Event.prototype.timer_fired = function(timer_probability, pertinent_vars) {
+    //console.log("timer probability: " + timer_probability);
     //Event is ongoing and shouldn't terminate this round.
     if (this.time_remaining > 1) {
       this.time_remaining -= 1;

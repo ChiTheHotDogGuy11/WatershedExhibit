@@ -2,7 +2,7 @@ $(function() {
   var storm_params = {
     name: "storm",
     duration: 3,
-    probability : 10,
+    probability : 0,
     on_init: function(duration, cur_inputs) {
       console.log("begin storm");
       //alert("Storm has begun");
@@ -29,7 +29,7 @@ $(function() {
   var price_hike_params = {
     name: "price_hike",
     duration: 2,
-    probability : 10,
+    probability : 0,
     on_init: function(duration, cur_inputs) {
       console.log("begin price hike");
       cur_inputs["rain"] -= .3;
@@ -52,7 +52,7 @@ $(function() {
   var drought_params = {
     name: "drought",
     duration: 3,
-    probability : 10,
+    probability : 0,
     on_init: function(duration, cur_inputs) {
       console.log("begin drought");
       cur_inputs["rain"] -= .3;
