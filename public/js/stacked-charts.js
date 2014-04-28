@@ -96,7 +96,6 @@ function StackedChart(_divId){
 		divId = newDivId;
 		self.contracted = true;
 		self.year = year;
-
 	}
 
 	render();

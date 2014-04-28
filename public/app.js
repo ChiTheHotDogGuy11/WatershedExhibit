@@ -2,53 +2,6 @@ var piece_container = '.page_container';
 
 'use strict';
 
-function initCheckout() {
-    if (CHECKOUT_METHOD === 0) {
-        $("#checkout-button").click(function() {
-            for (var i = 0; i < inCheckout.length; i++) {
-                var curId = inCheckout[i];
-                var isPurchased = (purchasedFeatures.indexOf(curId) !== -1);
-                if (!isPurchased) {
-                    var curPiece = pieces[curId];
-                    budget.subtractAmount(curPiece.cost);
-                    purchasedFeatures.push(curId);
-                }
-            }
-        });
-        var checkoutArea = new BoundingBox($("#checkout-area"), 
-            //in action
-            function(id) {
-                $("#checkout-button").prop('disabled', false);
-                if (inCheckout.indexOf(id) == -1) inCheckout.push(id);
-            }, 
-            //out action
-            function(id) {
-                var index = inCheckout.indexOf(id);
-                if (index > -1) inCheckout.splice(index, 1);
-                if (inCheckout.length == 0) {
-                    $("#checkout-button").prop('disabled', true);
-                }
-            }
-        );
-        boundingList.push(checkoutArea);
-    }
-    //DON'T DO: IT WILL CRASH!
-    else if (CHECKOUT_METHOD === 1) {
-        $("#checkout-area").css('display', 'none');
-        var house = new BoundingBox($("#houseAnimContainer"),
-            function(id){
-                console.log("collision with house");
-                visibilities[id] = FADING_IN;
-            },
-            function(id){
-                console.log('exiting');
-                visibilities[id] = FADING_OUT;
-            }
-        );
-        boundingList.push(house);
-    }
-}
-
 /**
  * All the code relevant to Socket.IO is collected in the IO namespace.
  *
@@ -84,51 +37,37 @@ var IO = {
 
 
     onUpdate : function(data) {
-		//Convert the byte arrays passed in the data
-		//to floats
-        data = data.message;
-       // var buffer = [];
-	    //Variables used to help move the pieces 
-		var xPercent;
-		var yPercent;
-		var xCoord;
-		var yCoord;
-		var windowW = $(window).width();
-		var windowH = $(window).height();
-		//Structure of data is "x1,y1~x2,y2~..."
-		var allCoords = data.toString().split('~');
-        for(var i = 0; i < allCoords.length; i++){
-            var coords = allCoords[i].split(',');
-            if(coords.length >=2 ){
-				//The floats passed are percentages of the screen
-				xPercent = parseFloat(coords[0]);
-				yPercent = parseFloat(coords[1]);
-        // if(xPercent < -10){
-        //   continue;
-        // }
-				//Scale the percentages to absolute values on screen
-        //var middle = windowW / 2;
-        //var perfectY = windowH * .6;
-				xCoord = (xPercent) * windowW * xScale + xShift;
-				yCoord = (yPercent) * windowH * yScale + yShift;
-    //     var distFromMidX = Math.abs(middle - xCoord);
-    //     var distFromMidY = Math.abs(perfectY - yCoord);
-    //     xCoord *= (.8 * distFromMidX);
-    //     yCoord *= (.8 * distFromMidY);
-				// //pieceIndex = Math.floor(i);
-        //var curID = pieces[pieceIndex].id;
-        //console.log(pieceIndex);
-        //$("#" + curID + "circle").css("left", xCoord+"px");
-        //$("#" + curID + "circle").css("top", yCoord+"px");
-        //console.log(xCoord + " " + yCoord);
+  		//Convert the byte arrays passed in the data
+  		//to floats
+          data = data.message;
+         // var buffer = [];
+  	    //Variables used to help move the pieces 
+  		var xPercent;
+  		var yPercent;
+  		var xCoord;
+  		var yCoord;
+  		var windowW = $(window).width();
+  		var windowH = $(window).height();
+  		//Structure of data is "x1,y1~x2,y2~..."
+  		var allCoords = data.toString().split('~');
+      for(var i = 0; i < allCoords.length; i++){
+        var coords = allCoords[i].split(',');
+        if(coords.length >=2 ){
+      		//The floats passed are percentages of the screen
+      		xPercent = parseFloat(coords[0]);
+      		yPercent = parseFloat(coords[1]);
 
-        if(i in pieces){
-          pieces[i].move(xCoord, yCoord);
-        }
-                //buffer.push(parseFloat(coords[0]));
-                //buffer.push(parseFloat(coords[1]));
+      		xCoord = (xPercent) * windowW * xScale + xShift;
+      		yCoord = (yPercent) * windowH * yScale + yShift;
+
+          if(i in pieces){
+            pieces[i].move(xCoord, yCoord);
+            if(xCoord > 0 && yCoord > 0 && GameState.state() == GAMESTATE_PROMPT_PIECE){
+              GameState.step();
             }
+          }
         }
+      }
     },
 };
 
@@ -318,7 +257,7 @@ var TouchEvent = {
 
 /* ------ Piece constructor -------- */
 
-function Piece(system)
+function Piece(system, numFrames, unit)
 {
   this.system = system;
   var name = system.name;
@@ -328,6 +267,9 @@ function Piece(system)
   this.y = 0;
   this.r = 40;
   this.diam = 110;
+  this.paused = true;
+  this.curFrame = 1;
+  this.unit = unit;
 
   //The current bounding box
   this.curBox = null;
@@ -343,27 +285,56 @@ function Piece(system)
   ref['info-icon'] = makeIcon(name+'-infoicon', 'images/info-button.png', 60, this.r-bw, this.r-bw-this.r*3, this.ref['anchor']);
   ref['plus-icon'] = makeIcon(name+'-plusicon', 'images/plus-button.png', 60, this.r-bw+this.r*0.866*3, this.r-bw+this.r*1.5, this.ref['anchor'])
     .click(function(){
+      if(GameState.state() == GAMESTATE_PROMPT_ICON){
+        GameState.step();
+      }
       self.system.scaleUp(); 
       ref['outer-circle'].detach();
       ref['outer-circle'] = makeCircle(name+'-outercircle', 'piece', self.r-bw, self.r-bw, getOuterR(self.system.scale), '2px solid', PINK, ref['anchor']);
       ref['scaletag'].detach();
-      ref['scaletag'] = makeTag(name+'-scaletag', 'scale:'+self.system.scale, -15, 80, ref['anchor']);
+      var scaleText = self.unit == '' ? 'scale: one size' : ('scale:'+self.system.scale+' '+self.unit + (self.system.scale > 1 ? 's' : ''));
+      ref['scaletag'] = makeTag(name+'-scaletag', scaleText, -15, 80, self.ref['anchor']);
     });
   ref['minus-icon'] = makeIcon(name+'-minusicon', 'images/minus-button.png', 60, this.r-bw-this.r*0.866*3, this.r-bw+this.r*1.5, this.ref['anchor'])
     .click(function(){
+      if(GameState.state() == GAMESTATE_PROMPT_ICON){
+        GameState.step();
+      }
       self.system.scaleDown();  
       ref['outer-circle'].detach();
       ref['outer-circle'] = makeCircle(name+'-outercircle', 'piece', self.r-bw, self.r-bw, getOuterR(self.system.scale), '2px solid', PINK, ref['anchor']);
       ref['scaletag'].detach();
-      ref['scaletag'] = makeTag(name+'-scaletag', 'scale:'+self.system.scale, -15, 80, ref['anchor']);
+      var scaleText = self.unit == '' ? 'scale: one size' : ('scale:'+self.system.scale+' '+self.unit + (self.system.scale > 1 ? 's' : ''));
+      ref['scaletag'] = makeTag(name+'-scaletag', scaleText, -15, 80, self.ref['anchor']);
     });
   ref['info-panel'] = makePanel(name+'-infoPanel', infoPanelTexts[name], -150+this.r-bw, this.r*3, this.ref['anchor']);
   ref['info-panel'].hide();
-  ref['info-icon'].click(function(){ref['info-panel'].toggle()});
+  ref['info-icon'].click(function(){
+    if(GameState.state() == GAMESTATE_PROMPT_ICON){
+        GameState.step();
+      }
+    ref['info-panel'].toggle()
+  });
   ref['nametag'] = makeTag(name+'-nametag', featureNames[name], -15, 50, this.ref['anchor']);
-  ref['scaletag'] = makeTag(name+'-scaletag', 'scale:'+this.system.scale, -15, 80, this.ref['anchor']);
-  this.loadAnimation(name, 1, 1);
-  //makeArc(this.r*2, -bw+this.r, -bw+this.r, bw, 15, this.ref['anchor']);
+  var scaleText = this.unit == '' ? 'scale: one size' : ('scale:'+this.system.scale+' '+this.unit + (this.system.scale > 1 ? 's' : ''));
+  ref['scaletag'] = makeTag(name+'-scaletag', scaleText, -15, 80, this.ref['anchor']);
+  this.loadAnimation(name, 1, numFrames);
+  
+  setInterval(function(){
+    if(!self.paused){
+      $('#'+self.system.name+'_frame'+self.curFrame).hide();
+      self.curFrame = self.curFrame >= self.endF ? 1 : self.curFrame+1;
+      $('#'+self.system.name+'_frame'+self.curFrame).show();
+    }
+  }, 150);
+}
+
+Piece.prototype.play = function(){
+  this.paused = false;
+}
+
+Piece.prototype.pause = function(){
+  this.paused = true;
 }
 
 Piece.prototype.expand = function(){
@@ -371,8 +342,8 @@ Piece.prototype.expand = function(){
   this.ref['plus-icon'].show();
   this.ref['info-icon'].show();
   this.ref['outer-circle'].show();
-  for(var i = this.startF; i < this.endF; i++){
-    $('#'+this.system.name+'_frame'+1).hide();
+  for(var i = this.startF; i <= this.endF; i++){
+    $('#'+this.system.name+'_frame'+i).hide();
   }
 }
 
@@ -390,9 +361,11 @@ Piece.prototype.loadAnimation = function(name, startF, endF){
   this.endF = endF;
   for(var i = startF; i <= endF; i++){
     var frame = $('<img/>', {
-      src: 'images/animations/'+name+'/'+startF+'.png',
+      src: 'images/animations/'+name+'/'+i+'.png',
       class: name+'_frame',
       id: name+'_frame'+i,
+      }).css({
+        zIndex: 1000,
       });
     $('#animAssets').append(frame);
   }

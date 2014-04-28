@@ -43,7 +43,7 @@ var two; //two.js object
 
 var GameState = (function(){
 	var _level = 0;
-	var _state = GAMESTATE_PAUSED;
+	var _state = GAMESTATE_PROMPT_PIECE;
 	var _playCount = 0;
 	var MAX_PLAYCOUNT = 12;
 	function level(){
@@ -52,10 +52,23 @@ var GameState = (function(){
 	function state(){
 		return _state;
 	}
+	function stepTo(level, state){
+		_level = level;
+		_state = state;
+		_playCount = 0;
+	}
 	function step(){
 		if(_level == 0){
-			_level++;
-			_state = GAMESTATE_PAUSED;
+			if(_state == GAMESTATE_PROMPT_PIECE){
+				_state = GAMESTATE_PROMPT_ICON;
+			}
+			else if(_state == GAMESTATE_PROMPT_ICON){
+				_state = GAMESTATE_PROMPT_SLOT;
+			}
+			else{
+				_level++;
+				_state = GAMESTATE_PAUSED;
+			}
 		}
 		else if(_level <= NUM_LEVELS){
 			if(_state == GAMESTATE_PAUSED){
@@ -77,13 +90,14 @@ var GameState = (function(){
 		level: level,
 		state: state,
 		step: step,
+		stepTo: stepTo,
 	};
 })(GameState|| {});
 
 //The number of pieces that exist on the board.
 var numPieces = 4;
 //Array to store the pieces.
-var pieces = {};
+var activePieces = [];
 
 var budget;
 var boundingList = []; 

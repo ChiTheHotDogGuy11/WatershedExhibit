@@ -95,8 +95,11 @@ var Engine = (function () {
       
       var out_vars = {};
       for (var out_name in out_variables) {
-        out_vars[out_name] = out_variables[out_name].current_value();
+        out_vars[out_name] = 0;//out_variables[out_name].current_value();
       }
+      // out_vars["outdoor_water"] = 0;
+      // out_vars["indoor_water"] = 0;
+      // out_vars["energy_consumption"] = 0;
       
       //Pass the latest input variables to the systems, 
       //and have them update the output variables they
@@ -124,7 +127,7 @@ var Engine = (function () {
       
       //Now update the output vars.
       for (var var_name in out_vars) {
-        out_variables[var_name].push_value(out_vars[var_name]);
+        out_variables[var_name].push_value(Math.max(0,out_vars[var_name]));
       }
 
     }
@@ -256,6 +259,7 @@ var Engine = (function () {
     //Define set objects
     params_hash["name"] = params_hash["name"] || "TMP";
     this.name = params_hash["name"];
+    this.maxScale = params_hash['maxScale'];
     this.piece = params_hash["piece"];
     //this.calc = params_hash['calculation_function']; 
     this.cost = params_hash["cost"];
@@ -294,10 +298,17 @@ var Engine = (function () {
   
   System.prototype.toggle = function(){
     this.active = !this.active;
+    if(this.active && GameState.state() == GAMESTATE_PROMPT_SLOT){
+        GameState.step();
+    }
+    else if(this.active && GameState.state() == GAMESTATE_PROMPT_ICON){
+        GameState.step();
+        GameState.step();
+    }
   }
 
   System.prototype.scaleUp = function(){
-    this.scale = Math.min(5, this.scale+1);
+    this.scale = Math.min(this.maxScale, this.scale+1);
   }
 
   System.prototype.scaleDown = function(){
@@ -334,6 +345,22 @@ var Engine = (function () {
     this.ongoing_events = {};
   };
 
+  EventManager.prototype.terminate_events = function() {
+    var cur_in_vals = {};
+    for (var cur_in_var in in_variables) {
+      cur_in_vals[cur_in_var] = in_variables[cur_in_var].current_value();
+    }
+    var pertinent_vars = {};
+    for (var cur_event_name in this.events) {
+      var cur_event = this.events[cur_event_name];
+      for (var i = 0; i < cur_event.input_vars.length; i++) {
+        var input_name = cur_event.input_vars[i];
+        pertinent_vars[input_name] = cur_in_vals[input_name];
+      }
+      cur_event.force_terminate(pertinent_vars);
+    }
+  }
+  
   EventManager.prototype.add_event = function(new_event_o) {
     this.events[new_event_o.name] = new_event_o;
   }
@@ -453,6 +480,13 @@ var Engine = (function () {
       }
     }
   };
+  
+  Event.prototype.force_terminate = function(pertinent_vars) {
+    if (this.time_remaining >= 1) {
+      this.time_remaining = -1;
+      this.on_terminate(this.duration, pertinent_vars);
+    }
+  }
 
   return {
     new_system: new_system,

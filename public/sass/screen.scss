@@ -58,9 +58,7 @@ p {
 }
 
 .asset_container{
-  z-index: -400;
-  height: 100%;
-  width: 100%;
+  z-index: 400;
   position: absolute;
   top: 0;
   left: 0;
@@ -440,8 +438,8 @@ color: white;
 
 .solar_panel_frame{
 	position: absolute;
-	left: 750px;
-	top: 50px;
+	left: 250px;
+	top: 30px;
 	width: 500px;
 	display: none;
 }
@@ -508,6 +506,10 @@ color: white;
 	margin-left: 40px;
 	margin-right: 40px;
 
+}
+
+#prompt{
+	text-align: center;
 }
 @import 'pieces';
 @import 'customization';
