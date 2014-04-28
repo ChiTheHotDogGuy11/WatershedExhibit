@@ -143,7 +143,19 @@ function renderScreen(){
           $('#scoreList').append('<dt>'+system.name+'</dt>');
           $('#scoreList').append('<dd>'+system.score+'</dd>');
         }   
-      }     
+      }
+      $('#roundScreen button').click(function() {
+        $('#nextRound h2').html("Round " + GameState.level());
+        $('#roundScreen').fadeOut('fast', function() {
+          $('#nextRound').fadeIn('fast', function() {
+            stackedCharts.pop();
+            $('#roundChart').empty();
+            setTimeout(function() {
+              $('#roundScreen').parent().hide();
+            }, 700);
+          })
+        });
+      });
     });
     contract('y'+GameState.level()+'-btn');
 		$('#y'+GameState.level()+'-btn').unbind('click');
