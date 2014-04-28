@@ -134,7 +134,18 @@ function renderScreen(){
 		$('#y'+GameState.level()+'-btn').css('box-shadow', '0 0 0px 0 #ff0000');
 	}
 	else if(GameState.level()  <= NUM_LEVELS && GameState.state() == GAMESTATE_DONE){	
-		contract('y'+GameState.level()+'-btn');
+		//TODO put in the game state transition here
+    $('#roundScreen').parent().show(function() {
+      stackedCharts.push(bindChart('roundChart'));
+      for(var key in Engine.systems) {
+        if(Engine.systems.hasOwnProperty(key) && Engine.systems[key].active) { 
+          var system = Engine.systems[key];
+          $('#scoreList').append('<dt>'+system.name+'</dt>');
+          $('#scoreList').append('<dd>'+system.score+'</dd>');
+        }   
+      }     
+    });
+    contract('y'+GameState.level()+'-btn');
 		$('#y'+GameState.level()+'-btn').unbind('click');
 		GameState.step();
 	}		

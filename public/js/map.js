@@ -312,7 +312,7 @@ var soil = {
     $.when.apply($, requests).then(function() {
       if(ret.length == 1) {
         $('#loaderdiv').empty();
-        $('#loaderdiv').append($(arguments[0]));
+        $('#loaderdiv').append($(arguments[0].replace(/src=[\S]+/g,'')));
         ret[0]["plant_water"] = $('#loaderdiv').find('.hyderosratings span:contains("Plant")').next().html().trim(); 
         ret[0]["hydrologic"] = $('#loaderdiv').find('.hyderosratings span:contains("Hydrologic")').next().html().trim().replace("Group ",""); 
         ret[0]["runoff"] = $('#loaderdiv').find('.hyderosratings span:contains("Runoff")').next().html().trim(); 
@@ -322,7 +322,7 @@ var soil = {
       if (ret.length > 1) {
         for(var i = 0; i < ret.length; i++) {
           $('#loaderdiv').empty();
-          $('#loaderdiv').append($(arguments[i][0]));
+          $('#loaderdiv').append($(arguments[i][0].replace(/src=[\S]+/g,'')));
           ret[i]["plant_water"] = $('#loaderdiv').find('.hyderosratings span:contains("Plant")').next().html().trim(); 
           ret[i]["hydrologic"] = $('#loaderdiv').find('.hyderosratings span:contains("Hydrologic")').next().html().trim().replace("Group ",""); 
           ret[i]["runoff"] = $('#loaderdiv').find('.hyderosratings span:contains("Runoff")').next().html().trim(); 
@@ -561,6 +561,7 @@ var NREL = {
         lon: lon,
         system_size: size,
       },
+      async: false,
       success: callback,
     });
   },
