@@ -136,6 +136,7 @@ function renderScreen(){
 		$('#play-btn').css('box-shadow', '0 0 0px 0 #ff0000');
 	}
 	else if(GameState.level()  <= NUM_LEVELS && GameState.state() == GAMESTATE_DONE){	
+    Engine.event_manager.terminate_events();
 		$('#prompt').text('Round two has started. You may now make adjustments to your installation for this round.');
 		//TODO put in the game state transition here
 	    $('#roundScreen').parent().show(function() {

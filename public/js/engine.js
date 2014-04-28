@@ -345,6 +345,22 @@ var Engine = (function () {
     this.ongoing_events = {};
   };
 
+  EventManager.prototype.terminate_events = function() {
+    var cur_in_vals = {};
+    for (var cur_in_var in in_variables) {
+      cur_in_vals[cur_in_var] = in_variables[cur_in_var].current_value();
+    }
+    var pertinent_vars = {};
+    for (var cur_event_name in this.events) {
+      var cur_event = this.events[cur_event_name];
+      for (var i = 0; i < cur_event.input_vars.length; i++) {
+        var input_name = cur_event.input_vars[i];
+        pertinent_vars[input_name] = cur_in_vals[input_name];
+      }
+      cur_event.force_terminate(pertinent_vars);
+    }
+  }
+  
   EventManager.prototype.add_event = function(new_event_o) {
     this.events[new_event_o.name] = new_event_o;
   }
@@ -464,6 +480,13 @@ var Engine = (function () {
       }
     }
   };
+  
+  Event.prototype.force_terminate = function(pertinent_vars) {
+    if (this.time_remaining >= 1) {
+      this.time_remaining = -1;
+      this.on_terminate(this.duration, pertinent_vars);
+    }
+  }
 
   return {
     new_system: new_system,
