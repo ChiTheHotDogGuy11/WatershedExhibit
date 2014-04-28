@@ -5,14 +5,14 @@ function initGameEngine(){
 		budget.change(budget.data - piece.system.cost(piece.system.scale));
     	piece.system.toggle();
     	activePieces.push(piece);
-    	console.log(activePieces);
+    	//console.log(activePieces);
     	piece.contract();
 	}
 	var outAction = function(piece){
 		budget.change(budget.data + piece.system.cost(piece.system.scale));
     	piece.system.toggle();
     	activePieces.splice(activePieces.indexOf(piece), 1);
-    	console.log(activePieces);
+    	//console.log(activePieces);
     	piece.expand();
 	}
 	for(var i = 0; i < 2; i++){
@@ -29,13 +29,13 @@ function initGameEngine(){
     };
     var rb_piece = new Piece(Engine.systems['rain_barrel'], 14, 'barrel', 5);
     Engine.systems['rain_barrel'].piece = rb_piece;
-    rb_piece.move(300, 300);
+    rb_piece.move(200, 200);
     var gt_piece = new Piece(Engine.systems['geo_thermal'], 21, '', 1);
     Engine.systems['geo_thermal'].piece = gt_piece;
     gt_piece.move(250, 400);
     var sp_piece = new Piece(Engine.systems['solar_panel'], 13, 'kwatt', 5);
     Engine.systems['solar_panel'].piece = sp_piece;
-    sp_piece.move(480, 480);
+    sp_piece.move(885, 494);
     pieces[1] = sp_piece;
     pieces[0] = gt_piece;
     pieces[2] = rb_piece;
@@ -60,7 +60,7 @@ function initGameEngine(){
 function bindChart(containerId){
 	// init stacked chart
 	var stackedChart = new StackedChart(containerId)
-		.setRange('line', 0, 120000)
+		.setRange('line', 0, 40000)
 		.setRange('bar', 0, 120000)
 		.bind(true, function(){return Engine.out_variables['outdoor_water'].get_values()}, 'Outdoor Water Consumption')
 		.bind(false, function(){return Engine.out_variables['indoor_water'].get_values()}, 'Indoor Water Consumption')

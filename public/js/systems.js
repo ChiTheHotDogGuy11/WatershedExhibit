@@ -1,20 +1,3 @@
-$(function() {
-  //Could have this be a system for energy-efficient appliances?? Change values depending on efficiency
-  Engine.new_system({
-    name: "living_systems",
-    calculation_function: function(in_vars, out_vars, scale, active) {
-      out_vars["outdoor_water"] = Building.outdoor_water_usage(in_vars["month"]);
-      out_vars["indoor_water"] = Building.indoor_water_usage({});
-      out_vars["energy_consumption"] = Building.electricity_usage() * Preferences.rates.residential;
-      return out_vars;
-    },
-    piece: undefined,
-    vars: ["month"],
-    cost: function(scale) {
-      return 0;
-    },
-  });
-});
 //Solar Power!
 $(function() {
   //We need to get our solar power info
@@ -114,7 +97,7 @@ $(function() {
 
 });
 
-$(function() {
+ $(function() {
   //Could have this be a system for energy-efficient appliances?? Change values depending on efficiency
   Engine.new_system({
     name: "living_systems",
@@ -130,7 +113,7 @@ $(function() {
       return 0;
     },
   });
-});
+}); 
 
 $(function() {
 
@@ -215,5 +198,5 @@ $(function() {
     },
 
   });
-});
+}); 
 
