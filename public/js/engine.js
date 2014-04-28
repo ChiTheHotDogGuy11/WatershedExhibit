@@ -14,9 +14,12 @@ var Engine = (function () {
   var systems = {};
   var in_variables = {};
   var out_variables = {};
+  var budget;
   var loc = null;
   // A container for the events. See event.js
   var event_manager = new EventManager();
+  //Keep track of the scores
+  var scores = new Array();
   
   function new_event(params_hash) {
     var new_e = new Event(params_hash);
@@ -42,6 +45,22 @@ var Engine = (function () {
     loc = new_loc 
   };
 
+  function get_scores() {
+    return scores;
+  };
+  
+  function set_system_active(system_name, is_active) {
+    if (systems[system_name]) {
+      systems[system_name].set_active(is_active);
+    }
+  };
+  
+  function set_system_scale(system_name, scale) {
+    if (systems[system_name]) {
+      systems[system_name].set_scale(scale);
+    }
+  };
+  
   function simulate(steps){
     steps = typeof steps !== 'undefined' ? steps : 1;
     //Run the simulation for the number of steps we have defined
@@ -193,6 +212,21 @@ var Engine = (function () {
     }
   };
 
+  function Budget(params_hash) {
+    this.money_left = params_hash["init_val"] || 0;
+    this.on_change = params_hash["on_change"];
+  }
+  
+  Budget.prototype.change_budget = function(delta) {
+    if (delta > 0) {
+      this.money_left = this.money_left + delta;
+      this.on_change(this.money_left, delta);
+    }
+  }
+  
+  Budget.get_val = function() {
+    return this.money_left;
+  }
   /**
    *  Define new systems by:
    *    Engine.new_system({
@@ -221,9 +255,14 @@ var Engine = (function () {
 
     //Define set objects
     params_hash["name"] = params_hash["name"] || "TMP";
-    this.cost = params_hash['cost'];
     this.name = params_hash["name"];
     this.piece = params_hash["piece"];
+    //this.calc = params_hash['calculation_function']; 
+    this.cost = params_hash["cost"];
+    //this.isActive = false;
+    this.scale = 1;
+    this.is_purchased = false;
+    //if (params_hash["scale"]) this.scale = params_hash["scale"];
     this.calc = function(in_vars, out_vars, scale, active) { 
       var ret = params_hash['calculation_function'](in_vars, $.extend({},out_vars), scale, active) 
       if (this.active) {
@@ -234,7 +273,7 @@ var Engine = (function () {
         month_score += (inactive["energy_consumption"] - ret["energy_consumption"]) * 0.5;
         month_score += (inactive["runoff"] - ret["runoff"]) * 4;
         month_score += (inactive["indoor_water"] - ret["indoor_water"]) * 2;
-        this.score += (month_score / 5); // To make sure our variable doesnt get to big
+        this.score += (month_score / 5); // To make sure our variable doesn't get too big
       }
       return ret;
     };
@@ -265,6 +304,24 @@ var Engine = (function () {
     this.scale = Math.max(1, this.scale-1);
   }
   
+  System.prototype.set_active = function(isActive) {
+    if (isActive && !this.is_purchased) {
+      var sys_cost = this.cost(this.scale);
+      if (budget.get_val() >= sys_cost) {
+        this.is_purchased = true;
+        budget.change_budget(sys_cost);
+      }
+    }
+    this.isActive = isActive;
+  }
+  
+  System.prototype.set_scale = function(scale) {
+    var cur_scale = this.scale;
+    var additional_cost = this.cost(cur_scale) - this.cost(scale);
+    budget.change_budget(additional_cost);
+    this.scale = scale;
+  }
+
       /**
      *    Relatively simple container for the possible events
      *    that can occur. It manages both starting/ending new
@@ -358,7 +415,7 @@ var Engine = (function () {
     this.name = params_hash["name"] || "TMP"; 
     this.duration = params_hash["duration"] || 1;
     //Probability modelled as integer between 0-99 (inclusive).
-    this.probability = params_hash["probability"] | 10;
+    this.probability = params_hash["probability"];
     this.on_init = params_hash["on_init"];
     this.on_update = params_hash["on_update"];
     this.on_terminate = params_hash["on_terminate"];
@@ -408,6 +465,9 @@ var Engine = (function () {
     systems: systems,
     in_variables: in_variables,
     event_manager: event_manager,
+    get_scores: get_scores,
+    set_system_active: set_system_active,
+    set_system_scale: set_system_scale
   }
 
 })(Engine || {});

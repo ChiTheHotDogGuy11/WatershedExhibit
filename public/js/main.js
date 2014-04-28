@@ -15,7 +15,6 @@ function initGameEngine(){
 		var bbox = new BoundingBox($('#pieceContainer'+i), inAction, outAction);
 		boundingList.push(bbox);
 	}
-
     var geo_sys = {
         vars: ["geo-thermal"],
         calculation_function: function(in_vars, out_vars) {
@@ -26,10 +25,10 @@ function initGameEngine(){
     };
     var rb_piece = new Piece(Engine.systems['rain_barrel']);
     Engine.systems['rain_barrel'].piece = rb_piece;
-    rb_piece.move(300, 300);
+    //rb_piece.move(300, 300);
     var gt_piece = new Piece(Engine.systems['geo_thermal']);
     Engine.systems['geo_thermal'].piece = gt_piece;
-    gt_piece.move(250, 400);
+    //gt_piece.move(250, 400);
     var sp_piece = new Piece(Engine.systems['solar_panel']);
     Engine.systems['solar_panel'].piece = sp_piece;
     sp_piece.move(680, 480);
@@ -40,6 +39,7 @@ function initGameEngine(){
     // barrel_sys.piece.move(400, 400);
     // geo_sys.piece.move(250, 500);
     // Engine.new_system(barrel_sys);
+    rb_piece.move(890, 493);
 
     // secret functionalities of help / quit button for the sake of testing. should be removed in release!s
 	$('#help-btn').click(function(){
@@ -143,7 +143,19 @@ function renderScreen(){
           $('#scoreList').append('<dt>'+system.name+'</dt>');
           $('#scoreList').append('<dd>'+system.score+'</dd>');
         }   
-      }     
+      }
+      $('#roundScreen button').click(function() {
+        $('#nextRound h2').html("Round " + GameState.level());
+        $('#roundScreen').fadeOut('fast', function() {
+          $('#nextRound').fadeIn('fast', function() {
+            stackedCharts.pop();
+            $('#roundChart').empty();
+            setTimeout(function() {
+              $('#roundScreen').parent().hide();
+            }, 700);
+          })
+        });
+      });
     });
     contract('y'+GameState.level()+'-btn');
 		$('#y'+GameState.level()+'-btn').unbind('click');
