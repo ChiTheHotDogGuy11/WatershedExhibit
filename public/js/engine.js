@@ -88,7 +88,46 @@ var Engine = (function () {
       //step along the events already in progress. Also update all 
       //the in_variables that the events modify.
       event_manager.timer_fired();
- 
+
+      for(var key in in_variables) {
+        if(in_variables.hasOwnProperty(key)) { 
+          in_vars[key] = in_variables[key].current_value();
+        }
+      }
+      
+      var out_vars = {};
+      for (var out_name in out_variables) {
+        out_vars[out_name] = out_variables[out_name].current_value();
+      }
+      
+      //Pass the latest input variables to the systems, 
+      //and have them update the output variables they
+      //care about.
+      var updated_out_values = {};
+
+      for (var sys_name in systems) {
+        var cur_system = systems[sys_name];
+        //Get the in-values for the variables this system cares about,
+        // formed as {var_name: cur_var_value, ...}
+        var pertinent_vars = {};
+        //Make sure we only capture the input variables that this
+        //system has said it cares about.
+        for (input_var_name in cur_system.vars) {
+          pertinent_vars[input_var_name] = in_vars[input_var_name];
+        }
+        //Capture the output variables that this event might
+        // have changed.
+        var changed_vals = cur_system.calc(in_vars, out_vars, cur_system.scale, cur_system.active);
+        //Update the now-outdated values we have in cur_in_vals.
+        for (var var_name in changed_vals) {
+          out_vars[var_name] = changed_vals[var_name];
+        }
+      }
+      
+      //Now update the output vars.
+      for (var var_name in out_vars) {
+        out_variables[var_name].push_value(out_vars[var_name]);
+      }
 
     }
     //Save the scores
@@ -231,6 +270,18 @@ var Engine = (function () {
     this.is_purchased = false;
     if (params_hash["scale"]) this.scale = params_hash["scale"];
   };
+
+  System.prototype.toggle = function(){
+    this.active = !this.active;
+  }
+
+  System.prototype.scaleUp = function(){
+    this.scale = Math.min(5, this.scale+1);
+  }
+
+  System.prototype.scaleDown = function(){
+    this.scale = Math.max(1, this.scale-1);
+  }
   
   System.prototype.set_active = function(isActive) {
     if (isActive && !this.is_purchased) {

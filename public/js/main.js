@@ -2,56 +2,19 @@ function initGameEngine(){
 
 	// init pieces
 	var inAction = function(piece){
-		budget.change(budget.data - piece.system.cost);
-    	piece.system.active = true;
+		budget.change(budget.data - piece.system.cost(piece.system.scale));
+    	piece.system.toggle();
     	piece.contract();
 	}
 	var outAction = function(piece){
-		budget.change(budget.data + piece.system.cost);
-    	piece.system.active = false;
+		budget.change(budget.data + piece.system.cost(piece.system.scale));
+    	piece.system.toggle();
     	piece.expand();
 	}
 	for(var i = 0; i < 2; i++){
 		var bbox = new BoundingBox($('#pieceContainer'+i), inAction, outAction);
 		boundingList.push(bbox);
 	}
-     //pieces[2].move(-1200, -200);
-    // pieces[3].move(-1000, -1000);
-    // Engine.new_out_variable({
-    //     name: "water_bill",
-    //     on_update: function(newVal) {}, 
-    //     init_value: 1000,
-    // });
-	
-    // Engine.new_out_variable({
-    //     name: "electricity_bill",
-    //     on_update: function(newVal) {}, 
-    //     init_value: 1000,
-    // });
-
-    // Engine.new_out_variable({
-    // 	name: 'water_run_off',
-    // 	on_update: function(newVal) {}, 
-    // 	init_value: 1000,
-    // });
-
-    // var barrel_sys = {
-    //     vars: ["rain"],
-    //     calculation_function: function(in_vars, out_vars) {
-    //       if(out_vars["water_bill"] < 5000){
-    //       	out_vars["water_bill"] += 1000;
-          	
-    //       }
-    //       else{
-    //       	out_vars["water_bill"] = 0;
-    //       }
-    //       out_vars['water_run_off'] = Math.random() * 5000;
-    //       out_vars['electricity_bill'] = 1000;
-    //       return out_vars;
-    //     },
-    //     name: 'rain_barrel',
-    //     cost: 1,
-    // };
     var geo_sys = {
         vars: ["geo-thermal"],
         calculation_function: function(in_vars, out_vars) {
@@ -62,15 +25,21 @@ function initGameEngine(){
     };
     var rb_piece = new Piece(Engine.systems['rain_barrel']);
     Engine.systems['rain_barrel'].piece = rb_piece;
+    //rb_piece.move(300, 300);
     var gt_piece = new Piece(Engine.systems['geo_thermal']);
     Engine.systems['geo_thermal'].piece = gt_piece;
+    //gt_piece.move(250, 400);
     var sp_piece = new Piece(Engine.systems['solar_panel']);
     Engine.systems['solar_panel'].piece = sp_piece;
+    sp_piece.move(680, 480);
+    pieces[1] = sp_piece;
+    pieces[0] = gt_piece;
+    pieces[2] = rb_piece;
     // geo_sys.piece = new Piece(geo_sys);
     // barrel_sys.piece.move(400, 400);
     // geo_sys.piece.move(250, 500);
     // Engine.new_system(barrel_sys);
-    rb_piece.move(700, 485);
+    rb_piece.move(890, 493);
 
     // secret functionalities of help / quit button for the sake of testing. should be removed in release!s
 	$('#help-btn').click(function(){
@@ -88,9 +57,9 @@ function bindChart(containerId){
 	var stackedChart = new StackedChart(containerId)
 		.setRange('line', 0, 120000)
 		.setRange('bar', 0, 120000)
-		.bind(true, function(){return Engine.out_variables['outdoor_water'].get_values()}, 'Electricity bill')
-		.bind(false, function(){return Engine.out_variables['indoor_water'].get_values()}, 'Water bill')
-		.bind(false, function(){return Engine.out_variables['energy_consumption'].get_values()}, 'Water run-off');
+		.bind(true, function(){return Engine.out_variables['outdoor_water'].get_values()}, 'Outdoor Water Consumption')
+		.bind(false, function(){return Engine.out_variables['indoor_water'].get_values()}, 'Indoor Water Consumption')
+		.bind(false, function(){return Engine.out_variables['energy_consumption'].get_values()}, 'Energy Consumption');
 	return stackedChart;
 }
 
@@ -99,11 +68,11 @@ function rebindChart(){
 		wbid = Engine.out_variables['indoor_water'].save(),
 		wrid = Engine.out_variables['energy_consumption'].save();
 	var oldChart = stackedCharts[stackedCharts.length-1];
-	oldChart.rebind(function(){return Engine.out_variables['outdoor_water'].get_past_values(ebid);}, 'Electricity bill');
-	oldChart.rebind(function(){return Engine.out_variables['indoor_water'].get_past_values(wbid);}, 'Water bill');
+	oldChart.rebind(function(){return Engine.out_variables['outdoor_water'].get_past_values(ebid);}, 'Outdoor Water Consumption');
+	oldChart.rebind(function(){return Engine.out_variables['indoor_water'].get_past_values(wbid);}, 'Indoor Water Consumption');
 	oldChart.rebind(function(){
 		return Engine.out_variables['energy_consumption'].get_past_values(wrid);}, 
-	'Water run-off');
+	'Energy Consumption');
 }
 
 function initGameScreen(){
@@ -135,10 +104,16 @@ function renderScreen(){
 			});
 	}
 	else if(GameState.level() <= NUM_LEVELS && GameState.state() == GAMESTATE_PAUSED){
+		stackedCharts.push(bindChart('gameChart'));
 		$('#pieceContainer0').css('box-shadow', '0 0 0px 0 #ff0000');
 		expand(GameState.level()).css('box-shadow', '0 0 40px 0 #ff0000')
 			.unbind('click')
 			.click(function(){
+				if(budget.data < 0){ alert('You have exceeded your budget! Try changing some features.'); return;}
+				if(GameState.level() > 1){
+					stackedCharts[stackedCharts.length-1].reposition('historyGraphContainer'+(GameState.level()-1), (GameState.level()-1));
+					rebindChart();
+				}				
 				GameState.step();
 			})
 		for(var i = 1; i < NUM_LEVELS; i++){
@@ -153,12 +128,12 @@ function renderScreen(){
 	else if(GameState.level()  <= NUM_LEVELS && GameState.state() == GAMESTATE_DONE){	
 		contract('y'+GameState.level()+'-btn');
 		$('#y'+GameState.level()+'-btn').unbind('click');
-		stackedCharts[stackedCharts.length-1].reposition('historyGraphContainer'+GameState.level(), GameState.level());
-		rebindChart();
-		stackedCharts.push(bindChart('gameChart'));
 		GameState.step();
 	}		
 	else{
+		stackedCharts.push(bindChart('gameChart'));
+		stackedCharts[stackedCharts.length-1].reposition('historyGraphContainer'+(GameState.level()-1), (GameState.level()-1));
+		rebindChart();
 		$('#endScreen').show();
 		$('#endScreen').append($('#historyGraphContainer1').detach().css('margin', '60px'));
 		$('#endScreen').append($('#historyGraphContainer2').detach().css('margin', '60px'));

@@ -49,4 +49,25 @@ $(function() {
    on_update: function(newVal) {}, 
    init_value: 0,
   });
+  
+  Engine.new_in_variable({
+    name: "rain",
+    timer_fired: function(cur_val, time_since_last_change) {
+      return cur_val;
+    },
+    on_update: function(newVal) {
+      //console.log("New rain val: " + newVal);
+    },
+    init_value: 1
+  });
+  Engine.new_in_variable({
+    name: "sun",
+    timer_fired: function(cur_val, time_since_last_change) {
+      return cur_val;
+    },
+    on_update: function(newVal) {
+      //console.log("New sun val: " + newVal);
+    },
+    init_value: 1
+  });;
 });
