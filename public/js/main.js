@@ -151,6 +151,7 @@ function renderScreen(){
             stackedCharts.pop();
             $('#roundChart').empty();
             setTimeout(function() {
+              $('#nextRound').hide();
               $('#roundScreen').parent().hide();
             }, 700);
           })
