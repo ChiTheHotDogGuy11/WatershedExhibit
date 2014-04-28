@@ -21,10 +21,11 @@ $(function() {
   //We need to get our solar power info
   var monthly_data;
   var scale = 1;
-
+  var blocking = false;
   var find_solar = function() {
     NREL.get_solar(Preferences.latLng.lat, Preferences.latLng.lng, Preferences.solar_size, function(data) {
       monthly_data = data.outputs;
+      blocking = false;
     });
   };
   Preferences.bind("latLng", "solar_size", find_solar);
@@ -33,7 +34,9 @@ $(function() {
     name: "solar_panel",
     calculation_function: function (in_vars, out_vars, scale, active) {
       var month = in_vars["month"]
-      if (Preferences.solar_size != scale) { Preferences.solar_size = 1000 * scale; } //TODO we need to block on this... else the results are not accurate
+      if (Preferences.solar_size != scale) { 
+        Preferences.solar_size = scale; 
+      } //TODO we need to block on this... else the results are not accurate
       if (active) {
         out_vars["energy_consumption"] -= (monthly_data.ac_monthly[month] * in_vars["sun"]) * Preferences.rates.residential; //TODO multiple this by zero if wind broke the pannels?? 
         //out_vars["energy_consumption"] -= 10000 * in_vars["sun"];

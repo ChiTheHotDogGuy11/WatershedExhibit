@@ -272,9 +272,9 @@ var Engine = (function () {
     //if (params_hash["scale"]) this.scale = params_hash["scale"];
     /* END HEAD */
     this.calc = function(in_vars, out_vars, scale, active) { 
-      var ret = params_hash['calculation_function'](in_vars, out_vars, scale, active) 
+      var ret = params_hash['calculation_function'](in_vars, $.extend({},out_vars), scale, active) 
       if (this.active) {
-        var inactive = params_hash['calculation_function'](in_vars, out_vars, scale, false)
+        var inactive = params_hash['calculation_function'](in_vars, $.extend({},out_vars), scale, false);
         //The number multiplied at the end is the "weight" -- we can change this to emphasize different features
         var month_score = 0;
         month_score += (inactive["outdoor_water"] - ret["outdoor_water"]) * 2;

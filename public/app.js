@@ -553,7 +553,7 @@ $(function() {
   $('#preferences').show(function() {
     google.maps.event.trigger(map, 'resize');
     centerMap();
-  })
+  });
 
   $('#preferences-form').submit(function (event) {
      event.preventDefault();
