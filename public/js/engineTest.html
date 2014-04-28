@@ -1,0 +1,204 @@
+<!doctype html>
+<html> 
+	<head>
+    <script src="jquery-1.11.0.js"></script>
+    <!--<script src="event.js"></script>-->
+    <script src="engine.js"></script>
+  </head>
+  <body>
+    <div id="eventSpace">
+        <h1>Input Vars</h1>
+        <div id="rain"></div>
+        <div id="sun"></div>
+        <div id="season"></div>
+        <h1>Output Vars</h1>
+        <div id="water_consumption"></div>
+        <div id="energy_consumption"></div>
+        <h1>Events</h1>
+        <div id="storm"></div>
+        <h1>Systems</h1>
+        <div>Solar Panels</div>
+        <div>Rain Barrels</div>
+    </div>
+    <script type="text/javascript">
+      /* Initialize input vars */
+      /* How TO MAKE NEW */
+      var rain_params = {
+        name: "rain",
+        timer_fired: function(cur_val, time_since_last_change) {
+          if (time_since_last_change > 2) return cur_val + 6;
+          else return cur_val;
+        },
+        on_update: function(newVal) {
+          $("#rain").html("rain: " + newVal);
+        },
+        init_value: 100
+      };
+      var sun_params = {
+        name: "sun",
+        timer_fired: function(cur_val, time_since_last_change) {
+          return cur_val;
+        },
+        on_update: function(newVal) {
+          $("#sun").html("sun: " + newVal);
+        },
+        init_value: 40
+      };
+      var season_params = {
+        name: "season", 
+        timer_fired: function(cur_val, time_since_last_change) {
+          if (time_since_last_change === 3) {
+            switch(cur_val) {
+              case "fall":
+                return "winter";
+                break;
+              case "summer":
+                return "fall";
+                break;
+              case "winter":
+                return "spring";
+                break;
+              default:
+                return "summer";
+            }
+          }
+          return cur_val;
+        },
+        on_update: function(newVal) {
+          $("#season").html("season: " + newVal);
+        },
+        init_value: "fall"
+      };
+      Engine.new_in_variable(rain_params);
+      Engine.new_in_variable(sun_params);
+      Engine.new_in_variable(season_params);
+      
+      /* Initialize output variables */
+      var water_params = {
+        name: "water_consumption",
+        on_update: function(newVal) {
+          $("#water_consumption").html("water consumption: " + newVal)
+        }, 
+        init_value: 1000
+      }
+      var energy_params = {
+        name: "energy_consumption", 
+        on_update: function(newVal) {
+          $("#energy_consumption").html("energy consumption: " + newVal);
+        }, 
+        init_value: 1000
+      }
+      Engine.new_out_variable(water_params);
+      Engine.new_out_variable(energy_params);
+      
+      /* Initialize systems */
+      var solar_params = {
+        vars: ["sun", "season"],
+        calculation_function: function(in_vars, out_vars) {
+          for (var var_name in in_vars) {
+            var cur_in = in_vars[var_name];
+            if (var_name === "sun") {
+              out_vars["energy_consumption"] -= 1;
+            }
+            /* This is silly
+            else if (var_name === "season") {
+              switch(cur_in) {
+                case "fall":
+                  out_vars["energy_consumption"]
+                  break;
+                case "summer";
+                  break;
+                case "winter";
+                  break;
+                default:
+              }
+            } */
+          }
+          return out_vars;
+        },
+        piece: undefined,
+        name: "solar_panels"
+      };
+      Engine.new_system(solar_params);
+      
+      var barrel_params = {
+        vars: ["rain"],
+        calculation_function: function(in_vars, out_vars) {
+          for (var var_name in in_vars) {
+            var cur_in = in_vars[var_name];
+            if (var_name === "rain") {
+              out_vars["water_consumption"] -= Math.floor(in_vars["rain"]/10);
+            }
+          }
+          return out_vars;
+        },
+        piece: undefined,
+        name: "rain_barrels"
+      };
+      Engine.new_system(barrel_params);
+      
+      /* Initialize events. */
+      var storm_params = {
+        name: "storm",
+        duration: 5,
+        probability : 40,
+        on_init: function(duration, cur_inputs) {
+          $("#storm").html("A storm has begun!");
+          return {};
+        },
+        on_update: function(duration, time_left, cur_inputs) {
+          $("#storm").html("storm time remaining: " + time_left);
+          cur_inputs["rain"] += 2;
+          cur_inputs["sun"] -= 4;
+          return cur_inputs;
+        },
+        on_terminate: function(duration, cur_inputs) {
+          $("#storm").html("");
+          return {};
+        },
+        input_vars: ["rain", "sun"]
+      };
+      Engine.new_event(storm_params);
+      
+      /* Event handlers */
+      $( "#eventSpace" ).click(function() {
+        Engine.simulate(1);
+      });
+    </script>
+    <!--<script type="text/javascript">
+      var rain = new Event({
+        name: "rain",
+        duration: 10,
+        probability : 40,
+        on_init: function(duration) {
+            $("#rainSpace").html("<h1>start rain</h1>");
+        },
+        on_update: function(duration, time_left) {
+            $("#rainSpace h1").html("rain: " + time_left);
+        },
+        on_terminate: function(duration) {
+            $("#rainSpace h1").html("");
+        }
+      });
+      var snow = new Event({
+        name: "snow",
+        duration: 4,
+        probability : 50,
+        on_init: function(duration) {
+            $("#snowSpace").html("<h1>start snow</h1>");
+        },
+        on_update: function(duration, time_left) {
+            $("#snowSpace h1").html("snow: " + time_left);
+        },
+        on_terminate: function(duration) {
+            $("#snowSpace h1").html("");
+        }
+      });
+      var events = new EventManager({"rain": rain, "snow": snow});
+      $( "#eventSpace" ).click(function() {
+        events.timer_fired();
+        console.log("timer fired");
+      });
+    </script>-->
+  </body>
+</html>

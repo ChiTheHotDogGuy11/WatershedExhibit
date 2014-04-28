@@ -19,7 +19,6 @@ function initGameEngine(){
 		var bbox = new BoundingBox($('#pieceContainer'+i), inAction, outAction);
 		boundingList.push(bbox);
 	}
-
     var geo_sys = {
         vars: ["geo-thermal"],
         calculation_function: function(in_vars, out_vars) {
@@ -40,6 +39,7 @@ function initGameEngine(){
     pieces[1] = sp_piece;
     pieces[0] = gt_piece;
     pieces[2] = rb_piece;
+
     // secret functionalities of help / quit button for the sake of testing. should be removed in release!s
 	$('#help-btn').click(function(){
 		window.open("instruction.html","_blank","resizable=yes, top=200, left=200, width=1000, height=600");

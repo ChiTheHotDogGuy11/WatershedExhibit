@@ -32,6 +32,7 @@
 	<script src="js/vars.js"></script>
     <script src="js/engine.js"></script>
     <script src="js/systems.js"></script>
+    <script src="js/events.js"></script>
     <script src="js/main.js"></script>
   </head>
 	<body>
@@ -81,19 +82,111 @@
 			<div id="piecesContainer">
 				<div id="pieceContainer0" class="piecePlacement"></div>
 		        <div id="pieceContainer1" class="piecePlacement" style="margin-left: 100px;"></div>
-      		</div>
+		        <div class="info_panel_star_rating" style="display: none;"> 
+							<div class="rain_barrel_rating">
+								<h3>Rain Barrel</h3>
+					      <div> <p>Cost</p>
+					      <div class="star_group">
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      </div>
+					   	 </div>
+					   	 <div>
+					     <p>Conservation</p>
+					      <div class="star_group">
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      </div>
+					     </div>
+					     <div>
+					     <p>Maintenance</p>
+								<div class="star_group">
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      </div>
+					     </div>
+					   </div>
+					   <div class="geothermal_rating">
+								<h3>Geothermal Well</h3>
+					      <div> <p>Cost</p>
+					      <div class="star_group">
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      </div>
+					   	 </div>
+					   	 <div>
+					     <p>Conservation</p>
+					      <div class="star_group">
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      </div>
+					     </div>
+					     <div>
+					     <p>Maintenance</p>
+								<div class="star_group">
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      </div>
+					     </div>
+					   </div>
+
+					    <div class="solar_panel_rating">
+								<h3>Solar Panel</h3>
+					      <div> <p>Cost</p>
+					      <div class="star_group">
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      </div>
+					   	 </div>
+					   	 <div>
+					     <p>Conservation</p>
+					      <div class="star_group">
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      </div>
+					     </div>
+					     <div>
+					     <p>Maintenance</p>
+								<div class="star_group">
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      	<img href="images/star.png" src="images/star.png" alt="star" width="30px"/>
+					      </div>
+					     </div>
+					   </div>
+					  </div>
+
+      </div>
       <div class="info_panel" style="display: none;">
       </div>
       <div class="overlay">
-        <div class="white-container" id="roundScreen"> 
+        <div class="game-panel overlay-container" id="roundScreen"> 
           <div id="roundChart"></div>
           <dl id="scoreList">
           </dl>
           <button type="button" class="btn btn-primary btn-lg">Continue</button>
         </div>
-        <div class="white-container" id="nextRound">
+        <div class="game-panel overlay-container" id="nextRound" style="display: none">
           <h2> </h2>
         </div>
+
       </div>
     </div>
     <div id="calibration" class="overlay">
@@ -102,7 +195,7 @@
     	<div id="point3" class="calibrate-point piece"></div>
     </div>
     <div id="preferences" class="overlay">
-      <div id="preferences-container" class="white-container">
+      <div id="preferences-container" class="overlay-container">
         <h3>Game Preferences</h3>
         <div id="map-container">
           <input id="pac-input" class="controls" type="text" placeholder="Search Box">

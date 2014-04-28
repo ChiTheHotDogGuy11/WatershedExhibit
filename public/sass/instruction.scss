@@ -1,5 +1,20 @@
 $font-color: #3d3d3d;
 
+.rain_barrel_rating, .solar_panel_rating, .geothermal_rating{
+	display: inline-block;
+	width: 250px;
+	p{
+		display: inline-block;
+		margin: 0;
+	}
+	img{
+		float: right;
+	}
+	.star_group{
+		display: inline-block;
+	}
+}
+
 
 .instruction_page{
 	background-color: #D8F5D5;

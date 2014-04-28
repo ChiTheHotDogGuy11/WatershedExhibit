@@ -556,26 +556,32 @@ p {
 }
 
 /* line 461, ../sass/screen.scss */
-.white-container {
+.overlay-container {
   margin-left: auto;
   margin-right: auto;
   margin-top: 100px;
   padding: 30px;
-  background-color: white;
-  border-radius: 10px;
 }
 
+<<<<<<< HEAD
 /* line 470, ../sass/screen.scss */
 >>>>>>> 799e47f635ef210261304c5b6f38f06498ac3eff
+=======
+/* line 468, ../sass/screen.scss */
+>>>>>>> 6982165e461975ad897a8e4f4c23ea2c7bb5bbea
 #panelContainer-middle {
   width: 100%;
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 /* line 458, ../sass/screen.scss */
 =======
 /* line 474, ../sass/screen.scss */
 >>>>>>> 799e47f635ef210261304c5b6f38f06498ac3eff
+=======
+/* line 472, ../sass/screen.scss */
+>>>>>>> 6982165e461975ad897a8e4f4c23ea2c7bb5bbea
 #endScreen {
   position: absolute;
   top: 15%;
@@ -587,10 +593,14 @@ p {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 /* line 467, ../sass/screen.scss */
 =======
 /* line 483, ../sass/screen.scss */
 >>>>>>> 799e47f635ef210261304c5b6f38f06498ac3eff
+=======
+/* line 481, ../sass/screen.scss */
+>>>>>>> 6982165e461975ad897a8e4f4c23ea2c7bb5bbea
 .endScore {
   color: white;
   font-size: 40pt;
@@ -601,10 +611,14 @@ p {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 /* line 476, ../sass/screen.scss */
 =======
 /* line 492, ../sass/screen.scss */
 >>>>>>> 799e47f635ef210261304c5b6f38f06498ac3eff
+=======
+/* line 490, ../sass/screen.scss */
+>>>>>>> 6982165e461975ad897a8e4f4c23ea2c7bb5bbea
 .endText {
   color: white;
   font-size: 12pt;
@@ -613,10 +627,14 @@ p {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 /* line 483, ../sass/screen.scss */
 =======
 /* line 499, ../sass/screen.scss */
 >>>>>>> 799e47f635ef210261304c5b6f38f06498ac3eff
+=======
+/* line 497, ../sass/screen.scss */
+>>>>>>> 6982165e461975ad897a8e4f4c23ea2c7bb5bbea
 .endInput {
   margin-left: 40px;
   margin-right: 40px;
@@ -625,10 +643,14 @@ p {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 /* line 490, ../sass/screen.scss */
 =======
 /* line 506, ../sass/screen.scss */
 >>>>>>> 799e47f635ef210261304c5b6f38f06498ac3eff
+=======
+/* line 504, ../sass/screen.scss */
+>>>>>>> 6982165e461975ad897a8e4f4c23ea2c7bb5bbea
 .endButton {
   color: white;
   font-size: 40pt;
@@ -714,22 +736,24 @@ p {
 #preferences-container {
   width: 70%;
   height: 70%;
+  background-color: white;
+  border-radius: 10px;
 }
 
-/* line 24, ../sass/customization.scss */
+/* line 26, ../sass/customization.scss */
 #map-container {
   height: 75%;
 }
 
-/* line 30, ../sass/customization.scss */
+/* line 32, ../sass/customization.scss */
 .gm-style-iw h3 {
   padding-bottom: 7px;
 }
-/* line 34, ../sass/customization.scss */
+/* line 36, ../sass/customization.scss */
 .gm-style-iw strong {
   font-weight: bold;
 }
-/* line 38, ../sass/customization.scss */
+/* line 40, ../sass/customization.scss */
 .gm-style-iw button {
   margin-top: 5px;
   color: #fff;
@@ -750,39 +774,39 @@ p {
   -webkit-user-select: none;
 }
 
-/* line 60, ../sass/customization.scss */
+/* line 62, ../sass/customization.scss */
 .form-center {
   overflow: hidden;
   padding: 10px;
 }
-/* line 65, ../sass/customization.scss */
+/* line 67, ../sass/customization.scss */
 .form-center form {
   margin: 0 auto;
 }
-/* line 69, ../sass/customization.scss */
+/* line 71, ../sass/customization.scss */
 .form-center label, .form-center input {
   float: left;
 }
-/* line 72, ../sass/customization.scss */
+/* line 74, ../sass/customization.scss */
 .form-center label {
   clear: left;
   display: block;
   margin-top: 3px;
 }
-/* line 78, ../sass/customization.scss */
+/* line 80, ../sass/customization.scss */
 .form-center .output {
   float: right;
   margin-top: 5px;
 }
 
-/* line 84, ../sass/customization.scss */
+/* line 86, ../sass/customization.scss */
 .slider {
   padding-bottom: 25px;
   left: 70px;
   display: inline-block;
 }
 
-/* line 90, ../sass/customization.scss */
+/* line 92, ../sass/customization.scss */
 #pac-input {
   background-color: #fff;
   padding: 0 11px 0 13px;
@@ -793,7 +817,7 @@ p {
   text-overflow: ellipsis;
 }
 
-/* line 100, ../sass/customization.scss */
+/* line 102, ../sass/customization.scss */
 #pac-input:focus {
   border-color: #4d90fe;
   margin-left: -1px;
@@ -802,26 +826,26 @@ p {
   width: 401px;
 }
 
-/* line 107, ../sass/customization.scss */
+/* line 109, ../sass/customization.scss */
 .pac-container {
   font-family: Roboto;
 }
 
-/* line 111, ../sass/customization.scss */
+/* line 113, ../sass/customization.scss */
 #type-selector {
   color: #fff;
   background-color: #4d90fe;
   padding: 5px 11px 0px 11px;
 }
 
-/* line 117, ../sass/customization.scss */
+/* line 119, ../sass/customization.scss */
 #type-selector label {
   font-family: Roboto;
   font-size: 13px;
   font-weight: 300;
 }
 
-/* line 123, ../sass/customization.scss */
+/* line 125, ../sass/customization.scss */
 #preferences-form {
   margin-top: 10px;
   margin-bottom: 10px;
