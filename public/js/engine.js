@@ -95,8 +95,11 @@ var Engine = (function () {
       
       var out_vars = {};
       for (var out_name in out_variables) {
-        out_vars[out_name] = out_variables[out_name].current_value();
+        out_vars[out_name] = 0;//out_variables[out_name].current_value();
       }
+      // out_vars["outdoor_water"] = 0;
+      // out_vars["indoor_water"] = 0;
+      // out_vars["energy_consumption"] = 0;
       
       //Pass the latest input variables to the systems, 
       //and have them update the output variables they
@@ -124,7 +127,7 @@ var Engine = (function () {
       
       //Now update the output vars.
       for (var var_name in out_vars) {
-        out_variables[var_name].push_value(out_vars[var_name]);
+        out_variables[var_name].push_value(Math.max(0,out_vars[var_name]));
       }
 
     }
