@@ -72,7 +72,15 @@ function rebindChart(){
 	var ebid = Engine.out_variables['outdoor_water'].save(), 
 		wbid = Engine.out_variables['indoor_water'].save(),
 		wrid = Engine.out_variables['energy_consumption'].save();
-	var oldChart = stackedCharts[stackedCharts.length-1];
+
+  //Save the scores for our systems	
+  for(var key in Engine.systems) {
+    if(Engine.systems.hasOwnProperty(key)) { 
+      Engine.systems[key].save_score();
+    }   
+  }     
+
+  var oldChart = stackedCharts[stackedCharts.length-1];
 	oldChart.rebind(function(){return Engine.out_variables['outdoor_water'].get_past_values(ebid);}, 'Outdoor Water Consumption');
 	oldChart.rebind(function(){return Engine.out_variables['indoor_water'].get_past_values(wbid);}, 'Indoor Water Consumption');
 	oldChart.rebind(function(){
@@ -129,7 +137,30 @@ function renderScreen(){
 	}
 	else if(GameState.level()  <= NUM_LEVELS && GameState.state() == GAMESTATE_DONE){	
 		$('#prompt').text('One year has passed. You may now make adjustments to your installation for the next year.');
-		$('#y'+GameState.level()+'-btn').unbind('click');
+		//TODO put in the game state transition here
+	    $('#roundScreen').parent().show(function() {
+	      stackedCharts.push(bindChart('roundChart'));
+	      for(var key in Engine.systems) {
+	        if(Engine.systems.hasOwnProperty(key) && Engine.systems[key].active) { 
+	          var system = Engine.systems[key];
+	          $('#scoreList').append('<dt>'+system.name+'</dt>');
+	          $('#scoreList').append('<dd>'+system.score+'</dd>');
+	        }   
+	      }
+	      $('#roundScreen button').click(function() {
+	        $('#nextRound h2').html("Round " + GameState.level());
+	        $('#roundScreen').fadeOut('fast', function() {
+	          $('#nextRound').fadeIn('fast', function() {
+	            stackedCharts.pop();
+	            $('#roundChart').empty();
+	            setTimeout(function() {
+	              $('#roundScreen').parent().hide();
+	            }, 700);
+	          })
+	        });
+	      });
+	    });
+
 		// deactivate system animations
 		for(var i = 0; i < activePieces.length; i++){
 			activePieces[i].pause();
@@ -225,7 +256,7 @@ function initInstruction(){
 
 
 // Insert JS here
-$(document).ready(function(){
+$(window).load(function(){
 	initInstruction();
 	initBudget();
 	initGameEngine();

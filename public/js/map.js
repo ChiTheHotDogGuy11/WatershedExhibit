@@ -74,7 +74,7 @@ function initialize() {
   
   //Update our weather and rates when we get a new LatLng
   Preferences.bind("latLng", function() {
-    $('#preferences-form :submit').prop('disabled', false);
+    $('#preferences-form :submit').prop('disabled', true);
     var count = 0;
     
     function doneLoading(count) {
@@ -258,6 +258,7 @@ var NOAA = {
 }
 
 
+//@see http://en.wikipedia.org/wiki/Runoff_curve_number
 var soil = {
   
   get_data: function(lat,lon,callback) {
@@ -272,6 +273,7 @@ var soil = {
     });
   },
   get_preference_info: function(latLon, callback) {
+    var self = this;
     this.get_data(latLon.lat, latLon.lng, function(data) {
       var ret = {};
       $('#loaderdiv').empty();
@@ -284,9 +286,53 @@ var soil = {
       ret["wetland"] = $('#loaderdiv').find('.mudata span:contains("Hydric")').next().html().trim();
       ret["table"] = $('#loaderdiv').find('.mudata span:contains("April-June")').next().html().trim();
       ret["soil"] = $('#loaderdiv').find('.muname > .mu-name').html().trim();
+      self.get_soil_conditions($('#loaderdiv').find('.data-list .comp-name a'),function(comp){
+        ret["composition"] = comp;
+        callback(ret);
+      });
+    });
+  },
+  get_soil_conditions: function(soils, callback) {
+    var me = this;
+    var requests = [];
+    var ret = [];
+    for(var i = 0; i < soils.length; i++)
+    {
+      requests.push($.ajax({
+        url: 'http://casoilresource.lawr.ucdavis.edu/gmap/' + soils[i].dataset.url,
+        method: 'get',
+        beforeSend: function(xhr, settings) {
+          settings.url = window.location.protocol + "/api/" + encodeURIComponent(settings.url);
+          settings.crossDomain = false;
+        },
+      }));
+      ret[i] = {percent: parseInt($(soils[i]).parent().prev().html().replace(/[^\d]*/g,''))};
+    }
+
+    $.when.apply($, requests).then(function() {
+      if(ret.length == 1) {
+        $('#loaderdiv').empty();
+        $('#loaderdiv').append($(arguments[0].replace(/src=[\S]+/g,'')));
+        ret[0]["plant_water"] = $('#loaderdiv').find('.hyderosratings span:contains("Plant")').next().html().trim(); 
+        ret[0]["hydrologic"] = $('#loaderdiv').find('.hyderosratings span:contains("Hydrologic")').next().html().trim().replace("Group ",""); 
+        ret[0]["runoff"] = $('#loaderdiv').find('.hyderosratings span:contains("Runoff")').next().html().trim(); 
+        ret[0]["erosion"] = $('#loaderdiv').find('.hyderosratings span:contains("Erosion")').next().html().trim(); 
+      
+      } 
+      if (ret.length > 1) {
+        for(var i = 0; i < ret.length; i++) {
+          $('#loaderdiv').empty();
+          $('#loaderdiv').append($(arguments[i][0].replace(/src=[\S]+/g,'')));
+          ret[i]["plant_water"] = $('#loaderdiv').find('.hyderosratings span:contains("Plant")').next().html().trim(); 
+          ret[i]["hydrologic"] = $('#loaderdiv').find('.hyderosratings span:contains("Hydrologic")').next().html().trim().replace("Group ",""); 
+          ret[i]["runoff"] = $('#loaderdiv').find('.hyderosratings span:contains("Runoff")').next().html().trim(); 
+          ret[i]["erosion"] = $('#loaderdiv').find('.hyderosratings span:contains("Erosion")').next().html().trim(); 
+        }
+      }
       callback(ret);
     });
-  }
+  },
+
 }
 
 //@see http://www.hamweather.com/support/documentation/aeris/
@@ -368,6 +414,7 @@ var Preferences = {
   num_people: 4,
   weather: null,
   rates: null,
+  rainfall_events: 4,
   //Use like bind("latLng","solar_size" function() { stuff })
   bind: function() {
     for(var i = 0; i < arguments.length-1; i++)
@@ -423,23 +470,11 @@ var Building = {
     faucet_min: .5, //length of faucet used
     hand_dishes: 1, //# of times the dishes are washed by hand per day
     hand_min: 5, //# of minutes for washing dishes by hand
-    dishwasher_loads: 7, //# of dishwasher loads per week
+    dishwasher_loads: 2, //# of dishwasher loads per week per person
     dishwasher_flow: 15, //Gallons per diswasher load
-    laundry: 7, //Loads of laundry per week
+    laundry: 2, //Loads of laundry per week per person
     laundry_flow: 55, //Gallons for each load
   }, 
-  indoor_water_usage: function(params) {
-    params = params || {}
-    var params = $.extend({},this.default_params,params)
-    var bathtotal = Math.round((params.showers * params.shower_time * params.shower_flow * Preferences.num_people) + (params.baths / 7 * 40));
-    var toiletday = Math.round(Preferences.num_people * params.gpf * params.toilet_flushes);
-    var faucetday = Math.round(params.faucet * Preferences.num_people * params.faucet_min * 3);
-    var dishwasherday = Math.round((params.dishwasher_loads * params.dishwasher_flow)/7);
-    var laundryday = Math.round((params.laundry * params.laundry_flow)/7);
-    var dishday = Math.round(params.hand_dishes * params.hand_min * 3);
-    var indoorday = Math.round(bathtotal + toiletday + faucetday + laundryday + dishwasherday + dishday);
-    return Math.round(indoorday * 30.4);
-  },
   
   outdoor_water_usage: function(month) {
     //Calculate this based on rainfall for the month
@@ -464,7 +499,7 @@ var Building = {
     total += 10; //Coffee Machine
     total += 135; //Well Pump
     total += 25; //55" TV
-    total += 21 * Math.floor(Preferences.num_people / 2); /* Computer */ 
+    total += 21 * Math.floor(Preferences.num_people / 2); // Computer 
     total += 1 * Preferences.num_people; //Cell Phones
     total += 23; //DVR
     total += (Preferences.num_people > 2)? 15:0; //Video game system
@@ -472,6 +507,32 @@ var Building = {
     total += 57; //Clothes dryer
     total  += 405; //Water heater
     return total
+  },
+
+  runoff: function(month) {
+    var comps = Preferences.soil.composition
+    var total = 0;
+    for (var i = 0; i < comps.length; i++) {
+      total += comps[i].percent; 
+    }
+    var CN = 0;
+    for (var i = 0; i < comps.length; i++) {
+      if(comps[i].percent > 0) {
+        CN += this.runoff_curve[Preferences.sqft][comps[i].hydrologic] * (comps[i].percent / total); 
+      }
+    }
+    if (CN < 1){ return 0; } //Issue calculating -- just set it to 0
+    var events = Preferences.rainfall_events; //TODO assuming 4 events for now ?
+
+    var P = Preferences.weather[month].prcp.mtdIN / events;
+    var s = 1000/CN - 10;
+    return ((Math.pow((P - 0.2 * s),2) / (P + 0.8 * s)) * events) * this.runoff_curve[Preferences.sqft]["sqft"] * 0.623;
+  },
+  
+  runoff_curve: {
+    800: {A: 77, B: 85, C: 90, D: 92, sqft: 5445},
+    1500: {A: 61, B: 75, C: 83, D: 87, sqft: 10890},
+    2000: {A: 57, B: 72, C: 81, D: 86, sqft: 14520},
   },
 
 }
@@ -500,6 +561,7 @@ var NREL = {
         lon: lon,
         system_size: size,
       },
+      async: false,
       success: callback,
     });
   },
@@ -621,3 +683,4 @@ function getMapCenter() {
   obj = map.getCenter();
   return {lat: obj.lat(), lon: obj.lng()}
 }
+

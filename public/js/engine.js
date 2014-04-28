@@ -225,11 +225,35 @@ var Engine = (function () {
     this.name = params_hash["name"];
     this.maxScale = params_hash['maxScale'];
     this.piece = params_hash["piece"];
-    this.calc = params_hash['calculation_function']; 
+    this.calc = function(in_vars, out_vars, scale, active) { 
+      var ret = params_hash['calculation_function'](in_vars, $.extend({},out_vars), scale, active) 
+      if (this.active) {
+        var inactive = params_hash['calculation_function'](in_vars, $.extend({},out_vars), scale, false);
+        //The number multiplied at the end is the "weight" -- we can change this to emphasize different features
+        var month_score = 0;
+        month_score += (inactive["outdoor_water"] - ret["outdoor_water"]) * 2;
+        month_score += (inactive["energy_consumption"] - ret["energy_consumption"]) * 0.5;
+        month_score += (inactive["runoff"] - ret["runoff"]) * 4;
+        month_score += (inactive["indoor_water"] - ret["indoor_water"]) * 2;
+        this.score += (month_score / 5); // To make sure our variable doesnt get to big
+      }
+      return ret;
+    };
     this.active = false;
     this.scale = params_hash['scale'];
+    this.score = 0;
+    this.past_scores = new Array();
   };
 
+  System.prototype.save_score = function() {
+    this.past_scores.push(this.score);
+    this.score = 0;
+  }
+
+  System.prototype.get_past_score = function(id) {
+    return this.past_scores[id];
+  }
+  
   System.prototype.toggle = function(){
     this.active = !this.active;
     if(this.active && GameState.state() == GAMESTATE_PROMPT_SLOT){

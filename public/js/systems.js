@@ -2,10 +2,12 @@
 $(function() {
   //We need to get our solar power info
   var monthly_data;
-
+  var scale = 1;
+  var blocking = false;
   var find_solar = function() {
     NREL.get_solar(Preferences.latLng.lat, Preferences.latLng.lng, Preferences.solar_size, function(data) {
       monthly_data = data.outputs;
+      blocking = false;
     });
   };
   Preferences.bind("latLng", "solar_size", find_solar);
@@ -14,7 +16,9 @@ $(function() {
     name: "solar_panel",
     calculation_function: function (in_vars, out_vars, scale, active) {
       var month = in_vars["month"]
-      if (Preferences.solar_size != scale) { Preferences.solar_size = scale; } //TODO we need to block on this... else the results are not accurate
+      if (Preferences.solar_size != scale) { 
+        Preferences.solar_size = scale; 
+      } //TODO we need to block on this... else the results are not accurate
       if (active) {
         out_vars["energy_consumption"] -= (monthly_data.ac_monthly[month] * in_vars["sun"]) * Preferences.rates.residential; //TODO multiple this by zero if wind broke the pannels?? 
       }
@@ -26,6 +30,7 @@ $(function() {
     scale: 1,
     cost: function(scale) {
       //They cost about 5 dollars per watt
+      // return scale * 5 * 1000;
       return 10+scale * 2;
     },
   });
@@ -60,6 +65,7 @@ $(function() {
     vars: ["month"],
     maxScale: 1,
     scale: 1,
+    //TODO what happened to the cost here? also this doesnt scale
     cost: function(scale) { return 42 + (scale-1) * (2) },
   });
 });
@@ -72,9 +78,11 @@ $(function() {
   Engine.new_system({
     name: "rain_barrel",
     calculation_function: function(in_vars, out_vars, scale, active) {
-      //We only get on overage half of the rain per month in our rain barrels
+      //We use all of the rainwater that we capture in our rainbarrels each month
       if (active) {
-        out_vars["outdoor_water"] -= Math.min((scale * 50 * 30.4),(((Preferences.sqft * 144) * (1/2)) / 231));       
+        var captured_water = Math.min((scale * 50 * 4),(Preferences.sqft * Preferences.weather.prcp.mtdIN * in_vars["rain"] * 0.623)); 
+        out_vars["outdoor_water"] -= captured_water; 
+        out_vars["runoff"] -= captured_water;
       }
       return out_vars;
     },
@@ -95,8 +103,8 @@ $(function() {
     name: "living_systems",
     calculation_function: function(in_vars, out_vars, scale, active) {
       out_vars["outdoor_water"] += Building.outdoor_water_usage(in_vars["month"]);
-      out_vars["indoor_water"] += Building.indoor_water_usage({});
       out_vars["energy_consumption"] += Building.electricity_usage() * Preferences.rates.residential;
+      out_vars["runoff"] = Building.runoff(in_vars["month"])
       return out_vars;
     },
     piece: undefined,
@@ -104,6 +112,91 @@ $(function() {
     cost: function(scale) {
       return 0;
     },
+  });
+});
+
+$(function() {
+
+  Engine.new_system({
+    name: "rain_garden",
+    calculation_function: function(in_vars, out_vars, scale, active) {
+      if (active) {
+        out_vars["runoff"] -= 200 * scale;
+      }
+      return out_vars;
+    },
+    piece: undefined,
+    vars: ["month"],
+    cost: function(scale) {
+      return 300 * scale //about 1000 for a really good rain garden -- the most effective
+    }
+  });
+});
+
+//TODO grey water and rain garden 
+$(function() {
+
+  Engine.new_system({
+    name: "grey_water",
+    calculation_function: function(in_vars, out_vars, scale, active) {
+      if (active) {
+        var params = Building.default_params;
+        out_vars["indoor_water"] -= Math.round(Preferences.num_people * 1.6 * params.toilet_flushes) * 30.4;
+        //They only supply as much water as a 1.6 flush toilet can use
+      }
+      return out_vars;
+    },
+    piece: undefined,
+    vars: ["month"],
+    cost: function(scale) {
+      return 300 * Math.floor(Preferences.sqft / 700) //Number of systems installed -- max depending on the size of the house
+    }
+  });
+});
+
+$(function() {
+
+  Engine.new_system({
+    name: "water_fixtures",
+    calculation_function: function(in_vars, out_vars, scale, active) {
+      var params = Building.default_params;
+      if (active) {
+        var diff_total = 0;
+        if (scale > 0) {
+          params["shower_flow"] = 2.5;
+          params["gpf"] = 1.6; 
+        }
+        if (scale > 1) {
+          params["laundry_flow"] = 20; 
+        }
+        if (scale > 2) {
+          params["dishwasher_flow"] = 7; 
+        }
+      }  
+      var bathtotal = Math.round((params.showers * params.shower_time * params.shower_flow * Preferences.num_people) + (params.baths / 7 * 40));
+      var toiletday = Math.round(Preferences.num_people * params.gpf * params.toilet_flushes);
+      var faucetday = Math.round(params.faucet * Preferences.num_people * params.faucet_min * 3);
+      var dishwasherday = Math.round((params.dishwasher_loads * Preferences.num_people * params.dishwasher_flow)/7);
+      var laundryday = Math.round((params.laundry * Preferences.num_people * params.laundry_flow)/7);
+      var dishday = Math.round(params.hand_dishes * params.hand_min * 3);
+      var indoorday = Math.round(bathtotal + toiletday + faucetday + laundryday + dishwasherday + dishday);
+      out_vars["indoor_water"] += indoorday * 30.4;
+      return out_vars;
+    },
+    piece: undefined,
+    vars: ["month"],
+    cost: function(scale) {
+      var cost = 0;
+      if (scale > 0) {
+        cost += 600 * Math.floor(Preferences.sqft / 700); //Multiply by the number of bathrooms in the house
+      } if (scale > 1) {
+        cost += 700
+      } if (scale > 2) {
+        cost += 800
+      }
+      return cost;
+    },
+
   });
 });
 
