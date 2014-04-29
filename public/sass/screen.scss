@@ -30,6 +30,7 @@ $piece-color: #CC0000;
 
 body{
   background-image: url('../images/background.png');
+  background-position-y: 64%;
   font-family: Exo;
   height: 100%;
   width: 100%;
@@ -135,7 +136,7 @@ color: white;
 
 .house{
 	position: absolute;
-	top: 40%;
+	top: 35%;
 	left: 40px;
 }
 
@@ -453,7 +454,7 @@ color: white;
 	position: absolute; 
 	left: 500px; 
 	width: 500px;
-	top: -20px;
+	top: 0px;
 }
 
 #roundScore {
