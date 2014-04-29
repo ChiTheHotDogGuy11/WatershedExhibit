@@ -80,7 +80,7 @@ $(function() {
     calculation_function: function(in_vars, out_vars, scale, active) {
       //We use all of the rainwater that we capture in our rainbarrels each month
       if (active) {
-        var captured_water = Math.min((scale * 50 * Preferences.rainfall_events[in_vars["month"]]),(Preferences.sqft * Preferences.weather[in_vars["month"]].prcp.mtdIN * in_vars["rain"] * 0.623)); 
+        var captured_water = Math.min((scale * 50 * Preferences.rainfall_events[in_vars["month"]]),(Preferences.sqft / 2 * Preferences.weather[in_vars["month"]].prcp.mtdIN * in_vars["rain"] * 0.623)); 
         out_vars["outdoor_water"] -= captured_water; 
         out_vars["runoff"] -= captured_water;
       }
