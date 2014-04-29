@@ -30,7 +30,7 @@ var server = net.createServer(function (socket) {
     });
 });
 // Start listening directly on tcp port
-server.listen(cppPort, '127.0.0.1');
+server.listen(cppPort, '0.0.0.0');
 
 
 function apiProxy() {
