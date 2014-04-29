@@ -60,7 +60,7 @@ function initGameEngine(){
 function bindChart(containerId,params){
 	// init stacked chart
 	var stackedChart = new StackedChart(containerId,params)
-		.setRange('line', 0, 40000)
+		.setRange('line', 0, 400)
 		.setRange('bar', 0, 120000)
 		.bind(true, function(){return Engine.out_variables['outdoor_water'].get_values()}, 'Outdoor Water Consumption')
 		.bind(false, function(){return Engine.out_variables['indoor_water'].get_values()}, 'Indoor Water Consumption')
@@ -152,13 +152,15 @@ function renderScreen(){
 	    $('#roundScreen').parent().show(function() {
 	      stackedCharts.push(bindChart('roundChart'));
         $('#scoreList').empty();
+        var total = 0;
 	      for(var key in Engine.systems) {
 	        if(Engine.systems.hasOwnProperty(key) && Engine.systems[key].active) { 
 	          var system = Engine.systems[key];
 	          $('#scoreList').append('<dt>'+featureNames[system.name]+'</dt>');
-	          $('#scoreList').append('<dd> Score: '+system.score+'</dd>');
+	          $('#scoreList').append('<dd> Score: '+Math.round(system.score)+'</dd>');
 	          $('#scoreList').append('<dd> Scale: '+system.scale+'</dd>');
-	        }   
+	          total += Math.round(system.score);
+          }
 	      }
 	      $('#roundScreen h2:first').html("Round " + (GameState.level()) + " Summary");
         $('#roundScreen button').unbind('click').click(function() {
@@ -188,13 +190,21 @@ function renderScreen(){
 		stackedCharts.push(bindChart('gameChart'));
 		stackedCharts[stackedCharts.length-1].reposition('historyGraphContainer'+(GameState.level()-1), (GameState.level()-1));
 		rebindChart();
-		$('#endScreen').show();
-		$('#endScreen').append($('#historyGraphContainer1').detach().css('margin', '60px'));
-		$('#endScreen').append($('#historyGraphContainer2').detach().css('margin', '60px'));
-		$('#endScreen').append($('#historyGraphContainer3').detach().css('margin', '60px'));
-		$('#endScreen').append($('<div class="endScore">SCORE:1</div>'));
-		$('#endScreen').append($('<div class="endScore">SCORE:2</div>'));
-		$('#endScreen').append($('<div class="endScore">SCORE:3</div>'));
+		$('#endScreen').show(function() {
+      for(var i = 1; i < GameState.level() - 1; i++)
+      {
+        $('#endScreen').append($('#historyGraphContainer'+i).detach().css('margin', '60px'));
+	      var total = 0;
+        for(var key in Engine.systems) {
+	        if(Engine.systems.hasOwnProperty(key) && Engine.systems[key].active) { 
+	          var system = Engine.systems[key];
+            //Our array is indexed at 0 instead of 1
+            total += system.get_past_score(i-1);
+	        }   
+	      }
+        $('#endScreen').append($('<div class="endScore">SCORE:'+Math.round(total)+'</div>'));
+      }
+    });
 		$('#endScreen').append($('<div class="endText">Here are more words for the player.</div>'));
 		$('#endScreen').append($('<input class="endInput" type="text" class="form-control" placeholder="Enter your email to receive more information about green practices!"></input>'));
 		$('#endScreen').append($('<div class="endButton">SUBMIT!</div>'));

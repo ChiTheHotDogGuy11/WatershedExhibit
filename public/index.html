@@ -3,7 +3,6 @@
 <head>
 	<title>Watershed Exhibit</title>
 	<link rel="stylesheet" type="text/css" href="stylesheets/screen.css"> 
-	<link rel="stylesheet" type="text/css" href="stylesheets/bootstrap.min.css"> 
 	<!-- Google Maps Library for Prefernces -->
 	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places,weather"></script>
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
@@ -49,7 +48,7 @@
 					<h4>Hackensack Meadowlands<h4>
 					<h5>Wetland in New Jersey<h5>
 				</div>
-				<div class="col-md-4 col-md-offset-2 game-panel" id="prompt"></div>
+				<div class="col-md-4 game-panel" id="prompt"></div>
 				<div class="col-md-2 game-panel" style="background: transparent" ></div>
 				<div class="col-md-1 game-panel-transparent" >
 					<img src="images/close-button.png" id="close-btn"></img>
@@ -180,6 +179,7 @@
           <h2>System Performance</h2>
           <dl id="scoreList">
           </dl>
+          <div id="roundScore"></div>
           <button type="button" class="btn btn-primary btn-lg">Continue</button>
         </div>
         <div class="game-panel overlay-container" id="nextRound" style="display: none">

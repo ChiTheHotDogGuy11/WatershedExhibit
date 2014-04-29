@@ -6,6 +6,7 @@
 
 /*This is the reset file that comes with compass*/
 @import "compass/reset";
+@import "bootstrap.min"; 
 
 /*Setting up some colors from color scheme*/
 $background: #E0F4F6;
@@ -34,16 +35,12 @@ body{
   width: 100%;
   margin: 0;
   overflow: hidden;
+  background-color: #C4E5E1;
 }
 
 html {
   height: 100%;
   overflow: hidden;
-}
-
-h2 {
-	font-size: 18px;
-	margin-bottom: 20px;
 }
 
 p {
@@ -138,8 +135,8 @@ color: white;
 
 .house{
 	position: absolute;
-	top: 100px;
-	left: 0px;
+	top: 340px;
+	left: 40px;
 }
 
 .info_panel{
@@ -459,6 +456,13 @@ color: white;
 	top: -20px;
 }
 
+#roundScore {
+  font-size: 1.5em;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}
+
 #roundScreen {
   width: 870px;
   height: 60%;
@@ -566,6 +570,7 @@ color: white;
 
 #prompt{
 	text-align: center;
+	margin-left: 16.66666667%;
 }
 
 .rain_barrel_rating, .solar_panel_rating, .geothermal_rating{

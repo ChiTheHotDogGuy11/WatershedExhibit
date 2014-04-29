@@ -552,28 +552,52 @@ var Building = {
     
     switch (true) {
       case contains(name,"temperate") && contains(name,"maritime"):
+        $('body').css('background-image', 'url("../images/Background_Alpine.png")');
+        return "cold mediteranian";
         break;
       case contains(name,"Subtropic") && contains(name,"macrotherm") && contains(name,"maritime"):
+        $('body').css('background-image', 'url("../images/Background_Temperate.png")');
+        return "warm mediteranian";
         break;
       case contains(name,"Subtropic") && contains(name,"megatherm") && contains(name,"maritime"):
+        $('body').css('background-image', 'url("../images/Background_Temperate.png")');
+        return "warm mediteranian";
         break;
       case contains(name,"temperate") && contains(name,"humid"):
+        $('body').css('background-image', 'url("../images/Background_Temperate.png")');
+        return "cold continental";
         break;
       case contains(name,"temperate") && contains(name,"arid"):
+        $('body').css('background-image', 'url("../images/Background_Grassland.png")');
+        return "cold grassland";
         break;
       case contains(name,"Subtropic") && contains(name,"mesotherm"):
+        $('body').css('background-image', 'url("../images/Background_Grassland.png")');
+        return "warm grassland";
         break;
       case contains(name,"Subtropic") && contains(name,"macrotherm"):
+        $('body').css('background-image', 'url("../images/Background_Temperate.png")');
+        return "tropic";
         break;
       case contains(name,"Subtropic") && contains(name,"megatherm") && contains(name,"humid"):
+        $('body').css('background-image', 'url("../images/Background_Grassland.png")');
+        return "tropic";
         break;
       case contains(name,"Subtropic") && contains(name,"megatherm") && contains(name,"arid"):
+        $('body').css('background-image', 'url("../images/Background_Desert.png")');
+        return "desert";
         break;
       case contains(name,"Dry") && contains(name,"cold"):
+        $('body').css('background-image', 'url("../images/Background_Alpine.png")');
+        return "mountain"
         break;
       case contains(name,"Dry") && contains(name,"warm"):
+        $('body').css('background-image', 'url("../images/Background_Desert.png")');
+        return "desert";
         break;
       case contains(name,"Tropic"):
+        $('body').css('background-image', 'url("../images/Background_Wetland.png")');
+        return "tropical";
         break;
     }
   },
