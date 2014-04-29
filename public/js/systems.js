@@ -81,7 +81,7 @@ $(function() {
       //We use all of the rainwater that we capture in our rainbarrels each month
       if (active) {
         var captured_water = Math.min((scale * 50 * Preferences.rainfall_events[in_vars["month"]]),(Preferences.sqft / 2 * Preferences.weather[in_vars["month"]].prcp.mtdIN * in_vars["rain"] * 0.623)); 
-        out_vars["outdoor_water"] -= captured_water; 
+        out_vars["outdoor_water"] -= captured_water / 100; 
         out_vars["runoff"] -= captured_water;
       }
       return out_vars;
@@ -102,7 +102,7 @@ $(function() {
   Engine.new_system({
     name: "living_systems",
     calculation_function: function(in_vars, out_vars, scale, active) {
-      out_vars["outdoor_water"] += Building.outdoor_water_usage(in_vars["month"]);
+      out_vars["outdoor_water"] += Building.outdoor_water_usage(in_vars["month"]) / 100;
       out_vars["energy_consumption"] += Building.electricity_usage() * Preferences.rates.residential;
       out_vars["runoff"] = Building.runoff(in_vars["month"])
       return out_vars;
@@ -141,7 +141,7 @@ $(function() {
     calculation_function: function(in_vars, out_vars, scale, active) {
       if (active) {
         var params = Building.default_params;
-        out_vars["indoor_water"] -= Math.round(Preferences.num_people * 1.6 * params.toilet_flushes) * 30.4;
+        out_vars["indoor_water"] -= (Math.round(Preferences.num_people * 1.6 * params.toilet_flushes) * 30.4) / 100;
         //They only supply as much water as a 1.6 flush toilet can use
       }
       return out_vars;
@@ -180,7 +180,7 @@ $(function() {
       var laundryday = Math.round((params.laundry * Preferences.num_people * params.laundry_flow)/7);
       var dishday = Math.round(params.hand_dishes * params.hand_min * 3);
       var indoorday = Math.round(bathtotal + toiletday + faucetday + laundryday + dishwasherday + dishday);
-      out_vars["indoor_water"] += indoorday * 30.4;
+      out_vars["indoor_water"] += (indoorday * 30.4) / 100;
       return out_vars;
     },
     piece: undefined,
