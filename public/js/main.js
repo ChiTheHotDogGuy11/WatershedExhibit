@@ -60,7 +60,7 @@ function initGameEngine(){
 function bindChart(containerId,params){
 	// init stacked chart
 	var stackedChart = new StackedChart(containerId,params)
-		.setRange('line', 0, 40000)
+		.setRange('line', 0, 400)
 		.setRange('bar', 0, 120000)
 		.bind(true, function(){return Engine.out_variables['outdoor_water'].get_values()}, 'Outdoor Water Consumption')
 		.bind(false, function(){return Engine.out_variables['indoor_water'].get_values()}, 'Indoor Water Consumption')
@@ -125,8 +125,18 @@ function renderScreen(){
 		$('#prompt').text('Drag a piece into a slot to install the feature.');
 	}
 	else if(GameState.level() <= NUM_LEVELS && GameState.state() == GAMESTATE_PAUSED){
-		//$('#y1-btn').css('box-shadow', '0 0 0px 0 #ff0000')
-		stackedCharts.push(bindChart('gameChart'));
+		$('#play-btn').unbind('click').click(function(){
+			if(GameState.level() > 1){
+				stackedCharts[stackedCharts.length-1].reposition('historyGraphContainer'+(GameState.level()-1), (GameState.level()-1));
+				rebindChart();
+				stackedCharts.push(bindChart('gameChart'));
+			}				
+			// activate system animations
+			for(var i = 0; i < activePieces.length; i++){
+				activePieces[i].play();
+			}
+			GameState.step();
+		})
 		if(GameState.level() == 1){
 			$('#prompt').text('Money spent! When you have chosen the systems for installation, hit the Play button.');
 		}
@@ -152,10 +162,9 @@ function renderScreen(){
 	          total += Math.round(system.score);
           }
 	      }
-	      $('#roundScore').html('Round Score: '+ total);
-        $('#roundScreen h2:first').html("Round " + (GameState.level() - 1) + " Summary");
-        $('#roundScreen button').click(function() {
-	        $('#nextRound h2').html("Round " + GameState.level());
+	      $('#roundScreen h2:first').html("Round " + (GameState.level()) + " Summary");
+        $('#roundScreen button').unbind('click').click(function() {
+	        $('#nextRound h2').html((GameState.level()+1) > NUM_LEVELS ? "Game over." : ("Round " + (GameState.level()+1)));
 	        $('#roundScreen').fadeOut('fast', function() {
 	          $('#nextRound').fadeIn('fast', function() {
 	            stackedCharts.pop();
@@ -167,6 +176,7 @@ function renderScreen(){
 	            }, 1000);
 	          })
 	        });
+	        GameState.step();
 	      });
 	    });
 
@@ -174,7 +184,6 @@ function renderScreen(){
 		for(var i = 0; i < activePieces.length; i++){
 			activePieces[i].pause();
 		}
-		GameState.step();
 	}		
 	else{
 		$('#prompt').text('Game over.');
@@ -182,7 +191,7 @@ function renderScreen(){
 		stackedCharts[stackedCharts.length-1].reposition('historyGraphContainer'+(GameState.level()-1), (GameState.level()-1));
 		rebindChart();
 		$('#endScreen').show(function() {
-      for(var i = 1; i < GameState.level() - 1; i++)
+      for(var i = 1; i < GameState.level(); i++)
       {
         $('#endScreen').append($('#historyGraphContainer'+i).detach().css('margin', '60px'));
 	      var total = 0;
