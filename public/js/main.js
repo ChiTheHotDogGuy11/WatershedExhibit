@@ -147,12 +147,12 @@ function renderScreen(){
 	        if(Engine.systems.hasOwnProperty(key) && Engine.systems[key].active) { 
 	          var system = Engine.systems[key];
 	          $('#scoreList').append('<dt>'+featureNames[system.name]+'</dt>');
-	          $('#scoreList').append('<dd> Score: '+system.score+'</dd>');
+	          $('#scoreList').append('<dd> Score: '+Math.round(system.score)+'</dd>');
 	          $('#scoreList').append('<dd> Scale: '+system.scale+'</dd>');
 	          total += Math.round(system.score);
           }
 	      }
-	      $('#roundScore').html('Round Score: '+ Math.round(total));
+	      $('#roundScore').html('Round Score: '+ total);
         $('#roundScreen h2:first').html("Round " + (GameState.level() - 1) + " Summary");
         $('#roundScreen button').click(function() {
 	        $('#nextRound h2').html("Round " + GameState.level());
