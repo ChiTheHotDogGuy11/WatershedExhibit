@@ -3,7 +3,7 @@
  * Import this file using the following HTML or equivalent:
  * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
 /*This is the reset file that comes with compass*/
-/* line 17, ../../../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 17, ../../../../../../.rvm/gems/ruby-2.0.0-p353/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -25,45 +25,45 @@ time, mark, audio, video {
   vertical-align: baseline;
 }
 
-/* line 22, ../../../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 22, ../../../../../../.rvm/gems/ruby-2.0.0-p353/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 html {
   line-height: 1;
 }
 
-/* line 24, ../../../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 24, ../../../../../../.rvm/gems/ruby-2.0.0-p353/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 ol, ul {
   list-style: none;
 }
 
-/* line 26, ../../../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 26, ../../../../../../.rvm/gems/ruby-2.0.0-p353/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 table {
   border-collapse: collapse;
   border-spacing: 0;
 }
 
-/* line 28, ../../../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 28, ../../../../../../.rvm/gems/ruby-2.0.0-p353/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 caption, th, td {
   text-align: left;
   font-weight: normal;
   vertical-align: middle;
 }
 
-/* line 30, ../../../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 30, ../../../../../../.rvm/gems/ruby-2.0.0-p353/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 q, blockquote {
   quotes: none;
 }
-/* line 103, ../../../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 103, ../../../../../../.rvm/gems/ruby-2.0.0-p353/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 q:before, q:after, blockquote:before, blockquote:after {
   content: "";
   content: none;
 }
 
-/* line 32, ../../../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 32, ../../../../../../.rvm/gems/ruby-2.0.0-p353/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 a img {
   border: none;
 }
 
-/* line 116, ../../../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 116, ../../../../../../.rvm/gems/ruby-2.0.0-p353/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
   display: block;
 }
@@ -548,11 +548,55 @@ p {
 
 /* line 454, ../sass/screen.scss */
 #roundScreen {
-  width: 70%;
+  width: 870px;
   height: 60%;
+  position: relative;
+}
+/* line 459, ../sass/screen.scss */
+#roundScreen button {
+  position: absolute;
+  bottom: 20px;
+}
+/* line 468, ../sass/screen.scss */
+#roundScreen dt {
+  font-size: 1.3em;
+  padding-bottom: 10px;
+}
+/* line 473, ../sass/screen.scss */
+#roundScreen dd {
+  font-weight: 400;
+}
+/* line 477, ../sass/screen.scss */
+#roundScreen h2 {
+  border-top: solid white 1px;
+  padding-top: 20px;
+}
+/* line 482, ../sass/screen.scss */
+#roundScreen h2:first-child {
+  border-top: none;
+  padding-top: 0px;
 }
 
-/* line 459, ../sass/screen.scss */
+/* line 488, ../sass/screen.scss */
+#nextRound {
+  width: 300px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  margin-top: 300px;
+}
+/* line 494, ../sass/screen.scss */
+#nextRound h2 {
+  text-align: center;
+}
+
+/* line 500, ../sass/screen.scss */
+#roundChart svg {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* line 507, ../sass/screen.scss */
 .overlay-container {
   margin-left: auto;
   margin-right: auto;
@@ -560,12 +604,12 @@ p {
   padding: 30px;
 }
 
-/* line 466, ../sass/screen.scss */
+/* line 514, ../sass/screen.scss */
 #panelContainer-middle {
   width: 100%;
 }
 
-/* line 470, ../sass/screen.scss */
+/* line 518, ../sass/screen.scss */
 #endScreen {
   position: absolute;
   top: 15%;
@@ -576,7 +620,7 @@ p {
   display: none;
 }
 
-/* line 479, ../sass/screen.scss */
+/* line 527, ../sass/screen.scss */
 .endScore {
   color: white;
   font-size: 40pt;
@@ -586,7 +630,7 @@ p {
   margin-right: 40px;
 }
 
-/* line 488, ../sass/screen.scss */
+/* line 536, ../sass/screen.scss */
 .endText {
   color: white;
   font-size: 12pt;
@@ -594,7 +638,7 @@ p {
   margin-top: 20px;
 }
 
-/* line 495, ../sass/screen.scss */
+/* line 543, ../sass/screen.scss */
 .endInput {
   margin-left: 40px;
   margin-right: 40px;
@@ -602,7 +646,7 @@ p {
   width: 90%;
 }
 
-/* line 502, ../sass/screen.scss */
+/* line 550, ../sass/screen.scss */
 .endButton {
   color: white;
   font-size: 40pt;
@@ -611,26 +655,26 @@ p {
   margin-right: 40px;
 }
 
-/* line 511, ../sass/screen.scss */
+/* line 559, ../sass/screen.scss */
 #prompt {
   text-align: center;
 }
 
-/* line 515, ../sass/screen.scss */
+/* line 563, ../sass/screen.scss */
 .rain_barrel_rating, .solar_panel_rating, .geothermal_rating {
   display: inline-block;
   width: 250px;
 }
-/* line 518, ../sass/screen.scss */
+/* line 566, ../sass/screen.scss */
 .rain_barrel_rating p, .solar_panel_rating p, .geothermal_rating p {
   display: inline-block;
   margin: 0;
 }
-/* line 522, ../sass/screen.scss */
+/* line 570, ../sass/screen.scss */
 .rain_barrel_rating img, .solar_panel_rating img, .geothermal_rating img {
   float: right;
 }
-/* line 525, ../sass/screen.scss */
+/* line 573, ../sass/screen.scss */
 .rain_barrel_rating .star_group, .solar_panel_rating .star_group, .geothermal_rating .star_group {
   display: inline-block;
 }
