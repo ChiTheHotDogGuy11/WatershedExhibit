@@ -21,11 +21,47 @@ var Engine = (function () {
   //Keep track of the scores
   var scores = new Array();
   
-  function new_event(params_hash) {
+  function new_event(params_hash, animParams) {
     var new_e = new Event(params_hash);
+    new_e.startF = animParams.startF;
+    new_e.endF = animParams.endF;
+    new_e.paused = true;
+    new_e.curFrame = 1;
+    new_e.play = function(){
+      this.paused = false;
+    };
+    new_e.pause = function(){
+      this.paused = true;
+      for(var i = animParams.startF; i <= animParams.endF; i++){
+        $('#'+this.name+'_frame'+i).hide();
+      }
+    };
+    for(var i = animParams.startF; i <= animParams.endF; i++){
+      var frame = $('<img/>', {
+        src: 'images/animations/'+new_e.name+'/'+i+'.png',
+        class: new_e.name+'_frame',
+        id: new_e.name+'_frame'+i,
+        });
+      $('#animAssets').append(frame);
+    }
     event_manager.add_event(new_e);
+    setInterval(function(){
+      if(!new_e.paused){
+        $('#'+new_e.name+'_frame'+new_e.curFrame).hide();
+        new_e.curFrame = new_e.curFrame >= new_e.endF ? 1 : new_e.curFrame+1;
+        $('#'+new_e.name+'_frame'+new_e.curFrame).show();
+      }
+    }, 150);
   };
   
+  function event_play(event_name){
+    event_manager.event_play(event_name);
+  }
+
+  function event_pause(event_name){
+    event_manager.event_pause(event_name);
+  }
+
   function new_system(params_hash){
     var tmp = new System(params_hash);
     systems[tmp.name] = tmp;
@@ -366,6 +402,14 @@ var Engine = (function () {
     this.events[new_event_o.name] = new_event_o;
   }
 
+  EventManager.prototype.event_play = function(event_name){
+    this.events[event_name].play();
+  }
+
+  EventManager.prototype.event_pause = function(event_name){
+    this.events[event_name].pause();
+  }
+
   EventManager.prototype.timer_fired = function() {
     this.ongoing_events = {};
     //Keep track of input variables, and modify them as needed
@@ -496,6 +540,8 @@ var Engine = (function () {
     set_location: set_location,
     simulate: simulate,
     new_event: new_event,
+    event_play: event_play,
+    event_pause: event_pause,
     out_variables: out_variables,
     systems: systems,
     in_variables: in_variables,

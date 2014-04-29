@@ -269,8 +269,8 @@ $(window).load(function(){
 	 		Engine.simulate(1);
 	 		GameState.step();
 	 	}
-	 	setTimeout(onTimer, 500);
+	 	setTimeout(onTimer, 1000);
     }
 
-	setTimeout(onTimer, 500);
+	setTimeout(onTimer, 1000);
 });

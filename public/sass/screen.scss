@@ -420,6 +420,13 @@ color: white;
 
 }
 
+.storm_frame{
+	display:none;
+	position: absolute;
+	left: 900px;
+	width: 300px;
+}
+
 .rain_barrel_frame{
 	position: absolute;
 	left: 950px;
@@ -442,6 +449,7 @@ color: white;
 	top: 30px;
 	width: 500px;
 	display: none;
+	z-index: 1000;
 }
 
 #mainHouse{
@@ -525,6 +533,14 @@ color: white;
 	.star_group{
 		display: inline-block;
 	}
+}
+
+.star-img{
+	width: 16px;
+}
+
+.star_group{
+	margin-top: -10px;
 }
 
 @import 'pieces';
