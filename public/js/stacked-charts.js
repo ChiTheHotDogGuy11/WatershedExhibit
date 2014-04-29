@@ -13,6 +13,7 @@ var MAX_NUM_BARS = 12, // 6 bars per day. 7 days per week.
 function StackedChart(_divId,params){
 	containerWidth = $('#'+divId).width();
 	this.contracted = false;
+	this.events = [];
 	var step = 500,
 		data = [],
 		tags = [],

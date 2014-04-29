@@ -308,7 +308,8 @@ function Piece(system, numFrames, unit)
       ref['scaletag'] = makeTag(name+'-scaletag', scaleText, -15, 80, self.ref['anchor']);
     });
   ref['info-panel'] = makePanel(name+'-infoPanel', infoPanelTexts[name], -150+this.r-bw, this.r*3, this.ref['anchor']);
-  ref['rating-panel'] = makePanel(name+'-rating-panel', $('.'+this.system.name+'_rating').html(), 160+this.r-bw, this.r*3, this.ref['anchor']);
+  ref['rating-panel'] = makePanel(name+'-rating-panel', $('.'+this.system.name+'_rating').html(), 160+this.r-bw, this.r*3, this.ref['anchor'])
+    .css('width', '150px');
   ref['info-icon'].click(function(){
     if(GameState.state() == GAMESTATE_PROMPT_ICON){
         GameState.step();
@@ -317,7 +318,7 @@ function Piece(system, numFrames, unit)
     ref['rating-panel'].toggle();
   });
   ref['nametag'] = makeTag(name+'-nametag', featureNames[name], -15, 50, this.ref['anchor']);
-  var scaleText = this.unit == '' ? 'scale: one size' : ('scale:'+this.system.scale+' '+this.unit + (this.system.scale > 1 ? 's' : ''));
+  var scaleText = this.unit == '' ? 'scale: one size' : ('scale: '+this.system.scale+' '+this.unit + (this.system.scale > 1 ? 's' : ''));
   ref['scaletag'] = makeTag(name+'-scaletag', scaleText, -15, 80, this.ref['anchor']);
   this.loadAnimation(name, 1, numFrames);
   
@@ -404,6 +405,7 @@ function makePanel(id, text, offx, offy, parent){
       left: offx,
       top: offy,
       display: 'none',
+      zIndex: 200,
     });
   parent.append(panel);
   return panel;
