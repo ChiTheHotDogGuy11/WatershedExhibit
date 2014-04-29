@@ -3,7 +3,11 @@
  * Import this file using the following HTML or equivalent:
  * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
 /*This is the reset file that comes with compass*/
+<<<<<<< HEAD
 /* line 17, ../../../../../.rvm/gems/ruby-2.0.0-p247/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+=======
+/* line 17, ../../../../../../.rvm/gems/ruby-2.0.0-p353/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+>>>>>>> 6e200242bb9060567d6a50534316bfc1d4671fd2
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -25,45 +29,77 @@ time, mark, audio, video {
   vertical-align: baseline;
 }
 
+<<<<<<< HEAD
 /* line 22, ../../../../../.rvm/gems/ruby-2.0.0-p247/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+=======
+/* line 22, ../../../../../../.rvm/gems/ruby-2.0.0-p353/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+>>>>>>> 6e200242bb9060567d6a50534316bfc1d4671fd2
 html {
   line-height: 1;
 }
 
+<<<<<<< HEAD
 /* line 24, ../../../../../.rvm/gems/ruby-2.0.0-p247/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+=======
+/* line 24, ../../../../../../.rvm/gems/ruby-2.0.0-p353/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+>>>>>>> 6e200242bb9060567d6a50534316bfc1d4671fd2
 ol, ul {
   list-style: none;
 }
 
+<<<<<<< HEAD
 /* line 26, ../../../../../.rvm/gems/ruby-2.0.0-p247/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+=======
+/* line 26, ../../../../../../.rvm/gems/ruby-2.0.0-p353/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+>>>>>>> 6e200242bb9060567d6a50534316bfc1d4671fd2
 table {
   border-collapse: collapse;
   border-spacing: 0;
 }
 
+<<<<<<< HEAD
 /* line 28, ../../../../../.rvm/gems/ruby-2.0.0-p247/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+=======
+/* line 28, ../../../../../../.rvm/gems/ruby-2.0.0-p353/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+>>>>>>> 6e200242bb9060567d6a50534316bfc1d4671fd2
 caption, th, td {
   text-align: left;
   font-weight: normal;
   vertical-align: middle;
 }
 
+<<<<<<< HEAD
 /* line 30, ../../../../../.rvm/gems/ruby-2.0.0-p247/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 q, blockquote {
   quotes: none;
 }
 /* line 103, ../../../../../.rvm/gems/ruby-2.0.0-p247/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+=======
+/* line 30, ../../../../../../.rvm/gems/ruby-2.0.0-p353/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+q, blockquote {
+  quotes: none;
+}
+/* line 103, ../../../../../../.rvm/gems/ruby-2.0.0-p353/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+>>>>>>> 6e200242bb9060567d6a50534316bfc1d4671fd2
 q:before, q:after, blockquote:before, blockquote:after {
   content: "";
   content: none;
 }
 
+<<<<<<< HEAD
 /* line 32, ../../../../../.rvm/gems/ruby-2.0.0-p247/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+=======
+/* line 32, ../../../../../../.rvm/gems/ruby-2.0.0-p353/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+>>>>>>> 6e200242bb9060567d6a50534316bfc1d4671fd2
 a img {
   border: none;
 }
 
+<<<<<<< HEAD
 /* line 116, ../../../../../.rvm/gems/ruby-2.0.0-p247/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+=======
+/* line 116, ../../../../../../.rvm/gems/ruby-2.0.0-p353/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+>>>>>>> 6e200242bb9060567d6a50534316bfc1d4671fd2
 article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
   display: block;
 }
@@ -557,11 +593,60 @@ p {
 
 /* line 462, ../sass/screen.scss */
 #roundScreen {
-  width: 70%;
+  width: 870px;
   height: 60%;
+  position: relative;
 }
+<<<<<<< HEAD
 
 /* line 467, ../sass/screen.scss */
+=======
+/* line 459, ../sass/screen.scss */
+#roundScreen button {
+  position: absolute;
+  bottom: 20px;
+}
+/* line 468, ../sass/screen.scss */
+#roundScreen dt {
+  font-size: 1.3em;
+  padding-bottom: 10px;
+}
+/* line 473, ../sass/screen.scss */
+#roundScreen dd {
+  font-weight: 400;
+}
+/* line 477, ../sass/screen.scss */
+#roundScreen h2 {
+  border-top: solid white 1px;
+  padding-top: 20px;
+}
+/* line 482, ../sass/screen.scss */
+#roundScreen h2:first-child {
+  border-top: none;
+  padding-top: 0px;
+}
+
+/* line 488, ../sass/screen.scss */
+#nextRound {
+  width: 300px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  margin-top: 300px;
+}
+/* line 494, ../sass/screen.scss */
+#nextRound h2 {
+  text-align: center;
+}
+
+/* line 500, ../sass/screen.scss */
+#roundChart svg {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* line 507, ../sass/screen.scss */
+>>>>>>> 6e200242bb9060567d6a50534316bfc1d4671fd2
 .overlay-container {
   margin-left: auto;
   margin-right: auto;
@@ -569,12 +654,20 @@ p {
   padding: 30px;
 }
 
+<<<<<<< HEAD
 /* line 474, ../sass/screen.scss */
+=======
+/* line 514, ../sass/screen.scss */
+>>>>>>> 6e200242bb9060567d6a50534316bfc1d4671fd2
 #panelContainer-middle {
   width: 100%;
 }
 
+<<<<<<< HEAD
 /* line 478, ../sass/screen.scss */
+=======
+/* line 518, ../sass/screen.scss */
+>>>>>>> 6e200242bb9060567d6a50534316bfc1d4671fd2
 #endScreen {
   position: absolute;
   top: 15%;
@@ -585,7 +678,11 @@ p {
   display: none;
 }
 
+<<<<<<< HEAD
 /* line 487, ../sass/screen.scss */
+=======
+/* line 527, ../sass/screen.scss */
+>>>>>>> 6e200242bb9060567d6a50534316bfc1d4671fd2
 .endScore {
   color: white;
   font-size: 40pt;
@@ -595,7 +692,11 @@ p {
   margin-right: 40px;
 }
 
+<<<<<<< HEAD
 /* line 496, ../sass/screen.scss */
+=======
+/* line 536, ../sass/screen.scss */
+>>>>>>> 6e200242bb9060567d6a50534316bfc1d4671fd2
 .endText {
   color: white;
   font-size: 12pt;
@@ -603,7 +704,11 @@ p {
   margin-top: 20px;
 }
 
+<<<<<<< HEAD
 /* line 503, ../sass/screen.scss */
+=======
+/* line 543, ../sass/screen.scss */
+>>>>>>> 6e200242bb9060567d6a50534316bfc1d4671fd2
 .endInput {
   margin-left: 40px;
   margin-right: 40px;
@@ -611,7 +716,11 @@ p {
   width: 90%;
 }
 
+<<<<<<< HEAD
 /* line 510, ../sass/screen.scss */
+=======
+/* line 550, ../sass/screen.scss */
+>>>>>>> 6e200242bb9060567d6a50534316bfc1d4671fd2
 .endButton {
   color: white;
   font-size: 40pt;
@@ -620,26 +729,46 @@ p {
   margin-right: 40px;
 }
 
+<<<<<<< HEAD
 /* line 519, ../sass/screen.scss */
+=======
+/* line 559, ../sass/screen.scss */
+>>>>>>> 6e200242bb9060567d6a50534316bfc1d4671fd2
 #prompt {
   text-align: center;
 }
 
+<<<<<<< HEAD
 /* line 523, ../sass/screen.scss */
+=======
+/* line 563, ../sass/screen.scss */
+>>>>>>> 6e200242bb9060567d6a50534316bfc1d4671fd2
 .rain_barrel_rating, .solar_panel_rating, .geothermal_rating {
   display: inline-block;
   width: 250px;
 }
+<<<<<<< HEAD
 /* line 526, ../sass/screen.scss */
+=======
+/* line 566, ../sass/screen.scss */
+>>>>>>> 6e200242bb9060567d6a50534316bfc1d4671fd2
 .rain_barrel_rating p, .solar_panel_rating p, .geothermal_rating p {
   display: inline-block;
   margin: 0;
 }
+<<<<<<< HEAD
 /* line 530, ../sass/screen.scss */
 .rain_barrel_rating img, .solar_panel_rating img, .geothermal_rating img {
   float: right;
 }
 /* line 533, ../sass/screen.scss */
+=======
+/* line 570, ../sass/screen.scss */
+.rain_barrel_rating img, .solar_panel_rating img, .geothermal_rating img {
+  float: right;
+}
+/* line 573, ../sass/screen.scss */
+>>>>>>> 6e200242bb9060567d6a50534316bfc1d4671fd2
 .rain_barrel_rating .star_group, .solar_panel_rating .star_group, .geothermal_rating .star_group {
   display: inline-block;
 }

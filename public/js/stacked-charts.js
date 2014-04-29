@@ -10,17 +10,22 @@ var MAX_NUM_BARS = 12, // 6 bars per day. 7 days per week.
 	colors = ['rgb(255, 255, 153)', 'rgb(104, 202, 202)', 'rgb(255, 102, 102)', 'rgb(153, 204, 102)', 'teal'],
 	containerWidth; 
 
-function StackedChart(_divId){
+function StackedChart(_divId,params){
+	containerWidth = $('#'+divId).width();
 	this.contracted = false;
 	this.events = [];
 	var step = 500,
 		data = [],
 		tags = [],
 		divId = _divId;	// collection of data getters singletons / sets.
-	containerWidth = $('#'+divId).width();
 	var self = this;
 	this.lineRange = {min: 0, max: 1};
 	this.barRange = {min: 0, max: 1};
+  
+  var param = $.extend({},{
+    width: containerWidth,
+    height: self.contracted? 70:90,
+  },params);
 
 	var update = function(){
 		if(data.length > 0){
@@ -34,8 +39,8 @@ function StackedChart(_divId){
 		$('#'+divId).empty();
 		var svg = d3.select('#'+divId)
 	            .append('svg')
-	            .attr("width", containerWidth)
-	            .attr("height", self.contracted? 70:90);
+	            .attr("width", param.width)
+	            .attr("height", param.height);
 
 	    var h = 0;
 	    for(var i = 0; i < data.length; i++){

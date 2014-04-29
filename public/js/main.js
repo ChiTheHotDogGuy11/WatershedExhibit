@@ -57,9 +57,9 @@ function initGameEngine(){
 	});
 }
 
-function bindChart(containerId){
+function bindChart(containerId,params){
 	// init stacked chart
-	var stackedChart = new StackedChart(containerId)
+	var stackedChart = new StackedChart(containerId,params)
 		.setRange('line', 0, 40000)
 		.setRange('bar', 0, 120000)
 		.bind(true, function(){return Engine.out_variables['outdoor_water'].get_values()}, 'Outdoor Water Consumption')
@@ -141,22 +141,27 @@ function renderScreen(){
 		//TODO put in the game state transition here
 	    $('#roundScreen').parent().show(function() {
 	      stackedCharts.push(bindChart('roundChart'));
+        $('#scoreList').empty();
 	      for(var key in Engine.systems) {
 	        if(Engine.systems.hasOwnProperty(key) && Engine.systems[key].active) { 
 	          var system = Engine.systems[key];
-	          $('#scoreList').append('<dt>'+system.name+'</dt>');
-	          $('#scoreList').append('<dd>'+system.score+'</dd>');
+	          $('#scoreList').append('<dt>'+featureNames[system.name]+'</dt>');
+	          $('#scoreList').append('<dd> Score: '+system.score+'</dd>');
+	          $('#scoreList').append('<dd> Scale: '+system.scale+'</dd>');
 	        }   
 	      }
-	      $('#roundScreen button').click(function() {
+	      $('#roundScreen h2:first').html("Round " + (GameState.level() - 1) + " Summary");
+        $('#roundScreen button').click(function() {
 	        $('#nextRound h2').html("Round " + GameState.level());
 	        $('#roundScreen').fadeOut('fast', function() {
 	          $('#nextRound').fadeIn('fast', function() {
 	            stackedCharts.pop();
 	            $('#roundChart').empty();
 	            setTimeout(function() {
+                $('#nextRound').hide();
+                $('#roundScreen').show();
 	              $('#roundScreen').parent().hide();
-	            }, 700);
+	            }, 1000);
 	          })
 	        });
 	      });
