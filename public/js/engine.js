@@ -274,6 +274,7 @@ var Engine = (function () {
         var inactive = params_hash['calculation_function'](in_vars, $.extend({},out_vars), scale, false);
         //The number multiplied at the end is the "weight" -- we can change this to emphasize different features
         var month_score = 0;
+        //TODO to do this properly, we really should really assign a weight to output variables and then iterate over the vars
         month_score += Math.round((inactive["outdoor_water"] - ret["outdoor_water"]) / 2);
         month_score += Math.round((inactive["energy_consumption"] - ret["energy_consumption"]) * 10);
         month_score += Math.round((inactive["runoff"] - ret["runoff"]) * 4);

@@ -34,6 +34,7 @@ body{
   width: 100%;
   margin: 0;
   overflow: hidden;
+  background-color: #C4E5E1;
 }
 
 html {
@@ -449,6 +450,13 @@ color: white;
 	left: 500px; 
 	width: 500px;
 	top: -20px;
+}
+
+#roundScore {
+  font-size: 1.5em;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
 }
 
 #roundScreen {
