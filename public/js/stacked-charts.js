@@ -224,7 +224,7 @@ StackedChart.prototype.drawLineChart = function(data, group, color, tag, height)
 	}
 	else{
 			group.append('text')
-			.text('year' + self.year)
+			.text('round ' + self.year)
 			.attr('x', yearXoff)
 			.attr('y', yearYoff)
 			.attr('fill','white')

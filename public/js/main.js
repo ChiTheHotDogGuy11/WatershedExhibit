@@ -191,7 +191,7 @@ function renderScreen(){
 		stackedCharts[stackedCharts.length-1].reposition('historyGraphContainer'+(GameState.level()-1), (GameState.level()-1));
 		rebindChart();
 		$('#endScreen').show(function() {
-      for(var i = 1; i < GameState.level() - 1; i++)
+      for(var i = 1; i < GameState.level(); i++)
       {
         $('#endScreen').append($('#historyGraphContainer'+i).detach().css('margin', '60px'));
 	      var total = 0;
