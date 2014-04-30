@@ -266,7 +266,7 @@ var soil = {
   
   get_data: function(lat,lon,callback) {
     $.ajax({
-      url: window.location.protocol + "/api/" + encodeURIComponent("http://casoilresource.lawr.ucdavis.edu/gmap/get_mapunit_data.php?lat="+lat+"&lon="+lon),
+      url: window.location.protocol + "/api?url=" + encodeURIComponent("casoilresource.lawr.ucdavis.edu/gmap/get_mapunit_data.php?lat="+lat+"&lon="+lon),
       success: function(data) {
         callback(data);
       },
@@ -302,10 +302,10 @@ var soil = {
     for(var i = 0; i < soils.length; i++)
     {
       requests.push($.ajax({
-        url: 'http://casoilresource.lawr.ucdavis.edu/gmap/' + soils[i].dataset.url,
+        url: 'casoilresource.lawr.ucdavis.edu/gmap/' + soils[i].dataset.url,
         method: 'get',
         beforeSend: function(xhr, settings) {
-          settings.url = window.location.protocol + "/api/" + encodeURIComponent(settings.url);
+          settings.url = window.location.protocol + "/api?url=" + encodeURIComponent(settings.url);
           settings.crossDomain = false;
         },
       }));
@@ -339,7 +339,7 @@ var soil = {
   //@see http://iridl.ldeo.columbia.edu/SOURCES/.UEA/.CRU/.TS2p1/.climatology/.c7100/.wet/
   get_rainfall_events: function(latLon, callback) {
     var cords = this.convert_cords(latLon.lat, latLon.lng);
-    var url = "http://iridl.ldeo.columbia.edu/SOURCES/.UEA/.CRU/.TS2p1/.climatology/.c7100/.wet/Y/";
+    var url = "iridl.ldeo.columbia.edu/SOURCES/.UEA/.CRU/.TS2p1/.climatology/.c7100/.wet/Y/";
     url += "("+cords.lat+")("+cords.lat+")RANGEEDGES/X/";
     url += "("+cords.lng+")("+cords.lng+")RANGEEDGES/T+exch+table-+text+text+skipanyNaN+-table+.html";
 
@@ -347,7 +347,7 @@ var soil = {
       url: url,
       method: 'get',
       beforeSend: function(xhr, settings) {
-        settings.url = window.location.protocol + "/api/" + encodeURIComponent(settings.url);
+        settings.url = window.location.protocol + "/api?url=" + encodeURIComponent(settings.url);
         settings.crossDomain = false;
       },
       success: function(data) {
@@ -375,7 +375,7 @@ var soil = {
 var Weather = {
   
   client_id: "nMCnfGEEaArwNARvEdiZb",
-  client_secret: "i8by9MQMwt1p4MPrRoLmnHhYhu030KkqcX1g5vo8",
+  client_secret: (window.location.host == "app-ecotouch.rhcloud.com")? "BCbLIz0jxx3XDzKtS2uUjtYJaoLpucSEk0Mi7Ate" : "i8by9MQMwt1p4MPrRoLmnHhYhu030KkqcX1g5vo8",
   normals: null,
   get_data: function(action,loc,params,callback) {
     params["client_id"] = this.client_id;
@@ -663,10 +663,10 @@ var NREL = {
     //age: old, mid, new
     var self = this;
     $.ajax({
-      url: 'http://www.waterfurnace.com/savings-calculator/v3.1.1/calculate.aspx',
+      url: 'www.waterfurnace.com/savings-calculator/v3.1.1/calculate.aspx',
       method: 'post',
       beforeSend: function(xhr, settings) {
-        settings.url = window.location.protocol + "/api/" + encodeURIComponent(settings.url);
+        settings.url = window.location.protocol + "/api?url=" + encodeURIComponent(settings.url);
         settings.crossDomain = false;
       },
       data: {

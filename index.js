@@ -1,6 +1,7 @@
 /* PORT NUMBERS */
 var cppPort = 1337;
-var clientPort = Number(process.env.PORT || 8001);
+var clientPort = process.env.OPENSHIFT_NODEJS_PORT || 8001;
+var clientIp = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
 
 
  // Import the Express module
@@ -30,13 +31,18 @@ var server = net.createServer(function (socket) {
     });
 });
 // Start listening directly on tcp port
-server.listen(cppPort, '0.0.0.0');
+if(clientIp == '127.0.0.1') {
+  server.listen(cppPort, '0.0.0.0');
+} else {
+  server.listen(15001, clientIp);
+}
 
 
 function apiProxy() {
   return function (req,res,next) {
-    if (req.url.match(new RegExp('^\/api\/'))){
-      var go_to = decodeURIComponent(req.path.slice(5));
+    if (req.url.match(new RegExp('^\/api'))){
+      //We have a param url that is the place we want to go to
+      var go_to = "http://" + decodeURIComponent(req.query.url);
       console.log(go_to);
       if (req.method == 'POST') {
         req.pipe(request.post(go_to, {form: req.body})).pipe(res);
@@ -57,6 +63,35 @@ function apiProxy() {
   }
 
 /******************
+ * Terminator SETUP ***
+ ******************/
+
+var terminator = function(sig){
+    if (typeof sig === "string") {
+       console.log('%s: Received %s - terminating sample app ...',
+                   Date(Date.now()), sig);
+       process.exit(1);
+    }   
+    console.log('%s: Node server stopped.', Date(Date.now()) );
+};  
+
+
+/** 
+ *  Setup termination handlers (for exit and a list of signals).
+ */
+var setupTerminationHandlers = function(){
+    //  Process on exit and signals.
+    process.on('exit', function() { terminator(); }); 
+
+    // Removed 'SIGPIPE' from the list - bugz 852598.
+    ['SIGHUP', 'SIGINT', 'SIGQUIT', 'SIGILL', 'SIGTRAP', 'SIGABRT',
+     'SIGBUS', 'SIGFPE', 'SIGUSR1', 'SIGSEGV', 'SIGUSR2', 'SIGTERM'
+    ].forEach(function(element, index, array) {
+        process.on(element, function() { terminator(element); }); 
+    }); 
+}; 
+
+/******************
  * CLIENT SETUP ***
  ******************/
 
@@ -74,9 +109,9 @@ app.configure(function() {
 
 });
 
+setupTerminationHandlers();
 // Create a Node.js based http server on clientPort
-var server = require('http').createServer(app).listen(clientPort);
-
+var server = require('http').createServer(app).listen(clientPort,clientIp);
 // Create a Socket.IO server and attach it to the http server
 var io = require('socket.io').listen(server);
 

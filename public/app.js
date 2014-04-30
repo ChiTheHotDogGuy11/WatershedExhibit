@@ -14,7 +14,11 @@ var IO = {
 	 * to the Socket.IO server
 	 */
 	init: function() {
-		IO.socket = io.connect();
+		if (window.location.host == "app-ecotouch.rhcloud.com") {
+      IO.socket = io.connect("ws://"+window.location.host+":8000/");
+    } else {
+      IO.socket = io.connect();
+    }
 		IO.bindEvents();
 	},
 
