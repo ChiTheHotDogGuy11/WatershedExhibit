@@ -1,6 +1,6 @@
 /* PORT NUMBERS */
 var cppPort = 1337;
-var clientPort = 8001;
+var clientPort = Number(process.env.PORT || 8001);
 
 
  // Import the Express module
