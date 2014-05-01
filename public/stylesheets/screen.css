@@ -7912,9 +7912,10 @@ p {
 /* line 368, ../sass/screen.scss */
 #gameChart {
   padding-top: 15px;
+  font-size: 1.5rem;
 }
 
-/* line 373, ../sass/screen.scss */
+/* line 374, ../sass/screen.scss */
 .stacked-chart-axis path,
 .stacked-chart-axis line {
   fill: none;
@@ -7922,14 +7923,14 @@ p {
   shape-rendering: crispEdges;
 }
 
-/* line 379, ../sass/screen.scss */
+/* line 380, ../sass/screen.scss */
 .stacked-chart-data-rect {
   background-color: white;
   width: 10px;
   height: 10px;
 }
 
-/* line 385, ../sass/screen.scss */
+/* line 386, ../sass/screen.scss */
 #panelContainer-bottom {
   width: 100%;
   position: fixed;
@@ -7937,12 +7938,12 @@ p {
   display: inline-block;
 }
 
-/* line 392, ../sass/screen.scss */
+/* line 393, ../sass/screen.scss */
 #panelContainer-top {
   width: 100%;
 }
 
-/* line 396, ../sass/screen.scss */
+/* line 397, ../sass/screen.scss */
 #budgetValue {
   color: white;
   font-size: 22pt;
@@ -7950,14 +7951,14 @@ p {
   font-family: ExoLight;
 }
 
-/* line 403, ../sass/screen.scss */
+/* line 404, ../sass/screen.scss */
 #budgetLable {
   color: white;
   font-size: 15pt;
   margin-top: 10px;
 }
 
-/* line 409, ../sass/screen.scss */
+/* line 410, ../sass/screen.scss */
 #budgetMeterBg {
   position: absolute;
   border-radius: 5px;
@@ -7968,7 +7969,7 @@ p {
   left: 180px;
 }
 
-/* line 419, ../sass/screen.scss */
+/* line 420, ../sass/screen.scss */
 #budgetMeterBar {
   position: absolute;
   border-radius: 5px;
@@ -7979,7 +7980,7 @@ p {
   background-color: #ff6666;
 }
 
-/* line 430, ../sass/screen.scss */
+/* line 431, ../sass/screen.scss */
 .storm_frame {
   display: none;
   position: absolute;
@@ -7987,7 +7988,7 @@ p {
   width: 300px;
 }
 
-/* line 437, ../sass/screen.scss */
+/* line 438, ../sass/screen.scss */
 .rain_barrel_frame {
   position: absolute;
   left: 950px;
@@ -7996,7 +7997,7 @@ p {
   display: none;
 }
 
-/* line 445, ../sass/screen.scss */
+/* line 446, ../sass/screen.scss */
 .geo_thermal_frame {
   position: absolute;
   top: 400px;
@@ -8005,7 +8006,7 @@ p {
   display: none;
 }
 
-/* line 453, ../sass/screen.scss */
+/* line 454, ../sass/screen.scss */
 .solar_panel_frame {
   position: absolute;
   left: 250px;
@@ -8015,7 +8016,7 @@ p {
   z-index: 1000;
 }
 
-/* line 462, ../sass/screen.scss */
+/* line 463, ../sass/screen.scss */
 #mainHouse {
   position: absolute;
   left: 500px;
@@ -8023,7 +8024,7 @@ p {
   top: 0px;
 }
 
-/* line 469, ../sass/screen.scss */
+/* line 470, ../sass/screen.scss */
 #roundScore {
   font-size: 1.5em;
   position: absolute;
@@ -8031,57 +8032,57 @@ p {
   right: 20px;
 }
 
-/* line 476, ../sass/screen.scss */
+/* line 477, ../sass/screen.scss */
 #roundScreen {
   width: 870px;
   height: 60%;
   position: relative;
 }
-/* line 481, ../sass/screen.scss */
+/* line 482, ../sass/screen.scss */
 #roundScreen button {
   position: absolute;
   bottom: 20px;
 }
-/* line 490, ../sass/screen.scss */
+/* line 491, ../sass/screen.scss */
 #roundScreen dt {
   font-size: 1.3em;
   padding-bottom: 10px;
 }
-/* line 495, ../sass/screen.scss */
+/* line 496, ../sass/screen.scss */
 #roundScreen dd {
   font-weight: 400;
 }
-/* line 499, ../sass/screen.scss */
+/* line 500, ../sass/screen.scss */
 #roundScreen h2 {
   border-top: solid white 1px;
   padding-top: 20px;
 }
-/* line 504, ../sass/screen.scss */
+/* line 505, ../sass/screen.scss */
 #roundScreen h2:first-child {
   border-top: none;
   padding-top: 0px;
 }
 
-/* line 510, ../sass/screen.scss */
+/* line 511, ../sass/screen.scss */
 #nextRound {
   width: 300px;
   padding-top: 20px;
   padding-bottom: 20px;
   margin-top: 300px;
 }
-/* line 516, ../sass/screen.scss */
+/* line 517, ../sass/screen.scss */
 #nextRound h2 {
   text-align: center;
 }
 
-/* line 522, ../sass/screen.scss */
+/* line 523, ../sass/screen.scss */
 #roundChart svg {
   display: block;
   margin-left: auto;
   margin-right: auto;
 }
 
-/* line 529, ../sass/screen.scss */
+/* line 530, ../sass/screen.scss */
 .overlay-container {
   margin-left: auto;
   margin-right: auto;
@@ -8089,12 +8090,12 @@ p {
   padding: 30px;
 }
 
-/* line 536, ../sass/screen.scss */
+/* line 537, ../sass/screen.scss */
 #panelContainer-middle {
   width: 100%;
 }
 
-/* line 540, ../sass/screen.scss */
+/* line 541, ../sass/screen.scss */
 #endScreen {
   position: absolute;
   top: 15%;
@@ -8105,7 +8106,7 @@ p {
   display: none;
 }
 
-/* line 549, ../sass/screen.scss */
+/* line 550, ../sass/screen.scss */
 .endScore {
   color: white;
   font-size: 40pt;
@@ -8115,7 +8116,7 @@ p {
   margin-right: 40px;
 }
 
-/* line 558, ../sass/screen.scss */
+/* line 559, ../sass/screen.scss */
 .endText {
   color: white;
   font-size: 12pt;
@@ -8123,7 +8124,7 @@ p {
   margin-top: 20px;
 }
 
-/* line 565, ../sass/screen.scss */
+/* line 566, ../sass/screen.scss */
 .endInput {
   margin-left: 40px;
   margin-right: 40px;
@@ -8131,7 +8132,7 @@ p {
   width: 90%;
 }
 
-/* line 572, ../sass/screen.scss */
+/* line 573, ../sass/screen.scss */
 .endButton {
   color: white;
   font-size: 40pt;
@@ -8140,7 +8141,7 @@ p {
   margin-right: 40px;
 }
 
-/* line 581, ../sass/screen.scss */
+/* line 582, ../sass/screen.scss */
 #prompt {
   text-align: center;
   margin-left: auto;
@@ -8150,31 +8151,31 @@ p {
   padding: 2% 5%;
 }
 
-/* line 590, ../sass/screen.scss */
+/* line 591, ../sass/screen.scss */
 .rain_barrel_rating, .solar_panel_rating, .geothermal_rating {
   display: inline-block;
   width: 250px;
 }
-/* line 593, ../sass/screen.scss */
+/* line 594, ../sass/screen.scss */
 .rain_barrel_rating p, .solar_panel_rating p, .geothermal_rating p {
   display: inline-block;
   margin: 0;
 }
-/* line 597, ../sass/screen.scss */
+/* line 598, ../sass/screen.scss */
 .rain_barrel_rating img, .solar_panel_rating img, .geothermal_rating img {
   float: right;
 }
-/* line 600, ../sass/screen.scss */
+/* line 601, ../sass/screen.scss */
 .rain_barrel_rating .star_group, .solar_panel_rating .star_group, .geothermal_rating .star_group {
   display: inline-block;
 }
 
-/* line 605, ../sass/screen.scss */
+/* line 606, ../sass/screen.scss */
 .star-img {
   width: 16px;
 }
 
-/* line 609, ../sass/screen.scss */
+/* line 610, ../sass/screen.scss */
 .star_group {
   margin-top: -10px;
 }
