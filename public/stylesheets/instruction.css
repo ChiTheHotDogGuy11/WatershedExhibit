@@ -1,4 +1,10 @@
-/* line 5, ../sass/instruction.scss */
+/* line 2, ../sass/instruction.scss */
+html {
+  font-size: 34px;
+  font-family: 'Exo', Helvetica, Arial, sans-serif;
+}
+
+/* line 8, ../sass/instruction.scss */
 .instruction_page {
   background-color: #D8F5D5;
   background-image: url("../images/instruction-bgx2.png");
@@ -6,49 +12,50 @@
   padding: 5% 12%;
 }
 
-/* line 13, ../sass/instruction.scss */
+/* line 16, ../sass/instruction.scss */
 #start_screen .instruction_next_button {
   right: 40%;
   bottom: 5%;
 }
 
-/* line 19, ../sass/instruction.scss */
+/* line 22, ../sass/instruction.scss */
 .instruction_header {
-  font-size: 58px;
+  font-size: 2.2rem;
   color: #3d3d3d;
   margin-bottom: 2%;
 }
 
-/* line 24, ../sass/instruction.scss */
+/* line 27, ../sass/instruction.scss */
 .instruction_paragraph {
   color: #3d3d3d;
   font-weight: 300;
-  font-size: 22px;
-}
-/* line 28, ../sass/instruction.scss */
-.instruction_paragraph img {
-  float: right;
+  font-size: 1rem;
 }
 /* line 31, ../sass/instruction.scss */
+.instruction_paragraph img {
+  float: right;
+  margin-left: 3%%;
+}
+/* line 35, ../sass/instruction.scss */
 .instruction_paragraph .instruction_option_container {
   display: inline-block;
   height: 200px;
 }
-/* line 35, ../sass/instruction.scss */
+/* line 39, ../sass/instruction.scss */
 .instruction_paragraph .instruction_option {
   display: inline-block;
   width: 32%;
 }
-/* line 38, ../sass/instruction.scss */
+/* line 42, ../sass/instruction.scss */
 .instruction_paragraph .instruction_option img {
   float: none;
 }
-/* line 42, ../sass/instruction.scss */
+/* line 46, ../sass/instruction.scss */
 .instruction_paragraph .instruction_option_label {
-  font-size: 25px;
+  font-size: 1rem;
   color: #3d3d3d;
 }
-/* line 46, ../sass/instruction.scss */
+/* line 50, ../sass/instruction.scss */
 .instruction_paragraph button {
   padding: 0;
   border: none;
@@ -56,7 +63,7 @@
   cursor: pointer;
 }
 
-/* line 54, ../sass/instruction.scss */
+/* line 58, ../sass/instruction.scss */
 .instruction_next_button {
   padding: 1% 4%;
   position: absolute;
@@ -64,7 +71,7 @@
   right: 8%;
   border-radius: 12px;
   display: inline-block;
-  font-size: 28px;
+  font-size: 1rem;
   color: white;
   background-color: #428bca;
   cursor: pointer;
@@ -74,7 +81,7 @@
   -ms-user-select: none;
 }
 
-/* line 70, ../sass/instruction.scss */
+/* line 74, ../sass/instruction.scss */
 .instruction_previous_button {
   padding: 1% 4%;
   position: absolute;
@@ -82,7 +89,7 @@
   left: 8%;
   border-radius: 12px;
   display: inline-block;
-  font-size: 28px;
+  font-size: 1rem;
   color: white;
   background-color: #428bca;
   cursor: pointer;

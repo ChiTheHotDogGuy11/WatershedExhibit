@@ -19,7 +19,7 @@ $corner-container-width: 30%;
 $piece-color: #CC0000;
 
 @font-face{
-	font-family: Exo;
+	font-family: 'Exo', Helvetica, Arial, sans-serif;
 	src: url(../fonts/Exo-Regular.otf);
 }
 
@@ -31,7 +31,8 @@ $piece-color: #CC0000;
 body{
   background-image: url('../images/background.png');
   background-position-y: 64%;
-  font-family: Exo;
+  font-size: 22px;
+  font-family: 'Exo', Helvetica, Arial, sans-serif;
   height: 100%;
   width: 100%;
   margin: 0;
@@ -45,7 +46,7 @@ html {
 }
 
 p {
-	font-size: 14px;
+	font-size: 0.5rem;
 
 }
 
@@ -91,7 +92,7 @@ color: white;
   height: 45%;
   width: 130%;
   text-align: center;
-  font-size: 50pt;
+  font-size: 0.5rem;
 }
 
 .meter{
@@ -320,6 +321,7 @@ color: white;
 	background-color: transparent;
 	border-radius: 10px;
 	margin: 10px;
+	float: right;
 }
 
 .big-btn{
@@ -571,7 +573,11 @@ color: white;
 
 #prompt{
 	text-align: center;
-	margin-left: 16.66666667%;
+	margin-left: auto;
+	margin-right: auto;
+	height: 10%;
+	width: 60%;
+	padding: 2% 5%;
 }
 
 .rain_barrel_rating, .solar_panel_rating, .geothermal_rating{
