@@ -28,6 +28,10 @@ $piece-color: #CC0000;
 	src: url(../fonts/Exo-Light.otf);
 }
 
+h4{
+	font-size: 2rem;
+}
+
 body{
   background-image: url('../images/background.png');
   background-position-y: 64%;
@@ -46,10 +50,13 @@ html {
 }
 
 p {
-	font-size: 0.5rem;
+	font-size: 2rem;
 
 }
 
+.btn{
+	font-size: 1.5rem;
+}
 .page_container{
   height: 100%;
   width: 100%;
