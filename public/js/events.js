@@ -27,7 +27,7 @@ $(function() {
   var price_hike_params = {
     name: "price_hike",
     duration: 2,
-    probability : 0,
+    probability : 5,
     on_init: function(duration, cur_inputs) {
       // console.log("begin price hike");
       cur_inputs["rain"] -= .7;
@@ -47,12 +47,12 @@ $(function() {
     },
     input_vars: ["rain", "sun"]
   };
-  Engine.new_event(price_hike_params, {startF:1, endF: 0});
+  Engine.new_event(price_hike_params, {startF:1, endF: 10});
   
   var drought_params = {
     name: "drought",
     duration: 2,
-    probability : 0,
+    probability : 5,
     on_init: function(duration, cur_inputs) {
       // console.log("begin drought");
       cur_inputs["rain"] -= .7;
@@ -72,5 +72,5 @@ $(function() {
     },
     input_vars: ["rain", "sun"]
   };
-  Engine.new_event(drought_params, {startF:1, endF: 0});
+  Engine.new_event(drought_params, {startF:1, endF: 6});
 });
