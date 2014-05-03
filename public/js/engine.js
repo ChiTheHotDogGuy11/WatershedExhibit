@@ -163,8 +163,8 @@ var Engine = (function () {
       
       //Now update the output vars.
       for (var var_name in out_vars) {
-        //out_variables[var_name].push_value(Math.max(0,out_vars[var_name]));
-        out_variables[var_name].push_value(out_vars[var_name]);
+        out_variables[var_name].push_value(Math.max(0,out_vars[var_name]));
+        //out_variables[var_name].push_value(out_vars[var_name]);
       }
 
     }
