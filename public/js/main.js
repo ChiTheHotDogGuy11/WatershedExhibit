@@ -29,13 +29,13 @@ function initGameEngine(){
     };
     var rb_piece = new Piece(Engine.systems['rain_barrel'], 14, 'barrel', 5);
     Engine.systems['rain_barrel'].piece = rb_piece;
-    rb_piece.move(200, 200);
+    rb_piece.move(-200, -200);
     var gt_piece = new Piece(Engine.systems['geo_thermal'], 21, '', 1);
     Engine.systems['geo_thermal'].piece = gt_piece;
-    gt_piece.move(250, 400);
+    gt_piece.move(-250, -400);
     var sp_piece = new Piece(Engine.systems['solar_panel'], 13, 'kwatt', 5);
     Engine.systems['solar_panel'].piece = sp_piece;
-    sp_piece.move(885, 494);
+    sp_piece.move(-885, -494);
     pieces[1] = sp_piece;
     pieces[0] = gt_piece;
     pieces[2] = rb_piece;
