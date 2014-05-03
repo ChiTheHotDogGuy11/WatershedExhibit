@@ -19,7 +19,7 @@ $corner-container-width: 30%;
 $piece-color: #CC0000;
 
 @font-face{
-	font-family: Exo;
+	font-family: 'Exo', Helvetica, Arial, sans-serif;
 	src: url(../fonts/Exo-Regular.otf);
 }
 
@@ -28,9 +28,15 @@ $piece-color: #CC0000;
 	src: url(../fonts/Exo-Light.otf);
 }
 
+h4{
+	font-size: 2rem;
+}
+
 body{
   background-image: url('../images/background.png');
-  font-family: Exo;
+  background-position-y: 64%;
+  font-size: 22px;
+  font-family: 'Exo', Helvetica, Arial, sans-serif;
   height: 100%;
   width: 100%;
   margin: 0;
@@ -44,10 +50,13 @@ html {
 }
 
 p {
-	font-size: 14px;
+	font-size: 2rem;
 
 }
 
+.btn{
+	font-size: 1.5rem;
+}
 .page_container{
   height: 100%;
   width: 100%;
@@ -90,7 +99,7 @@ color: white;
   height: 45%;
   width: 130%;
   text-align: center;
-  font-size: 50pt;
+  font-size: 0.5rem;
 }
 
 .meter{
@@ -135,7 +144,7 @@ color: white;
 
 .house{
 	position: absolute;
-	top: 340px;
+	top: 35%;
 	left: 40px;
 }
 
@@ -319,6 +328,7 @@ color: white;
 	background-color: transparent;
 	border-radius: 10px;
 	margin: 10px;
+	float: right;
 }
 
 .big-btn{
@@ -357,6 +367,7 @@ color: white;
 
 #gameChart{
 	padding-top: 15px;
+	font-size: 1.5rem;
 }
 
 .stacked-chart-axis path,
@@ -453,7 +464,7 @@ color: white;
 	position: absolute; 
 	left: 500px; 
 	width: 500px;
-	top: -20px;
+	top: 0px;
 }
 
 #roundScore {
@@ -570,7 +581,11 @@ color: white;
 
 #prompt{
 	text-align: center;
-	margin-left: 16.66666667%;
+	margin-left: auto;
+	margin-right: auto;
+	height: 10%;
+	width: 60%;
+	padding: 2% 5%;
 }
 
 .rain_barrel_rating, .solar_panel_rating, .geothermal_rating{

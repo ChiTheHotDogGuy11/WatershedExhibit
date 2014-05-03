@@ -163,6 +163,7 @@ function renderScreen(){
           }
 	      }
 	      $('#roundScreen h2:first').html("Round " + (GameState.level()) + " Summary");
+        $('#roundScore').html('Round Score: '+ total);
         $('#roundScreen button').unbind('click').click(function() {
 	        $('#nextRound h2').html((GameState.level()+1) > NUM_LEVELS ? "Game over." : ("Round " + (GameState.level()+1)));
 	        $('#roundScreen').fadeOut('fast', function() {
