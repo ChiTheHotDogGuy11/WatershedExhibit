@@ -36,7 +36,7 @@ function initialize() {
   google.maps.event.addListener(kmzLayer, 'click', function(kmlEvt) {
     //TODO Something more here -- get the location
     
-    var content = "<h2>"+kmlEvt.featureData.name+"</h2>\n"+kmlEvt.featureData.description;
+    var content = kmlEvt.featureData.description;
     content += "<button class='info_button'>Choose Location</button>";
 
     if (curWindow != null) {
@@ -50,6 +50,8 @@ function initialize() {
     curWindow.setPosition(kmlEvt.latLng);
 
     $('.info_button').click(function (event) {
+      curWindow.setContent('<h4>Loading Area</h4><img src="/images/loading.gif"/>');
+      
       var dist = 60;
       var box = new google.maps.LatLngBounds(
           destinationFrom(kmlEvt.latLng.lat(),kmlEvt.latLng.lng(),225,dist),
@@ -77,9 +79,13 @@ function initialize() {
   Preferences.bind("latLng", function() {
     $('#preferences-form :submit').prop('disabled', true);
     var count = 0;
-    
+   
     function doneLoading(count) {
-      if (count >= 5) {
+      if (count >= 3) {
+        if(curWindow != null) {
+          curWindow.setContent('<h4>Loaded!</h4>');
+        }
+        
         var html = '<h4>Area Selection</h4><p><strong>Zip</strong>&nbsp;&nbsp;'+Preferences.location.zip+'</p>';
         html += '<p><strong>City</strong>&nbsp;'+Preferences.location.city+'</p>';
         $('#preference-loading').html(html);
@@ -95,9 +101,9 @@ function initialize() {
     //Update zip code
     geocode.find_location(Preferences.latLng, function(data) { Preferences.location = data; doneLoading(++count); });
     //get soil information 
-    soil.get_preference_info(Preferences.latLng, function(data) { Preferences.soil = data; doneLoading(++count); });
+    //soil.get_preference_info(Preferences.latLng, function(data) { Preferences.soil = data; doneLoading(++count); });
     //get rainfall events
-    soil.get_rainfall_events(Preferences.latLng, function(data) { Preferences.rainfall_events = data; doneLoading(++count);});
+    //soil.get_rainfall_events(Preferences.latLng, function(data) { Preferences.rainfall_events = data; doneLoading(++count);});
   });
 
   var geocode = {
@@ -603,6 +609,8 @@ var Building = {
   },
 
   runoff: function(month) {
+    return 20;
+
     var comps = Preferences.soil.composition
     var total = 0;
     for (var i = 0; i < comps.length; i++) {
