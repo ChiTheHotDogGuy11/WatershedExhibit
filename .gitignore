@@ -29,3 +29,4 @@ node_modules/
 
 # Banish DS Store
 .DS_Store
+__MACOSX/
