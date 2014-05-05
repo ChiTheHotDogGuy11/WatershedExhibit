@@ -538,7 +538,7 @@ $(function() {
 
   $('#preferences-form').submit(function (event) {
      event.preventDefault();
-     Preferences.num_people = parseInt($('#preferences-form input[name=members]').val());
+     Preferences.num_people = parseInt($('#preferences-form .output').html());
      $('#preferences').hide();
   });
 });

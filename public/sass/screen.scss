@@ -558,23 +558,18 @@ color: white;
 	position: absolute; 
 	top: 15%; 
 	left: 20%; 
-	width: 60%; height: 70%; 
+	width: 60%; height: 55%; 
 	z-index: 400;
 	display: none;
 }
 
 .endScore{
 	color: white;
-	font-size: 40pt;
-	display: inline-block;
-	margin-top: -20px;
-	margin-left: 40px;
-	margin-right: 40px;
 }
 
 .endText{
 	color: white;
-	font-size: 12pt;
+	font-size: 22pt;
 	margin-left: 40px;
 	margin-top: 20px;
 }
@@ -587,12 +582,8 @@ color: white;
 }
 
 .endButton{
-	color: white;
-	font-size: 40pt;
-	margin-top: 30px;
-	margin-left: 40px;
-	margin-right: 40px;
-
+  margin-top: 10px;
+  margin-left: 40px;
 }
 
 #prompt{

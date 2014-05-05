@@ -194,7 +194,9 @@ function renderScreen(){
 		$('#endScreen').show(function() {
       for(var i = 1; i < GameState.level(); i++)
       {
-        $('#endScreen').append($('#historyGraphContainer'+i).detach().css('margin', '60px'));
+        var row = $('<div class="row"></div>').appendTo('#endScreen');
+        var col = $('<div class="col-md-6"></div>').appendTo(row);
+        col.append($('#historyGraphContainer'+i).detach().css('width', '270px').css('margin-left', '110px'));
 	      var total = 0;
         for(var key in Engine.systems) {
 	        if(Engine.systems.hasOwnProperty(key) && Engine.systems[key].active) { 
@@ -203,12 +205,12 @@ function renderScreen(){
             total += system.get_past_score(i-1);
 	        }   
 	      }
-        $('#endScreen').append($('<div class="endScore">SCORE:'+Math.round(total)+'</div>'));
+        row.append($('<div class="col-md-6"><div class="endScore">SCORE:'+Math.round(total)+'</div></div>'));
       }
     });
-		$('#endScreen').append($('<div class="endText">Here are more words for the player.</div>'));
+		$('#endScreen').append($('<div class="endText">Good Job! Thank you for playing our game.</div>'));
 		$('#endScreen').append($('<input class="endInput" type="text" class="form-control" placeholder="Enter your email to receive more information about green practices!"></input>'));
-		$('#endScreen').append($('<div class="endButton">SUBMIT!</div>'));
+		$('#endScreen').append($('<div class="btn btn-primary btn-lg endButton ">SUBMIT!</div>'));
 	}
 }
 
