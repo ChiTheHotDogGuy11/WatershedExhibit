@@ -91,6 +91,9 @@ function initialize() {
         $('#preference-loading').html(html);
         $('#preferences-form :submit').prop('disabled', false);
         count = 0;
+        $('#titlePanel').empty();
+        $('#titlePanel').append('<h4>'+Preferences.location.city+'</h4>');
+        $('#titlePanel').append('<h5>'+Preferences.climate + ' in ' + Preferences.location.state+'</h5>');
       }
     }
 
@@ -559,51 +562,51 @@ var Building = {
     switch (true) {
       case contains(name,"temperate") && contains(name,"maritime"):
         $('body').css('background-image', 'url("../images/Background_Alpine.png")');
-        return "cold mediteranian";
+        return "Cold Mediteranian";
         break;
       case contains(name,"Subtropic") && contains(name,"macrotherm") && contains(name,"maritime"):
         $('body').css('background-image', 'url("../images/Background_Temperate.png")');
-        return "warm mediteranian";
+        return "Warm Mediteranian";
         break;
       case contains(name,"Subtropic") && contains(name,"megatherm") && contains(name,"maritime"):
         $('body').css('background-image', 'url("../images/Background_Temperate.png")');
-        return "warm mediteranian";
+        return "Warm Mediteranian";
         break;
       case contains(name,"temperate") && contains(name,"humid"):
         $('body').css('background-image', 'url("../images/Background_Temperate.png")');
-        return "cold continental";
+        return "Cold Continental";
         break;
       case contains(name,"temperate") && contains(name,"arid"):
         $('body').css('background-image', 'url("../images/Background_Grassland.png")');
-        return "cold grassland";
+        return "Cold Grassland";
         break;
       case contains(name,"Subtropic") && contains(name,"mesotherm"):
         $('body').css('background-image', 'url("../images/Background_Grassland.png")');
-        return "warm grassland";
+        return "Warm Grassland";
         break;
       case contains(name,"Subtropic") && contains(name,"macrotherm"):
         $('body').css('background-image', 'url("../images/Background_Temperate.png")');
-        return "tropic";
+        return "Continental";
         break;
       case contains(name,"Subtropic") && contains(name,"megatherm") && contains(name,"humid"):
         $('body').css('background-image', 'url("../images/Background_Grassland.png")');
-        return "tropic";
+        return "Subtropic";
         break;
       case contains(name,"Subtropic") && contains(name,"megatherm") && contains(name,"arid"):
         $('body').css('background-image', 'url("../images/Background_Desert.png")');
-        return "desert";
+        return "Desert";
         break;
       case contains(name,"Dry") && contains(name,"cold"):
         $('body').css('background-image', 'url("../images/Background_Alpine.png")');
-        return "mountain"
+        return "Mountain"
         break;
       case contains(name,"Dry") && contains(name,"warm"):
         $('body').css('background-image', 'url("../images/Background_Desert.png")');
-        return "desert";
+        return "Desert";
         break;
       case contains(name,"Tropic"):
         $('body').css('background-image', 'url("../images/Background_Wetland.png")');
-        return "tropical";
+        return "Tropical";
         break;
     }
   },
