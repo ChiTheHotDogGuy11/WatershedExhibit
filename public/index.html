@@ -189,16 +189,19 @@
           <div id="map-canvas"></div>
         </div>
         <div class="form-center row">
-          <div class="col-md-6">
+          <div class="col-md-6" style="position: static">
             <form id="preferences-form">
               <div>
                 <label>Household Size</label>
-                <input type="text" name="members" data-slider="true" data-slider-snap="true" data-slider-values="1,2,3,4,5,6" data-slider-equal-steps="true" value="4">
-                <span class="output">4</span>
+                <div class="pull-right">
+                  <span class="output">4</span>
+                  <div class="btn-group-vertical">
+                    <button type="button" class="btn btn-success">+</button>
+                    <button type="button" class="btn btn-danger">-</button>
+                  </div>
+                </div>
               </div>
-              <div>
-                <input type="submit" disabled class="btn btn-primary">
-              </div>
+              <input type="submit" disabled class="btn btn-primary" style="position: absolute; bottom: 15px; right: 0">
             </form>
           </div>
           <div class="col-md-6" id="preference-loading">

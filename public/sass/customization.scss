@@ -63,6 +63,8 @@
   
   overflow: hidden;
   padding: 10px;
+  position: relative;
+  height: 150px;
 
   form {
     margin: 0 auto;
@@ -78,7 +80,6 @@
   }
 
   .output {
-    float: right;
     margin-top: 5px
   }
 }
@@ -125,4 +126,5 @@
 #preferences-form {
   margin-top: 10px;
   margin-bottom: 10px;
+
 }

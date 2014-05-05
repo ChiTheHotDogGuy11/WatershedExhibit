@@ -3,7 +3,7 @@
  * Import this file using the following HTML or equivalent:
  * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
 /*This is the reset file that comes with compass*/
-/* line 17, ../../../../../.rvm/gems/ruby-2.0.0-p247/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 17, ../../../../../../.rvm/gems/ruby-2.0.0-p353/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -25,45 +25,45 @@ time, mark, audio, video {
   vertical-align: baseline;
 }
 
-/* line 22, ../../../../../.rvm/gems/ruby-2.0.0-p247/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 22, ../../../../../../.rvm/gems/ruby-2.0.0-p353/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 html {
   line-height: 1;
 }
 
-/* line 24, ../../../../../.rvm/gems/ruby-2.0.0-p247/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 24, ../../../../../../.rvm/gems/ruby-2.0.0-p353/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 ol, ul {
   list-style: none;
 }
 
-/* line 26, ../../../../../.rvm/gems/ruby-2.0.0-p247/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 26, ../../../../../../.rvm/gems/ruby-2.0.0-p353/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 table {
   border-collapse: collapse;
   border-spacing: 0;
 }
 
-/* line 28, ../../../../../.rvm/gems/ruby-2.0.0-p247/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 28, ../../../../../../.rvm/gems/ruby-2.0.0-p353/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 caption, th, td {
   text-align: left;
   font-weight: normal;
   vertical-align: middle;
 }
 
-/* line 30, ../../../../../.rvm/gems/ruby-2.0.0-p247/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 30, ../../../../../../.rvm/gems/ruby-2.0.0-p353/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 q, blockquote {
   quotes: none;
 }
-/* line 103, ../../../../../.rvm/gems/ruby-2.0.0-p247/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 103, ../../../../../../.rvm/gems/ruby-2.0.0-p353/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 q:before, q:after, blockquote:before, blockquote:after {
   content: "";
   content: none;
 }
 
-/* line 32, ../../../../../.rvm/gems/ruby-2.0.0-p247/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 32, ../../../../../../.rvm/gems/ruby-2.0.0-p353/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 a img {
   border: none;
 }
 
-/* line 116, ../../../../../.rvm/gems/ruby-2.0.0-p247/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 116, ../../../../../../.rvm/gems/ruby-2.0.0-p353/gems/compass-0.12.4/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
   display: block;
 }
@@ -8312,35 +8312,36 @@ p {
 .form-center {
   overflow: hidden;
   padding: 10px;
+  position: relative;
+  height: 150px;
 }
-/* line 67, ../sass/customization.scss */
+/* line 69, ../sass/customization.scss */
 .form-center form {
   margin: 0 auto;
 }
-/* line 71, ../sass/customization.scss */
+/* line 73, ../sass/customization.scss */
 .form-center label, .form-center input {
   float: left;
 }
-/* line 74, ../sass/customization.scss */
+/* line 76, ../sass/customization.scss */
 .form-center label {
   clear: left;
   display: block;
   margin-top: 3px;
 }
-/* line 80, ../sass/customization.scss */
+/* line 82, ../sass/customization.scss */
 .form-center .output {
-  float: right;
   margin-top: 5px;
 }
 
-/* line 86, ../sass/customization.scss */
+/* line 87, ../sass/customization.scss */
 .slider {
   padding-bottom: 25px;
   left: 70px;
   display: inline-block;
 }
 
-/* line 92, ../sass/customization.scss */
+/* line 93, ../sass/customization.scss */
 #pac-input {
   background-color: #fff;
   padding: 0 11px 0 13px;
@@ -8351,7 +8352,7 @@ p {
   text-overflow: ellipsis;
 }
 
-/* line 102, ../sass/customization.scss */
+/* line 103, ../sass/customization.scss */
 #pac-input:focus {
   border-color: #4d90fe;
   margin-left: -1px;
@@ -8360,26 +8361,26 @@ p {
   width: 401px;
 }
 
-/* line 109, ../sass/customization.scss */
+/* line 110, ../sass/customization.scss */
 .pac-container {
   font-family: Roboto;
 }
 
-/* line 113, ../sass/customization.scss */
+/* line 114, ../sass/customization.scss */
 #type-selector {
   color: #fff;
   background-color: #4d90fe;
   padding: 5px 11px 0px 11px;
 }
 
-/* line 119, ../sass/customization.scss */
+/* line 120, ../sass/customization.scss */
 #type-selector label {
   font-family: Roboto;
   font-size: 13px;
   font-weight: 300;
 }
 
-/* line 125, ../sass/customization.scss */
+/* line 126, ../sass/customization.scss */
 #preferences-form {
   margin-top: 10px;
   margin-bottom: 10px;

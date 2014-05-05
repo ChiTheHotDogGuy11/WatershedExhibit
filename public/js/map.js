@@ -81,7 +81,7 @@ function initialize() {
     var count = 0;
    
     function doneLoading(count) {
-      if (count >= 3) {
+      if (count >= 5) {
         if(curWindow != null) {
           curWindow.setContent('<h4>Loaded!</h4>');
         }
@@ -101,9 +101,9 @@ function initialize() {
     //Update zip code
     geocode.find_location(Preferences.latLng, function(data) { Preferences.location = data; doneLoading(++count); });
     //get soil information 
-    //soil.get_preference_info(Preferences.latLng, function(data) { Preferences.soil = data; doneLoading(++count); });
+    soil.get_preference_info(Preferences.latLng, function(data) { Preferences.soil = data; doneLoading(++count); });
     //get rainfall events
-    //soil.get_rainfall_events(Preferences.latLng, function(data) { Preferences.rainfall_events = data; doneLoading(++count);});
+    soil.get_rainfall_events(Preferences.latLng, function(data) { Preferences.rainfall_events = data; doneLoading(++count);});
   });
 
   var geocode = {
@@ -609,8 +609,6 @@ var Building = {
   },
 
   runoff: function(month) {
-    return 20;
-
     var comps = Preferences.soil.composition
     var total = 0;
     for (var i = 0; i < comps.length; i++) {
@@ -729,11 +727,16 @@ $(function(){
   google.maps.event.addDomListener(window, 'load', initialize);
 
   //Setup our datasliders to output their values when they are changed
-  $("[data-slider]").bind("slider:ready slider:changed", function(event,data) {
-    $(this)
-      .nextAll(".output:first")
-        .html(data.value);
+  $('#preferences-form .btn-success').click(function() {
+    var val = parseInt($('#preferences-form .output').html());
+    $('#preferences-form .output').html((val < 6)? val + 1 : val);
   });
+  
+  $('#preferences-form .btn-danger').click(function() {
+    var val = parseInt($('#preferences-form .output').html());
+    $('#preferences-form .output').html((val > 1)? val - 1 : val);
+  });
+
 });
 
 
