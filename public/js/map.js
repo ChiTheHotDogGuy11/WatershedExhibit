@@ -1,47 +1,55 @@
+//Google maps global object
 var map;
 
+/*
+ * Centers our Google map to be around the US
+ */
 function centerMap() {
     var defaultBounds = new google.maps.LatLngBounds(
         new google.maps.LatLng(47.971537, -131.132813),
-        new google.maps.LatLng(24.754314, -76.728516));
+        new google.maps.LatLng(24.754314, -76.728516)
+    );
     map.fitBounds(defaultBounds);
 }
 
+/*
+ * Initialize our Google Map. Also sets up appropriate callbacks for preference selection
+ */
 function initialize() {
 
   var markers = [];
+  //Use a Road Map 
   map = new google.maps.Map(document.getElementById('map-canvas'), {
     mapTypeId: google.maps.MapTypeId.ROADMAP
   });
 
-//  var weatherLayer = new google.maps.weather.WeatherLayer({
-//    temperatureUnits: google.maps.weather.TemperatureUnit.FAHRENHEIT
-//  });
-//  weatherLayer.setMap(map);
-
+  //Set our default bounds to be the US. TODO this should limit selection to the US only
   var defaultBounds = new google.maps.LatLngBounds(
       new google.maps.LatLng(47.971537, -131.132813),
       new google.maps.LatLng(24.754314, -76.728516));
   map.fitBounds(defaultBounds);
 
+  //Add our climate zones to our map using a KML layer. 
   var kmzLayer = new google.maps.KmlLayer({
     url: 'https://raw.githubusercontent.com/ChiTheHotDogGuy11/WatershedExhibit/master/public/all-climate-zones.kml',
     preserveViewport: true,
     map: map,
     suppressInfoWindows: true
   });
-
+  //Variable to track if a popup window is open
   var curWindow = null;
 
+  //Add a listener to the KmlLayer to deal with click events
   google.maps.event.addListener(kmzLayer, 'click', function(kmlEvt) {
-    //TODO Something more here -- get the location
     
     var content = kmlEvt.featureData.description;
     content += "<button class='info_button'>Choose Location</button>";
 
+    //Close any existing open content bubbles
     if (curWindow != null) {
       curWindow.close();
     }
+    //Set the content for the information bubble
     curWindow = new google.maps.InfoWindow({
       content: content,
     });
@@ -49,6 +57,8 @@ function initialize() {
     curWindow.open(map);
     curWindow.setPosition(kmlEvt.latLng);
 
+    //When the "Select" button is pressed, we want to perform a loading event that
+    //sets the appropriate content
     $('.info_button').click(function (event) {
       curWindow.setContent('<h4>Loading Area</h4><img src="/images/loading.gif"/>');
       
@@ -58,34 +68,27 @@ function initialize() {
           destinationFrom(kmlEvt.latLng.lat(),kmlEvt.latLng.lng(),45,dist));
       
       $('#preference-loading').html('<h4>Loading Area</h4><img src="/images/loading.gif"/>');
+        
+      //Set our climate and latLng that we retrieved from the map
       Preferences.latLng = {lat: kmlEvt.latLng.lat(), lng: kmlEvt.latLng.lng()};
       Preferences.climate = Building.setClimate(kmlEvt.featureData.name); 
       
-      //Get Station Info
-      //NOAA.stations_for_area(box,function(data) {
-      //  NOAA.data_for_stations(data, {startdate: "2013-03-01", enddate: "2013-03-31", datasetid: "GHCNDMS"}, function(data) {
-      //    console.log(data);
-      //  });
-      //});
-      
-      //Solar potential for area
-      //NREL.get_solar(kmlEvt.latLng.lat(),kmlEvt.latLng.lng(),100,function(data) {console.log(data)});
-      //Get the geothermal info
-      ////NREL.get_geothermal(kmlEvt.latLng.lat(),kmlEvt.latLng.lng(),"natural_gas",2000,function(data){ console.log(data)});  
     });
   });
   
-  //Update our weather and rates when we get a new LatLng
+  //Update our weather, rates, and soil info when we get a new LatLng
   Preferences.bind("latLng", function() {
     $('#preferences-form :submit').prop('disabled', true);
     var count = 0;
    
+    //Our function to check when we are done loading external content 
     function doneLoading(count) {
       if (count >= 5) {
         if(curWindow != null) {
           curWindow.setContent('<h4>Loaded!</h4>');
         }
         
+        //Set the location we have selected
         var html = '<h4>Area Selection</h4><p><strong>Zip</strong>&nbsp;&nbsp;'+Preferences.location.zip+'</p>';
         html += '<p><strong>City</strong>&nbsp;'+Preferences.location.city+'</p>';
         $('#preference-loading').html(html);
@@ -109,8 +112,19 @@ function initialize() {
     soil.get_rainfall_events(Preferences.latLng, function(data) { Preferences.rainfall_events = data; doneLoading(++count);});
   });
 
+  /*
+   * Geocoder object that allows us to recieve info about a LatLng
+   * functions:
+   *    find_location: find a location based on latlng
+   */
   var geocode = {
     geocoder: new google.maps.Geocoder(),
+    /*
+     * Find a location based on a latlng
+     * laglng: Latitude and Longitude we want information back on
+     * callback: a callback function that is passed
+     *  loc: a location object consisting of {zip, city, state}
+     */
     find_location: function(latlng,callback) {
       this.geocoder.geocode({'latLng': latlng}, function(results,status) {
         if (status == google.maps.GeocoderStatus.OK) {
@@ -198,7 +212,10 @@ if (typeof String.prototype.startsWith != 'function') {
     };
 }
 
-//This NOAA Stuff is Great -- but their data is too unreliable to use
+/*
+ * A suite of functions to retrieve information from the NOAA data service
+ * This is currently not in use
+ */
 var NOAA = {
 
   key: "GQEfnmROmOrqmgxclKAELCzpALViYCrw",
@@ -270,7 +287,16 @@ var NOAA = {
 }
 
 
-//@see http://en.wikipedia.org/wiki/Runoff_curve_number
+/*
+ * A set of functions to retrieve soil information
+ * functions:
+ *  get_data: internal function to retrieve information from SoilWeb
+ *  get_preference_info: retrieve preference information for a particular latlng
+ *  get_soil_conditions: given an array of soil, retrieve information about them
+ *  get_rainfall_events: for a particular latlng, return the number of rainfall events in a month
+ *  convert_cords: change coordinates from neg/pos to E/W & N/S
+ * @see http://en.wikipedia.org/wiki/Runoff_curve_number
+ */
 var soil = {
   
   get_data: function(lat,lon,callback) {
@@ -284,6 +310,14 @@ var soil = {
       }
     });
   },
+  /*
+   * Retrieve soil information for a particular latlon object
+   * latLon: an object with {lat, lng}
+   * callback: callback function called after this function is complete
+   *    ret: information hash with:
+   *        {flood, storage, drainage_wet, drainage_dom, wetland, table, soil, composition:
+   *            [{plant_water, hydrologic, runoff, erosion}, ...] }
+   */
   get_preference_info: function(latLon, callback) {
     var self = this;
     this.get_data(latLon.lat, latLon.lng, function(data) {
@@ -304,10 +338,17 @@ var soil = {
       });
     });
   },
+  /*
+   * Get the information regarding the different soils provided in the array. Used by get_preference_info
+   * soils: array of soil composition links
+   * callback: callback function after this function is complete
+   *    ret: [{plant_water, hydrologic, runoff, erosion}, ....]
+   */
   get_soil_conditions: function(soils, callback) {
     var me = this;
     var requests = [];
     var ret = [];
+    //Loop through each available soil type and spinoff an ajax request
     for(var i = 0; i < soils.length; i++)
     {
       requests.push($.ajax({
@@ -321,6 +362,7 @@ var soil = {
       ret[i] = {percent: parseInt($(soils[i]).parent().prev().html().replace(/[^\d]*/g,''))};
     }
 
+    //When the ajaz requests are done, then parse through them, pulling the info we want
     $.when.apply($, requests).then(function() {
       if(ret.length == 1) {
         $('#loaderdiv').empty();
@@ -341,6 +383,7 @@ var soil = {
           ret[i]["erosion"] = $('#loaderdiv').find('.hyderosratings span:contains("Erosion")').next().html().trim(); 
         }
       }
+      //pass the pulled info to the callback
       callback(ret);
     });
   },
@@ -380,12 +423,26 @@ var soil = {
   }
 }
 
-//@see http://www.hamweather.com/support/documentation/aeris/
+/*
+ * A set of functions to retrieve soil information
+ * functions:
+ *  get_data: retrieve weather data using the Hamweather API.
+ *  get_normals: get the normal monthly weather values for a particular location
+ * @see http://www.hamweather.com/support/documentation/aeris/
+ */
 var Weather = {
   
   client_id: "nMCnfGEEaArwNARvEdiZb",
   client_secret: (window.location.host == "app-ecotouch.rhcloud.com")? "BCbLIz0jxx3XDzKtS2uUjtYJaoLpucSEk0Mi7Ate" : "i8by9MQMwt1p4MPrRoLmnHhYhu030KkqcX1g5vo8",
   normals: null,
+  /*
+   * Retrieve weather data using the Hamweather API.
+   * action: action to perform as per the Hamweather documentation
+   * loc: location type being based in by params
+   * params: a set of parameters that correspond to action
+   * callback: callback that returns after function is complete
+   *    ret: data -- data object as defined by Hamweather API
+   */
   get_data: function(action,loc,params,callback) {
     params["client_id"] = this.client_id;
     params["client_secret"] = this.client_secret;
@@ -397,7 +454,7 @@ var Weather = {
           console.log(textStatus);
         }
     });
-  },
+  }, 
   get_normals: function(loc,callback) {
     params = {};
     params["p"] = loc.lat.toFixed(3) + "," + loc.lng.toFixed(3);
@@ -503,6 +560,14 @@ var Preferences = {
 }
 Preferences.init();
 
+/*
+ * Represents the calculation functions that a building would use for its average consumption
+ * outdoor_water_usage: calculates the outdoor water usage in gallons
+ * electricity_usage: calculates electricity usage in kWh
+ * setClimage: sets the climate of the display depending on a climate name string
+ * runOff: calculates the amount of runoff for a month in inches
+ * 
+ */
 var Building = {
   default_params: {
     showers: 1, //Showers per day per person
@@ -725,7 +790,6 @@ var NREL = {
   },
 }
 
-//Allow us to pass cross domain ajax requests through our node proxy
 $(function(){
   google.maps.event.addDomListener(window, 'load', initialize);
 
@@ -742,18 +806,6 @@ $(function(){
 
 });
 
-
-Array.prototype.removeDups = function (property){
-  var arr = {};
-
-  for ( var i=0; i < this.length; i++ )
-      arr[this[i][property]] = this[i];
-
-  var tmp = new Array();
-  for ( key in arr )
-      tmp.push(arr[key]);
-  return tmp;
-}
 
 if (typeof(Number.prototype.toRad) === "undefined") {
   Number.prototype.toRad = function() {
